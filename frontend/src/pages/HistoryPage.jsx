@@ -8,13 +8,13 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
 
   const handleCheckboxChange = (dreamId) => {
     if (selectedForFusion.includes(dreamId)) {
-      setSelectedForFusion(prev => prev.filter(id => id !== dreamId));
+      setSelectedForFusion((prev) => prev.filter((id) => id !== dreamId));
     } else {
       if (selectedForFusion.length >= 2) {
         // limit to 2
-        setSelectedForFusion(prev => [prev[1], dreamId]);
+        setSelectedForFusion((prev) => [prev[1], dreamId]);
       } else {
-        setSelectedForFusion(prev => [...prev, dreamId]);
+        setSelectedForFusion((prev) => [...prev, dreamId]);
       }
     }
   };
@@ -49,7 +49,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
       {/* Dream Fusion Banner */}
       <div className="glass-panel p-6 rounded-2xl border border-[var(--accent-color)]/20 bg-gradient-to-br from-[var(--bg-secondary)]/50 to-black/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--accent-glow)] rounded-full filter blur-2xl pointer-events-none opacity-30" />
-        
+
         <div className="flex items-start gap-4">
           <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 shrink-0">
             <GitMerge className="w-6 h-6 animate-pulse" />
@@ -59,7 +59,8 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
               Dream Fusion Chamber
             </h4>
             <p className="text-gray-400 max-w-lg leading-relaxed">
-              Toggle checkboxes on any two dreams below to merge their variables (physics, enemies, storylines) into a hybrid game.
+              Toggle checkboxes on any two dreams below to merge their variables (physics, enemies, storylines) into a
+              hybrid game.
             </p>
             {selectedForFusion.length > 0 && (
               <span className="text-[var(--accent-color)] font-bold uppercase tracking-wider mt-1">
@@ -91,11 +92,11 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
           {dreams.map((dream) => {
             const isSelected = selectedForFusion.includes(dream.id);
             return (
-              <div 
+              <div
                 key={dream.id}
                 className={`glass-panel rounded-2xl border transition-all duration-300 p-6 flex flex-col gap-4 relative ${
-                  isSelected 
-                    ? 'border-purple-500 shadow-lg shadow-purple-950/20 bg-purple-500/[0.02]' 
+                  isSelected
+                    ? 'border-purple-500 shadow-lg shadow-purple-950/20 bg-purple-500/[0.02]'
                     : 'border-white/5 bg-white/5 hover:border-white/10'
                 }`}
               >
@@ -122,9 +123,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
                       </span>
                     )}
                   </div>
-                  <h4 className="font-extrabold text-white text-base leading-snug line-clamp-1">
-                    {dream.title}
-                  </h4>
+                  <h4 className="font-extrabold text-white text-base leading-snug line-clamp-1">{dream.title}</h4>
                   <p className="text-xs text-gray-400 line-clamp-3 leading-relaxed mt-1 font-medium">
                     {dream.description}
                   </p>
@@ -132,7 +131,8 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
 
                 <div className="border-t border-white/5 pt-4 mt-auto flex items-center justify-between">
                   <span className="text-[9px] text-gray-500 font-mono">
-                    {new Date(dream.createdAt).toLocaleDateString()} at {new Date(dream.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(dream.createdAt).toLocaleDateString()} at{' '}
+                    {new Date(dream.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
 
                   <div className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
-                    
+
                     <button
                       onClick={() => onPlayDream(dream)}
                       className="px-4 py-2.5 rounded-lg bg-[var(--accent-color)] hover:opacity-95 text-white text-xs font-bold tracking-wider flex items-center gap-1 cursor-pointer transition-all shadow-md"

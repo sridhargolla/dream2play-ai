@@ -5,10 +5,7 @@ export default function Navbar({ activePage, setActivePage, user, onLogout, them
   return (
     <nav className="glass-panel border-b border-white/10 sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
       {/* Brand Logo */}
-      <div 
-        className="flex items-center gap-2 cursor-pointer select-none"
-        onClick={() => setActivePage('landing')}
-      >
+      <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setActivePage('landing')}>
         <Gamepad2 className="w-8 h-8 text-[var(--accent-color)] animate-float" />
         <span className="text-xl font-black tracking-wider text-[var(--accent-color)] neon-text-glow font-[var(--title-font)] uppercase">
           Dream2Play AI
@@ -21,44 +18,44 @@ export default function Navbar({ activePage, setActivePage, user, onLogout, them
           <button
             onClick={() => setActivePage('dashboard')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-              activePage === 'dashboard' 
-                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50' 
+              activePage === 'dashboard'
+                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             <LayoutDashboard className="w-4 h-4" />
             Dashboard
           </button>
-          
+
           <button
             onClick={() => setActivePage('generator')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-              activePage === 'generator' 
-                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50' 
+              activePage === 'generator'
+                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             <Compass className="w-4 h-4" />
             Dream Engine
           </button>
-          
+
           <button
             onClick={() => setActivePage('history')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-              activePage === 'history' 
-                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50' 
+              activePage === 'history'
+                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             <History className="w-4 h-4" />
             Dream Logs
           </button>
-          
+
           <button
             onClick={() => setActivePage('profile')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-              activePage === 'profile' 
-                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50' 
+              activePage === 'profile'
+                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -83,7 +80,9 @@ export default function Navbar({ activePage, setActivePage, user, onLogout, them
             {/* Profile Dropdown / Logout */}
             <div className="hidden lg:flex flex-col items-end text-xs">
               <span className="font-bold text-gray-300">Welcome, {user.username}</span>
-              <span className="text-[var(--accent-color)] font-semibold uppercase tracking-wider text-[9px]">{theme || 'Default'} Mode</span>
+              <span className="text-[var(--accent-color)] font-semibold uppercase tracking-wider text-[9px]">
+                {theme || 'Default'} Mode
+              </span>
             </div>
 
             <button

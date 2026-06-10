@@ -18,13 +18,13 @@ export const createGameConfig = (parentDiv, blueprint, onWin, onLose) => {
       default: 'arcade',
       arcade: {
         gravity: { y: 0 },
-        debug: false
-      }
+        debug: false,
+      },
     },
     scene: [PlayScene],
     scale: {
       mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH
-    }
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
   };
 };

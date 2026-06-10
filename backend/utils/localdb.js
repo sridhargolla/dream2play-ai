@@ -7,7 +7,7 @@ const DB_FILE = path.join(__dirname, '..', 'local_db.json');
 const DEFAULT_DB = {
   users: [],
   dreams: [],
-  scores: []
+  scores: [],
 };
 
 function readDb() {
@@ -35,12 +35,12 @@ function writeDb(data) {
 // User Methods
 function findUserByEmail(email) {
   const db = readDb();
-  return db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  return db.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
 }
 
 function findUserById(id) {
   const db = readDb();
-  return db.users.find(u => u.id === id);
+  return db.users.find((u) => u.id === id);
 }
 
 function createUser(user) {
@@ -54,7 +54,7 @@ function createUser(user) {
 // Dream Methods
 function getDreamsByUser(userId) {
   const db = readDb();
-  return db.dreams.filter(d => d.userId === userId);
+  return db.dreams.filter((d) => d.userId === userId);
 }
 
 function saveDream(dream) {
@@ -68,23 +68,21 @@ function saveDream(dream) {
 function deleteDream(id, userId) {
   const db = readDb();
   const initialCount = db.dreams.length;
-  db.dreams = db.dreams.filter(d => !(d.id === id && d.userId === userId));
+  db.dreams = db.dreams.filter((d) => !(d.id === id && d.userId === userId));
   writeDb(db);
   return db.dreams.length < initialCount;
 }
 
 function getDreamById(id) {
   const db = readDb();
-  return db.dreams.find(d => d.id === id);
+  return db.dreams.find((d) => d.id === id);
 }
 
 // Score Methods
 function getScores() {
   const db = readDb();
   // Return sorted high scores (descending score, ascending time)
-  return db.scores
-    .sort((a, b) => b.score - a.score || a.completionTime - b.completionTime)
-    .slice(0, 50); // limit to top 50
+  return db.scores.sort((a, b) => b.score - a.score || a.completionTime - b.completionTime).slice(0, 50); // limit to top 50
 }
 
 function saveScore(score) {
@@ -104,5 +102,5 @@ module.exports = {
   deleteDream,
   getDreamById,
   getScores,
-  saveScore
+  saveScore,
 };

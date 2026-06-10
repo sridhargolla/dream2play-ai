@@ -6,10 +6,10 @@ export default function ProfilePage({ user, scores }) {
   const globalLeaderboard = scores.slice(0, 10);
 
   // Take user-specific scores
-  const userScores = scores.filter(s => s.userId === user.id);
+  const userScores = scores.filter((s) => s.userId === user.id);
   const totalCompleted = userScores.length;
-  const bestScore = userScores.length > 0 ? Math.max(...userScores.map(s => s.score)) : 0;
-  
+  const bestScore = userScores.length > 0 ? Math.max(...userScores.map((s) => s.score)) : 0;
+
   return (
     <div className="w-full max-w-6xl mx-auto flex flex-col gap-8 px-4 py-8 text-left">
       {/* Page Title */}
@@ -19,7 +19,8 @@ export default function ProfilePage({ user, scores }) {
           LEADERBOARD & ARCHIVE
         </h2>
         <p className="text-xs text-gray-400 max-w-xl font-medium">
-          Check out the global rankings, top scores across all synthesized dimensions, and your active badge progression.
+          Check out the global rankings, top scores across all synthesized dimensions, and your active badge
+          progression.
         </p>
       </div>
 
@@ -48,7 +49,7 @@ export default function ProfilePage({ user, scores }) {
                     globalLeaderboard.map((scoreItem, idx) => {
                       const rank = idx + 1;
                       const isSelf = scoreItem.userId === user.id;
-                      
+
                       let rankBadge = '';
                       if (rank === 1) rankBadge = '🥇';
                       else if (rank === 2) rankBadge = '🥈';
@@ -56,38 +57,35 @@ export default function ProfilePage({ user, scores }) {
                       else rankBadge = `#${rank}`;
 
                       return (
-                        <tr 
-                          key={scoreItem.id} 
+                        <tr
+                          key={scoreItem.id}
                           className={`hover:bg-white/[0.02] transition-all ${
                             isSelf ? 'bg-[var(--accent-color)]/5 border-l-2 border-l-[var(--accent-color)]' : ''
                           }`}
                         >
-                          <td className="px-6 py-4 text-center font-bold text-sm">
-                            {rankBadge}
-                          </td>
+                          <td className="px-6 py-4 text-center font-bold text-sm">{rankBadge}</td>
                           <td className="px-6 py-4 font-bold text-white">
-                            {scoreItem.username} {isSelf && <span className="text-[10px] text-[var(--accent-color)] font-normal ml-1">(You)</span>}
+                            {scoreItem.username}{' '}
+                            {isSelf && (
+                              <span className="text-[10px] text-[var(--accent-color)] font-normal ml-1">(You)</span>
+                            )}
                           </td>
-                          <td className="px-6 py-4 text-gray-300 max-w-[180px] truncate">
-                            {scoreItem.dreamTitle}
-                          </td>
+                          <td className="px-6 py-4 text-gray-300 max-w-[180px] truncate">{scoreItem.dreamTitle}</td>
                           <td className="px-6 py-4 text-center">
-                            <span className={`px-2 py-0.5 rounded-[4px] text-[9px] font-bold uppercase ${
-                              scoreItem.difficulty === 'Hard' 
-                                ? 'bg-red-500/10 text-red-400 border border-red-500/20' 
-                                : scoreItem.difficulty === 'Medium'
-                                ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
-                                : 'bg-green-500/10 text-green-400 border border-green-500/20'
-                            }`}>
+                            <span
+                              className={`px-2 py-0.5 rounded-[4px] text-[9px] font-bold uppercase ${
+                                scoreItem.difficulty === 'Hard'
+                                  ? 'bg-red-500/10 text-red-400 border border-red-500/20'
+                                  : scoreItem.difficulty === 'Medium'
+                                    ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                                    : 'bg-green-500/10 text-green-400 border border-green-500/20'
+                              }`}
+                            >
                               {scoreItem.difficulty}
                             </span>
                           </td>
-                          <td className="px-6 py-4 text-right font-black text-white text-sm">
-                            {scoreItem.score}
-                          </td>
-                          <td className="px-6 py-4 text-right text-gray-400 font-mono">
-                            {scoreItem.completionTime}s
-                          </td>
+                          <td className="px-6 py-4 text-right font-black text-white text-sm">{scoreItem.score}</td>
+                          <td className="px-6 py-4 text-right text-gray-400 font-mono">{scoreItem.completionTime}s</td>
                         </tr>
                       );
                     })
@@ -139,7 +137,11 @@ export default function ProfilePage({ user, scores }) {
                   Active Tier
                 </span>
                 <span className="font-bold text-[var(--accent-color)]">
-                  {totalCompleted >= 5 ? 'Master Architect' : totalCompleted >= 2 ? 'Novice Weaver' : 'Synthesizer Trainee'}
+                  {totalCompleted >= 5
+                    ? 'Master Architect'
+                    : totalCompleted >= 2
+                      ? 'Novice Weaver'
+                      : 'Synthesizer Trainee'}
                 </span>
               </div>
             </div>

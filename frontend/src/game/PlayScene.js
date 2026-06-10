@@ -7,7 +7,7 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   init(data) {
-    const source = (data && data.blueprint) ? data : (window.__dream2play_data || {});
+    const source = data && data.blueprint ? data : window.__dream2play_data || {};
 
     const rawBlueprint = source.blueprint || {
       hero: 'Explorer',
@@ -19,18 +19,23 @@ export default class PlayScene extends Phaser.Scene {
       powerups: ['Speed surge'],
       mood: 'Adventure',
       difficulty: 'Medium',
-      colors: { bg: '#0a0b10', accent: '#8b5cf6', secondary: '#06b6d4', hazard: '#f43f5e', player: '#22c55e', text: '#ffffff' },
+      colors: {
+        bg: '#0a0b10',
+        accent: '#8b5cf6',
+        secondary: '#06b6d4',
+        hazard: '#f43f5e',
+        player: '#22c55e',
+        text: '#ffffff',
+      },
       physics: { gravity: 300, speed: 200, jump: -350, bounce: 0.1 },
-      stories: { intro: 'Welcome to the dream.', mission: 'Collect shards.', ending: 'You won!' }
+      stories: { intro: 'Welcome to the dream.', mission: 'Collect shards.', ending: 'You won!' },
     };
 
     // Deep clone blueprint to prevent state leakage on deaths / restarts
     this.blueprint = JSON.parse(JSON.stringify(rawBlueprint));
 
-    this.stages = Array.isArray(this.blueprint.stages) && this.blueprint.stages.length
-      ? this.blueprint.stages
-      : [];
-        
+    this.stages = Array.isArray(this.blueprint.stages) && this.blueprint.stages.length ? this.blueprint.stages : [];
+
     this.currentStageIndex = 0;
     this.genre = (this.blueprint.genre || 'platformer').toLowerCase();
 
@@ -52,7 +57,7 @@ export default class PlayScene extends Phaser.Scene {
 
     // Battle royale storm tracker
     this.stormX = 0;
-    
+
     // Timer
     this.startTime = Date.now();
     this.completionTime = 0;
@@ -75,7 +80,7 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   getStageRequiredScore() {
-    return 30 + (this.currentStageIndex * 20);
+    return 30 + this.currentStageIndex * 20;
   }
 
   preload() {
@@ -120,12 +125,21 @@ export default class PlayScene extends Phaser.Scene {
     this.bossProjectiles = this.physics.add.group();
 
     // Determine gravity by genre
-    const isNoGravityGenre = this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
-    const pGrav = isNoGravityGenre ? 0 : (this.blueprint.player?.gravity !== undefined ? this.blueprint.player.gravity : 300);
+    const isNoGravityGenre =
+      this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
+    const pGrav = isNoGravityGenre
+      ? 0
+      : this.blueprint.player?.gravity !== undefined
+        ? this.blueprint.player.gravity
+        : 300;
     const pBounce = this.blueprint.physics?.bounce !== undefined ? this.blueprint.physics.bounce : 0.1;
 
     // Spawn Player
-    const playerStartY = this.genre.includes('runner') ? 250 : (this.genre.includes('driving') || this.genre.includes('racing') ? 360 : height - 150);
+    const playerStartY = this.genre.includes('runner')
+      ? 250
+      : this.genre.includes('driving') || this.genre.includes('racing')
+        ? 360
+        : height - 150;
     this.player = this.physics.add.sprite(100, playerStartY, 'player_tex');
     this.player.setDisplaySize(32, 32);
     this.player.setCollideWorldBounds(true);
@@ -148,23 +162,23 @@ export default class PlayScene extends Phaser.Scene {
       this.jumpCount = 0;
     });
     this.physics.add.collider(this.enemies, this.platforms);
-    
+
     this.physics.add.overlap(this.player, this.collectibles, this.collectItem, null, this);
     this.physics.add.overlap(this.player, this.hazards, this.hitHazard, null, this);
     this.physics.add.overlap(this.player, this.enemies, this.hitEnemy, null, this);
     this.physics.add.overlap(this.player, this.bossProjectiles, this.hitPlayerProjectile, null, this);
-    
+
     this.physics.add.overlap(this.projectiles, this.enemies, this.shootEnemy, null, this);
     this.physics.add.overlap(this.projectiles, this.platforms, this.destroyProjectile, null, this);
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.keyQ     = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-    this.keyE     = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-    this.keyR     = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
     this.keyBackspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE);
-    this.lastFired  = 0;
-    this.lastDash   = 0;
+    this.lastFired = 0;
+    this.lastDash = 0;
     this.lastShield = 0;
     this.lastTriple = 0;
     this.shieldActive = false;
@@ -175,7 +189,10 @@ export default class PlayScene extends Phaser.Scene {
     // Battle Royale Storm Overlay
     if (this.genre === 'battle_royale') {
       this.stormX = 0;
-      this.stormWall = this.add.rectangle(0, height / 2, 10, height, 0xef4444, 0.35).setScrollFactor(1).setDepth(15);
+      this.stormWall = this.add
+        .rectangle(0, height / 2, 10, height, 0xef4444, 0.35)
+        .setScrollFactor(1)
+        .setDepth(15);
       this.physics.add.existing(this.stormWall, true);
     }
 
@@ -202,7 +219,7 @@ export default class PlayScene extends Phaser.Scene {
       this.player.body.setAllowGravity(false);
 
       const speed = this.blueprint.player?.speed || 250;
-      
+
       if (this.cursors.up.isDown) {
         this.player.setVelocityX(speed);
       } else if (this.cursors.down.isDown) {
@@ -216,15 +233,16 @@ export default class PlayScene extends Phaser.Scene {
       } else if (this.cursors.right.isDown) {
         this.player.y = Math.min(400, this.player.y + 5);
       }
-
     } else if (this.genre === 'endless_runner') {
       this.player.setGravityY(0);
       this.player.body.setAllowGravity(false);
 
       this.player.setVelocityX(200);
 
-      const isUpJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up) || Phaser.Input.Keyboard.JustDown(this.cursors.left);
-      const isDownJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.down) || Phaser.Input.Keyboard.JustDown(this.cursors.right);
+      const isUpJustPressed =
+        Phaser.Input.Keyboard.JustDown(this.cursors.up) || Phaser.Input.Keyboard.JustDown(this.cursors.left);
+      const isDownJustPressed =
+        Phaser.Input.Keyboard.JustDown(this.cursors.down) || Phaser.Input.Keyboard.JustDown(this.cursors.right);
 
       if (isUpJustPressed) {
         this.currentTrack = Math.max(0, this.currentTrack - 1);
@@ -236,9 +254,8 @@ export default class PlayScene extends Phaser.Scene {
 
       const tracksY = [150, 250, 350];
       const targetY = tracksY[this.currentTrack];
-      
-      this.player.y += (targetY - this.player.y) * 0.25;
 
+      this.player.y += (targetY - this.player.y) * 0.25;
     } else {
       const speed = this.blueprint.player?.speed || 220;
       const jumpForce = this.blueprint.player?.jumpForce || -350;
@@ -322,7 +339,7 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     // Patrol/Chase enemies — move + fall-into-gap elimination
-    this.enemies.getChildren().forEach(enemy => {
+    this.enemies.getChildren().forEach((enemy) => {
       if (!enemy.active) return;
 
       // ── Gap Fall Kill ──────────────────────────────────────────────────
@@ -348,10 +365,8 @@ export default class PlayScene extends Phaser.Scene {
         // Chase: follow player horizontally
         const dir = this.player.x - enemy.x;
         enemy.setVelocityX(Math.sign(dir) * 75);
-
       } else if (type === 'traffic') {
         enemy.setVelocityX(-120);
-
       } else {
         // Patrol: reverse on wall collision
         if (enemy.body.blocked.left || enemy.body.blocked.right) {
@@ -364,10 +379,14 @@ export default class PlayScene extends Phaser.Scene {
           const lookAheadX = enemy.x + Math.sign(enemy.body.velocity.x) * 20;
           const lookAheadY = enemy.y + 20;
           let groundAhead = false;
-          this.platforms.getChildren().forEach(platform => {
+          this.platforms.getChildren().forEach((platform) => {
             const pb = platform.getBounds();
-            if (lookAheadX >= pb.left && lookAheadX <= pb.right &&
-                lookAheadY >= pb.top - 5 && lookAheadY <= pb.bottom + 5) {
+            if (
+              lookAheadX >= pb.left &&
+              lookAheadX <= pb.right &&
+              lookAheadY >= pb.top - 5 &&
+              lookAheadY <= pb.bottom + 5
+            ) {
               groundAhead = true;
             }
           });
@@ -391,7 +410,14 @@ export default class PlayScene extends Phaser.Scene {
   // --- SPRITE GENERATORS (10-type Dynamic Atlas) ---
   generateTextures() {
     const gc = this.add.graphics();
-    const colors = this.blueprint.colors || { bg: '#0a0b10', accent: '#8b5cf6', secondary: '#06b6d4', hazard: '#f43f5e', player: '#22c55e', text: '#ffffff' };
+    const colors = this.blueprint.colors || {
+      bg: '#0a0b10',
+      accent: '#8b5cf6',
+      secondary: '#06b6d4',
+      hazard: '#f43f5e',
+      player: '#22c55e',
+      text: '#ffffff',
+    };
     const pColor = Phaser.Display.Color.HexStringToColor(colors.player).color;
     const aColor = Phaser.Display.Color.HexStringToColor(colors.accent).color;
     const hColor = Phaser.Display.Color.HexStringToColor(colors.hazard).color;
@@ -404,92 +430,124 @@ export default class PlayScene extends Phaser.Scene {
 
       if (subType === 'car' || this.genre.includes('driving') || this.genre.includes('racing')) {
         // ── TOP-DOWN CAR ──
-        gc.fillStyle(pColor);        gc.fillRect(4, 8, 44, 18);   // body
-        gc.fillStyle(0x222222);      gc.fillRect(6, 4, 9, 5);     // FL wheel
-        gc.fillRect(37, 4, 9, 5);                                   // FR wheel
-        gc.fillRect(6, 23, 9, 5);                                   // RL wheel
-        gc.fillRect(37, 23, 9, 5);                                  // RR wheel
-        gc.fillStyle(aColor);        gc.fillRect(22, 10, 12, 10); // windshield
-        gc.fillStyle(0xfff9c4, 0.9); gc.fillCircle(6, 17, 3);     // headlight L
-        gc.fillCircle(46, 17, 3);                                   // headlight R
+        gc.fillStyle(pColor);
+        gc.fillRect(4, 8, 44, 18); // body
+        gc.fillStyle(0x222222);
+        gc.fillRect(6, 4, 9, 5); // FL wheel
+        gc.fillRect(37, 4, 9, 5); // FR wheel
+        gc.fillRect(6, 23, 9, 5); // RL wheel
+        gc.fillRect(37, 23, 9, 5); // RR wheel
+        gc.fillStyle(aColor);
+        gc.fillRect(22, 10, 12, 10); // windshield
+        gc.fillStyle(0xfff9c4, 0.9);
+        gc.fillCircle(6, 17, 3); // headlight L
+        gc.fillCircle(46, 17, 3); // headlight R
         gc.generateTexture('player_tex', 52, 34);
-
       } else if (subType === 'motorcycle') {
         // ── SIDE-VIEW MOTORCYCLE ──
-        gc.fillStyle(pColor);        gc.fillRect(10, 10, 30, 8);  // frame
-        gc.fillStyle(0x111111);      gc.fillCircle(8, 22, 7);     // rear wheel
-        gc.fillCircle(42, 22, 7);                                   // front wheel
-        gc.fillStyle(aColor);        gc.fillRect(16, 4, 14, 8);   // fairing
-        gc.fillStyle(0xffffff, 0.7); gc.fillCircle(42, 22, 3);    // front hub
-        gc.fillCircle(8, 22, 3);                                    // rear hub
+        gc.fillStyle(pColor);
+        gc.fillRect(10, 10, 30, 8); // frame
+        gc.fillStyle(0x111111);
+        gc.fillCircle(8, 22, 7); // rear wheel
+        gc.fillCircle(42, 22, 7); // front wheel
+        gc.fillStyle(aColor);
+        gc.fillRect(16, 4, 14, 8); // fairing
+        gc.fillStyle(0xffffff, 0.7);
+        gc.fillCircle(42, 22, 3); // front hub
+        gc.fillCircle(8, 22, 3); // rear hub
         gc.generateTexture('player_tex', 52, 34);
-
       } else if (subType === 'aircraft') {
         // ── FIGHTER JET ──
-        gc.fillStyle(pColor);        gc.fillTriangle(26, 0, 52, 20, 0, 20); // nose
-        gc.fillRect(10, 12, 32, 10);                               // fuselage
-        gc.fillStyle(aColor);        gc.fillTriangle(8, 14, 0, 28, 20, 22); // left wing
-        gc.fillTriangle(44, 14, 52, 28, 32, 22);                   // right wing
-        gc.fillStyle(hColor, 0.9);   gc.fillRect(20, 18, 12, 4);  // cockpit
+        gc.fillStyle(pColor);
+        gc.fillTriangle(26, 0, 52, 20, 0, 20); // nose
+        gc.fillRect(10, 12, 32, 10); // fuselage
+        gc.fillStyle(aColor);
+        gc.fillTriangle(8, 14, 0, 28, 20, 22); // left wing
+        gc.fillTriangle(44, 14, 52, 28, 32, 22); // right wing
+        gc.fillStyle(hColor, 0.9);
+        gc.fillRect(20, 18, 12, 4); // cockpit
         gc.generateTexture('player_tex', 52, 34);
-
       } else if (subType === 'spacecraft') {
         // ── SPACECRAFT ──
-        gc.fillStyle(pColor);        gc.fillCircle(26, 17, 14);   // hull
-        gc.fillStyle(aColor);        gc.fillRect(14, 26, 24, 6);  // engine
-        gc.fillStyle(sColor, 0.9);   gc.fillCircle(26, 15, 6);    // cockpit dome
-        gc.fillStyle(hColor, 0.7);   gc.fillRect(2, 19, 8, 4);    // left fin
-        gc.fillRect(42, 19, 8, 4);                                  // right fin
+        gc.fillStyle(pColor);
+        gc.fillCircle(26, 17, 14); // hull
+        gc.fillStyle(aColor);
+        gc.fillRect(14, 26, 24, 6); // engine
+        gc.fillStyle(sColor, 0.9);
+        gc.fillCircle(26, 15, 6); // cockpit dome
+        gc.fillStyle(hColor, 0.7);
+        gc.fillRect(2, 19, 8, 4); // left fin
+        gc.fillRect(42, 19, 8, 4); // right fin
         gc.generateTexture('player_tex', 52, 34);
-
       } else if (subType === 'ninja') {
         // ── HOODED NINJA ──
-        gc.fillStyle(0x1a1a2e);      gc.fillRect(6, 4, 20, 28);   // dark body
-        gc.fillStyle(0x111111);      gc.fillRect(8, 4, 16, 10);   // hood
-        gc.fillStyle(pColor);        gc.fillRect(10, 12, 12, 4);  // mask slit
-        gc.fillStyle(aColor);        gc.fillRect(2, 16, 4, 18);   // katana blade
-        gc.fillStyle(0x8b4513);      gc.fillRect(4, 14, 2, 4);    // katana handle
+        gc.fillStyle(0x1a1a2e);
+        gc.fillRect(6, 4, 20, 28); // dark body
+        gc.fillStyle(0x111111);
+        gc.fillRect(8, 4, 16, 10); // hood
+        gc.fillStyle(pColor);
+        gc.fillRect(10, 12, 12, 4); // mask slit
+        gc.fillStyle(aColor);
+        gc.fillRect(2, 16, 4, 18); // katana blade
+        gc.fillStyle(0x8b4513);
+        gc.fillRect(4, 14, 2, 4); // katana handle
         gc.generateTexture('player_tex', 32, 34);
-
       } else if (subType === 'soldier') {
         // ── MILITARY SOLDIER ──
-        gc.fillStyle(0x4b5563);      gc.fillRect(6, 4, 20, 28);   // uniform
-        gc.fillStyle(0x374151);      gc.fillRect(8, 2, 16, 10);   // helmet
-        gc.fillStyle(0xfbbf24, 0.5); gc.fillRect(10, 6, 12, 4);   // visor
-        gc.fillStyle(0x6b7280);      gc.fillRect(24, 14, 14, 4);  // rifle barrel
-        gc.fillRect(22, 14, 4, 10);                                 // rifle body
-        gc.fillStyle(pColor);        gc.fillRect(10, 12, 4, 4);   // left eye
+        gc.fillStyle(0x4b5563);
+        gc.fillRect(6, 4, 20, 28); // uniform
+        gc.fillStyle(0x374151);
+        gc.fillRect(8, 2, 16, 10); // helmet
+        gc.fillStyle(0xfbbf24, 0.5);
+        gc.fillRect(10, 6, 12, 4); // visor
+        gc.fillStyle(0x6b7280);
+        gc.fillRect(24, 14, 14, 4); // rifle barrel
+        gc.fillRect(22, 14, 4, 10); // rifle body
+        gc.fillStyle(pColor);
+        gc.fillRect(10, 12, 4, 4); // left eye
         gc.generateTexture('player_tex', 40, 34);
-
       } else if (subType === 'superhero') {
         // ── CAPED SUPERHERO ──
-        gc.fillStyle(pColor);        gc.fillRect(5, 6, 22, 26);   // body
-        gc.fillStyle(aColor);        gc.fillRect(7, 6, 18, 8);    // chest emblem
-        gc.fillStyle(pColor);        gc.fillCircle(16, 6, 7);     // head
-        gc.fillStyle(hColor, 0.85);  gc.fillTriangle(0, 10, 6, 6, 6, 24); // cape L
-        gc.fillTriangle(26, 6, 32, 10, 26, 24);                    // cape R
-        gc.fillStyle(0xfde68a);      gc.fillRect(11, 4, 4, 6);    // mask
+        gc.fillStyle(pColor);
+        gc.fillRect(5, 6, 22, 26); // body
+        gc.fillStyle(aColor);
+        gc.fillRect(7, 6, 18, 8); // chest emblem
+        gc.fillStyle(pColor);
+        gc.fillCircle(16, 6, 7); // head
+        gc.fillStyle(hColor, 0.85);
+        gc.fillTriangle(0, 10, 6, 6, 6, 24); // cape L
+        gc.fillTriangle(26, 6, 32, 10, 26, 24); // cape R
+        gc.fillStyle(0xfde68a);
+        gc.fillRect(11, 4, 4, 6); // mask
         gc.generateTexture('player_tex', 36, 34);
-
       } else if (subType === 'human_female') {
         // ── HUMAN FEMALE ──
-        gc.fillStyle(pColor);        gc.fillRect(7, 6, 18, 26);   // body
-        gc.fillStyle(0xfbbf24);      gc.fillCircle(16, 6, 7);     // head
-        gc.fillStyle(aColor);        gc.fillRect(7, 12, 18, 8);   // outfit accent
-        gc.fillStyle(0xfde68a);      gc.fillRect(10, 2, 12, 8);   // hair
-        gc.fillStyle(0x000000);      gc.fillRect(12, 6, 3, 3);    // eye L
-        gc.fillRect(17, 6, 3, 3);                                   // eye R
+        gc.fillStyle(pColor);
+        gc.fillRect(7, 6, 18, 26); // body
+        gc.fillStyle(0xfbbf24);
+        gc.fillCircle(16, 6, 7); // head
+        gc.fillStyle(aColor);
+        gc.fillRect(7, 12, 18, 8); // outfit accent
+        gc.fillStyle(0xfde68a);
+        gc.fillRect(10, 2, 12, 8); // hair
+        gc.fillStyle(0x000000);
+        gc.fillRect(12, 6, 3, 3); // eye L
+        gc.fillRect(17, 6, 3, 3); // eye R
         gc.generateTexture('player_tex', 32, 34);
-
       } else {
         // ── DEFAULT: HUMAN MALE ──
-        gc.fillStyle(pColor);        gc.fillRect(6, 6, 20, 26);   // body
-        gc.fillStyle(0xfbbf24);      gc.fillCircle(16, 6, 7);     // head
-        gc.fillStyle(aColor);        gc.fillRect(8, 14, 16, 8);   // shirt accent
-        gc.fillStyle(0x000000);      gc.fillRect(11, 4, 3, 4);    // eye L
-        gc.fillRect(18, 4, 3, 4);                                   // eye R
-        gc.fillStyle(0x374151);      gc.fillRect(6, 30, 9, 4);    // leg L
-        gc.fillRect(17, 30, 9, 4);                                  // leg R
+        gc.fillStyle(pColor);
+        gc.fillRect(6, 6, 20, 26); // body
+        gc.fillStyle(0xfbbf24);
+        gc.fillCircle(16, 6, 7); // head
+        gc.fillStyle(aColor);
+        gc.fillRect(8, 14, 16, 8); // shirt accent
+        gc.fillStyle(0x000000);
+        gc.fillRect(11, 4, 3, 4); // eye L
+        gc.fillRect(18, 4, 3, 4); // eye R
+        gc.fillStyle(0x374151);
+        gc.fillRect(6, 30, 9, 4); // leg L
+        gc.fillRect(17, 30, 9, 4); // leg R
         gc.generateTexture('player_tex', 32, 36);
       }
     }
@@ -499,45 +557,61 @@ export default class PlayScene extends Phaser.Scene {
       gc.clear();
       if (this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('bike')) {
         // Traffic / Police Car
-        gc.fillStyle(hColor);        gc.fillRect(2, 8, 44, 18);   // enemy car body
-        gc.fillStyle(0x111111);      gc.fillRect(5, 4, 8, 5);     // wheel FL
-        gc.fillRect(36, 4, 8, 5);                                   // wheel FR
-        gc.fillRect(5, 23, 8, 5);                                   // wheel RL
-        gc.fillRect(36, 23, 8, 5);                                  // wheel RR
-        gc.fillStyle(0xfff9c4, 0.8); gc.fillCircle(46, 17, 3);    // headlight
-        gc.fillStyle(0xff0000, 0.9); gc.fillRect(2, 12, 5, 6);    // tail light
+        gc.fillStyle(hColor);
+        gc.fillRect(2, 8, 44, 18); // enemy car body
+        gc.fillStyle(0x111111);
+        gc.fillRect(5, 4, 8, 5); // wheel FL
+        gc.fillRect(36, 4, 8, 5); // wheel FR
+        gc.fillRect(5, 23, 8, 5); // wheel RL
+        gc.fillRect(36, 23, 8, 5); // wheel RR
+        gc.fillStyle(0xfff9c4, 0.8);
+        gc.fillCircle(46, 17, 3); // headlight
+        gc.fillStyle(0xff0000, 0.9);
+        gc.fillRect(2, 12, 5, 6); // tail light
         gc.generateTexture('enemy_tex', 52, 34);
-
       } else if (this.genre === 'survival') {
         // Zombie
-        gc.fillStyle(0x4d7c0f);      gc.fillRect(5, 6, 22, 26);   // body (greenish)
-        gc.fillStyle(0x65a30d, 0.8); gc.fillCircle(16, 6, 7);     // head
-        gc.fillStyle(0xff0000);      gc.fillRect(10, 4, 4, 3);    // zombie eye L
-        gc.fillRect(18, 4, 4, 3);                                   // zombie eye R
-        gc.fillStyle(hColor, 0.7);   gc.fillRect(4, 20, 6, 14);   // arm reaching out
-        gc.fillStyle(0x4d7c0f, 0.8); gc.fillRect(8, 30, 8, 4);    // leg L
-        gc.fillRect(17, 30, 8, 4);                                  // leg R
+        gc.fillStyle(0x4d7c0f);
+        gc.fillRect(5, 6, 22, 26); // body (greenish)
+        gc.fillStyle(0x65a30d, 0.8);
+        gc.fillCircle(16, 6, 7); // head
+        gc.fillStyle(0xff0000);
+        gc.fillRect(10, 4, 4, 3); // zombie eye L
+        gc.fillRect(18, 4, 4, 3); // zombie eye R
+        gc.fillStyle(hColor, 0.7);
+        gc.fillRect(4, 20, 6, 14); // arm reaching out
+        gc.fillStyle(0x4d7c0f, 0.8);
+        gc.fillRect(8, 30, 8, 4); // leg L
+        gc.fillRect(17, 30, 8, 4); // leg R
         gc.generateTexture('enemy_tex', 32, 36);
-
       } else if (this.genre === 'battle_royale' || this.genre === 'shooter') {
         // Armed Rival
-        gc.fillStyle(0x78350f);      gc.fillRect(6, 6, 20, 26);   // camo uniform
-        gc.fillStyle(0x57534e);      gc.fillRect(8, 2, 16, 10);   // helmet
-        gc.fillStyle(hColor);        gc.fillRect(24, 14, 14, 3);  // gun barrel
-        gc.fillStyle(0x57534e);      gc.fillRect(22, 13, 4, 8);   // gun body
-        gc.fillStyle(0xfef3c7);      gc.fillRect(11, 4, 3, 4);    // eye slit
+        gc.fillStyle(0x78350f);
+        gc.fillRect(6, 6, 20, 26); // camo uniform
+        gc.fillStyle(0x57534e);
+        gc.fillRect(8, 2, 16, 10); // helmet
+        gc.fillStyle(hColor);
+        gc.fillRect(24, 14, 14, 3); // gun barrel
+        gc.fillStyle(0x57534e);
+        gc.fillRect(22, 13, 4, 8); // gun body
+        gc.fillStyle(0xfef3c7);
+        gc.fillRect(11, 4, 3, 4); // eye slit
         gc.generateTexture('enemy_tex', 40, 34);
-
       } else {
         // Generic patrol enemy — humanoid
-        gc.fillStyle(hColor);        gc.fillRect(5, 6, 22, 26);   // body
-        gc.fillStyle(0xdc2626, 0.9); gc.fillCircle(16, 6, 7);     // red head
-        gc.fillStyle(0xffffff);      gc.fillRect(10, 4, 4, 4);    // eye L
-        gc.fillRect(18, 4, 4, 4);                                   // eye R
-        gc.fillStyle(0x000000);      gc.fillRect(11, 5, 2, 2);    // pupil L
-        gc.fillRect(19, 5, 2, 2);                                   // pupil R
-        gc.fillStyle(hColor, 0.7);   gc.fillRect(4, 12, 4, 14);   // arm L
-        gc.fillRect(24, 12, 4, 14);                                 // arm R
+        gc.fillStyle(hColor);
+        gc.fillRect(5, 6, 22, 26); // body
+        gc.fillStyle(0xdc2626, 0.9);
+        gc.fillCircle(16, 6, 7); // red head
+        gc.fillStyle(0xffffff);
+        gc.fillRect(10, 4, 4, 4); // eye L
+        gc.fillRect(18, 4, 4, 4); // eye R
+        gc.fillStyle(0x000000);
+        gc.fillRect(11, 5, 2, 2); // pupil L
+        gc.fillRect(19, 5, 2, 2); // pupil R
+        gc.fillStyle(hColor, 0.7);
+        gc.fillRect(4, 12, 4, 14); // arm L
+        gc.fillRect(24, 12, 4, 14); // arm R
         gc.generateTexture('enemy_tex', 32, 34);
       }
     }
@@ -548,14 +622,14 @@ export default class PlayScene extends Phaser.Scene {
       // Menacing Diamond Shield / Crown Shape with Horns and Glowing Core
       gc.fillStyle(hColor);
       gc.beginPath();
-      gc.moveTo(42, 2);   // top peak
-      gc.lineTo(76, 24);  // top right horn
-      gc.lineTo(62, 38);  // mid right indent
-      gc.lineTo(80, 68);  // bottom right wing
-      gc.lineTo(42, 82);  // bottom peak
-      gc.lineTo(4, 68);   // bottom left wing
-      gc.lineTo(22, 38);  // mid left indent
-      gc.lineTo(8, 24);   // top left horn
+      gc.moveTo(42, 2); // top peak
+      gc.lineTo(76, 24); // top right horn
+      gc.lineTo(62, 38); // mid right indent
+      gc.lineTo(80, 68); // bottom right wing
+      gc.lineTo(42, 82); // bottom peak
+      gc.lineTo(4, 68); // bottom left wing
+      gc.lineTo(22, 38); // mid left indent
+      gc.lineTo(8, 24); // top left horn
       gc.closePath();
       gc.fill();
 
@@ -598,12 +672,16 @@ export default class PlayScene extends Phaser.Scene {
       gc.fillStyle(sColor);
       if (this.genre.includes('driving') || this.genre.includes('racing')) {
         // Fuel canister
-        gc.fillRect(4, 4, 16, 20);  gc.fillRect(8, 0, 8, 4);
-        gc.fillStyle(aColor, 0.7);  gc.fillRect(6, 8, 12, 4);
+        gc.fillRect(4, 4, 16, 20);
+        gc.fillRect(8, 0, 8, 4);
+        gc.fillStyle(aColor, 0.7);
+        gc.fillRect(6, 8, 12, 4);
       } else if (this.genre === 'survival') {
         // Medkit cross
-        gc.fillRect(8, 2, 8, 20);   gc.fillRect(2, 8, 20, 8);
-        gc.fillStyle(0xffffff, 0.5);gc.fillRect(10, 4, 4, 16);
+        gc.fillRect(8, 2, 8, 20);
+        gc.fillRect(2, 8, 20, 8);
+        gc.fillStyle(0xffffff, 0.5);
+        gc.fillRect(10, 4, 4, 16);
         gc.fillRect(4, 10, 16, 4);
       } else {
         // Star collectible
@@ -628,9 +706,12 @@ export default class PlayScene extends Phaser.Scene {
     // ── PLATFORM SPRITE ──
     if (!this.textures.exists('platform_tex')) {
       gc.clear();
-      gc.fillStyle(sColor, 0.35);    gc.fillRect(0, 0, 64, 20);
-      gc.lineStyle(2, aColor, 0.8);  gc.strokeRect(0, 0, 64, 20);
-      gc.fillStyle(aColor, 0.12);    gc.fillRect(4, 4, 56, 12);
+      gc.fillStyle(sColor, 0.35);
+      gc.fillRect(0, 0, 64, 20);
+      gc.lineStyle(2, aColor, 0.8);
+      gc.strokeRect(0, 0, 64, 20);
+      gc.fillStyle(aColor, 0.12);
+      gc.fillRect(4, 4, 56, 12);
       gc.generateTexture('platform_tex', 64, 20);
     }
 
@@ -662,7 +743,14 @@ export default class PlayScene extends Phaser.Scene {
 
   createBackgroundElements(height) {
     const numElements = 40;
-    const colors = this.blueprint.colors || { bg: '#0a0b10', accent: '#8b5cf6', secondary: '#06b6d4', hazard: '#f43f5e', player: '#22c55e', text: '#ffffff' };
+    const colors = this.blueprint.colors || {
+      bg: '#0a0b10',
+      accent: '#8b5cf6',
+      secondary: '#06b6d4',
+      hazard: '#f43f5e',
+      player: '#22c55e',
+      text: '#ffffff',
+    };
     const aColor = Phaser.Display.Color.HexStringToColor(colors.accent).color;
 
     for (let i = 0; i < numElements; i++) {
@@ -670,10 +758,10 @@ export default class PlayScene extends Phaser.Scene {
       const y = Math.random() * (height - 100);
       const size = Math.random() * 4 + 2;
       const alpha = Math.random() * 0.4 + 0.1;
-      
+
       const dot = this.add.circle(x, y, size, aColor, alpha);
       dot.setDepth(1);
-      
+
       this.tweens.add({
         targets: dot,
         y: y - (Math.random() * 30 + 10),
@@ -681,7 +769,7 @@ export default class PlayScene extends Phaser.Scene {
         duration: Math.random() * 3000 + 2000,
         yoyo: true,
         repeat: -1,
-        ease: 'Sine.easeInOut'
+        ease: 'Sine.easeInOut',
       });
     }
   }
@@ -692,9 +780,9 @@ export default class PlayScene extends Phaser.Scene {
     const isRoad = this.genre.includes('driving') || this.genre.includes('racing');
 
     if (Array.isArray(stage.blocks)) {
-      stage.blocks.forEach(block => {
+      stage.blocks.forEach((block) => {
         if (block.type === 'ground' || block.type === 'solid') {
-          const tex = (block.type === 'ground' && isRoad) ? 'road_tex' : 'platform_tex';
+          const tex = block.type === 'ground' && isRoad ? 'road_tex' : 'platform_tex';
           const p = this.platforms.create(block.x, block.y, tex);
           if (block.width && block.height) {
             p.setDisplaySize(block.width, block.height);
@@ -709,7 +797,7 @@ export default class PlayScene extends Phaser.Scene {
         } else if (block.type === 'collectible') {
           const shard = this.collectibles.create(block.x, block.y, 'collect_tex');
           shard.setDisplaySize(block.width || 24, block.height || 24);
-          
+
           if (this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner')) {
             shard.body.setAllowGravity(false);
           } else {
@@ -722,12 +810,13 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     // Ensure the floor continues all the way until the boss is defeated (up to x = 6500)
-    const isNoGravityGenre = this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
+    const isNoGravityGenre =
+      this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
     if (!isNoGravityGenre) {
       let maxX = 0;
       let groundY = height - 30; // default ground Y (420 for height 450)
       if (Array.isArray(stage.blocks)) {
-        stage.blocks.forEach(block => {
+        stage.blocks.forEach((block) => {
           if (block.type === 'ground' || block.type === 'solid') {
             const rightEdge = block.x + (block.width || 64) / 2;
             if (rightEdge > maxX) {
@@ -752,14 +841,19 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     if (Array.isArray(stage.enemies)) {
-      const isNoGravity = this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
-      const pGrav = isNoGravity ? 0 : (this.blueprint.player?.gravity !== undefined ? this.blueprint.player.gravity : 300);
+      const isNoGravity =
+        this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
+      const pGrav = isNoGravity
+        ? 0
+        : this.blueprint.player?.gravity !== undefined
+          ? this.blueprint.player.gravity
+          : 300;
 
-      stage.enemies.forEach(enemyData => {
+      stage.enemies.forEach((enemyData) => {
         if (enemyData.defeated) return;
 
         const enemySprite = this.enemies.create(enemyData.x, enemyData.y, 'enemy_tex');
-        
+
         if (this.genre.includes('driving') || this.genre.includes('racing')) {
           enemySprite.setDisplaySize(48, 32);
         } else {
@@ -796,24 +890,35 @@ export default class PlayScene extends Phaser.Scene {
     const labelStyle = { font: '12px Outfit, sans-serif', fill: '#888888' };
 
     // Resolve score label from blueprint (set by dynamic analyzer)
-    this._scoreLabel = this.blueprint.intent?.scoreLabel || (
-      (this.genre.includes('driving') || this.genre.includes('racing')) ? 'SPEED' :
-      this.genre.includes('runner') ? 'COINS' : 'SHARDS'
-    );
-    
+    this._scoreLabel =
+      this.blueprint.intent?.scoreLabel ||
+      (this.genre.includes('driving') || this.genre.includes('racing')
+        ? 'SPEED'
+        : this.genre.includes('runner')
+          ? 'COINS'
+          : 'SHARDS');
+
     this.uiContainer = this.add.container(20, 20).setScrollFactor(0).setDepth(20);
-    
+
     this.scoreText = this.add.text(0, 0, `${this._scoreLabel}: 0`, style);
     this.uiContainer.add(this.scoreText);
 
-    this.stageText = this.add.text(0, 25, `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`, labelStyle);
+    this.stageText = this.add.text(
+      0,
+      25,
+      `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`,
+      labelStyle
+    );
     this.uiContainer.add(this.stageText);
 
     this.objectiveText = this.add.text(0, 42, `MISSION: ${this.getCurrentObjective()}`, labelStyle);
     this.uiContainer.add(this.objectiveText);
 
     // Dynamic stage checklist panel
-    this.objectiveTitleText = this.add.text(0, 65, `STAGE OBJECTIVES:`, { font: 'bold 11px Outfit, sans-serif', fill: '#fbbf24' });
+    this.objectiveTitleText = this.add.text(0, 65, `STAGE OBJECTIVES:`, {
+      font: 'bold 11px Outfit, sans-serif',
+      fill: '#fbbf24',
+    });
     this.uiContainer.add(this.objectiveTitleText);
 
     this.shardsStatusText = this.add.text(10, 80, ``, { font: '11px Outfit, sans-serif', fill: '#94a3b8' });
@@ -834,12 +939,18 @@ export default class PlayScene extends Phaser.Scene {
     this.uiContainer.add(this.healthBar);
     this.updateHealthBar();
 
-    this.healthText = this.add.text(width - 220, 20, `HEALTH: 100%`, { font: 'bold 12px Outfit, sans-serif', fill: '#ffffff' });
+    this.healthText = this.add.text(width - 220, 20, `HEALTH: 100%`, {
+      font: 'bold 12px Outfit, sans-serif',
+      fill: '#ffffff',
+    });
     this.uiContainer.add(this.healthText);
 
     this.bossUI = this.add.container(0, 0).setScrollFactor(0).setDepth(20).setVisible(false);
-    
-    this.bossLabel = this.add.text(width / 2 - 100, 10, `BOSS: ${this.getCurrentBossName().toUpperCase()}`, { font: 'bold 14px Outfit, sans-serif', fill: '#ff3333' });
+
+    this.bossLabel = this.add.text(width / 2 - 100, 10, `BOSS: ${this.getCurrentBossName().toUpperCase()}`, {
+      font: 'bold 14px Outfit, sans-serif',
+      fill: '#ff3333',
+    });
     this.bossUI.add(this.bossLabel);
 
     const bBarBg = this.add.graphics();
@@ -855,9 +966,9 @@ export default class PlayScene extends Phaser.Scene {
     // ── POWER BAR HUD (bottom-right) ─────────────────────────────────────
     const pw = width;
     const powers = [
-      { key: 'Q', label: 'DASH',    color: '#00e5ff' },
-      { key: 'E', label: 'SHIELD',  color: '#a78bfa' },
-      { key: 'R', label: 'TRIPLE',  color: '#06b6d4' }
+      { key: 'Q', label: 'DASH', color: '#00e5ff' },
+      { key: 'E', label: 'SHIELD', color: '#a78bfa' },
+      { key: 'R', label: 'TRIPLE', color: '#06b6d4' },
     ];
 
     this.powerBarContainer = this.add.container(0, 0).setScrollFactor(0).setDepth(25);
@@ -881,13 +992,15 @@ export default class PlayScene extends Phaser.Scene {
 
       // Key label
       const keyTxt = this.add.text(bx + 6, by + 4, `[${p.key}]`, {
-        font: 'bold 10px Outfit, sans-serif', fill: p.color
+        font: 'bold 10px Outfit, sans-serif',
+        fill: p.color,
       });
       this.powerBarContainer.add(keyTxt);
 
       // Power name
       const nameTxt = this.add.text(bx + 6, by + 18, p.label, {
-        font: '9px Outfit, sans-serif', fill: '#cbd5e1'
+        font: '9px Outfit, sans-serif',
+        fill: '#cbd5e1',
       });
       this.powerBarContainer.add(nameTxt);
 
@@ -906,7 +1019,7 @@ export default class PlayScene extends Phaser.Scene {
   updatePowerBar(time) {
     if (!this._powerSlots) return;
     const cooldowns = [this.lastDash - 1800, this.lastShield - 5000, this.lastTriple - 1200];
-    const durations  = [1800, 5000, 1200];
+    const durations = [1800, 5000, 1200];
 
     this._powerSlots.forEach((slot, i) => {
       slot.fillGfx.clear();
@@ -930,18 +1043,25 @@ export default class PlayScene extends Phaser.Scene {
   updateObjectivesHUD() {
     const stage = this.getCurrentStage();
     const reqScore = this.getStageRequiredScore();
-    const scoreLabel = (this.genre.includes('driving') || this.genre.includes('racing')) ? 'Speed/Score' : (this.genre.includes('runner') ? 'Coins' : 'Shards');
-    
+    const scoreLabel =
+      this.genre.includes('driving') || this.genre.includes('racing')
+        ? 'Speed/Score'
+        : this.genre.includes('runner')
+          ? 'Coins'
+          : 'Shards';
+
     const scoreOk = this.score >= reqScore;
     this.shardsStatusText.setText(`• ${scoreLabel}: ${this.score} / ${reqScore} ${scoreOk ? '✔' : '⏳'}`);
     this.shardsStatusText.setFill(scoreOk ? '#86efac' : '#94a3b8');
 
     const totalEnemies = Array.isArray(stage.enemies) ? stage.enemies.length : 0;
-    const remainingEnemies = Array.isArray(stage.enemies) ? stage.enemies.filter(e => !e.defeated).length : 0;
+    const remainingEnemies = Array.isArray(stage.enemies) ? stage.enemies.filter((e) => !e.defeated).length : 0;
     const enemiesOk = remainingEnemies === 0;
-    
+
     if (totalEnemies > 0) {
-      this.enemiesStatusText.setText(`• Hostiles: ${remainingEnemies} / ${totalEnemies} remaining ${enemiesOk ? '✔' : '⏳'}`);
+      this.enemiesStatusText.setText(
+        `• Hostiles: ${remainingEnemies} / ${totalEnemies} remaining ${enemiesOk ? '✔' : '⏳'}`
+      );
       this.enemiesStatusText.setFill(enemiesOk ? '#86efac' : '#94a3b8');
       this.enemiesStatusText.setVisible(true);
     } else {
@@ -962,9 +1082,9 @@ export default class PlayScene extends Phaser.Scene {
   collectItem(player, item) {
     item.destroy();
     this.score += 10;
-    
+
     this.scoreText.setText(`${this._scoreLabel}: ${this.score}`);
-    
+
     AudioSynth.playSFX('collect');
     const color = this.blueprint.colors?.secondary || '#06b6d4';
     this.createSpark(item.x, item.y, color);
@@ -998,10 +1118,9 @@ export default class PlayScene extends Phaser.Scene {
       this.cameras.main.shake(200, 0.02);
       this.damagePlayer(30);
       this.createSpark(enemySprite.x, enemySprite.y, '#dc2626');
-      
+
       this.updateObjectivesHUD();
       this.checkStageCompletion();
-
     } else if (player.y < enemySprite.y - 15) {
       enemyState.hp = 0;
       enemyState.alive = false;
@@ -1011,14 +1130,13 @@ export default class PlayScene extends Phaser.Scene {
       player.setVelocityY(-220);
       AudioSynth.playSFX('explosion');
       this.score += 20;
-      
+
       this.scoreText.setText(`${this._scoreLabel}: ${this.score}`);
 
       this.createSpark(enemySprite.x, enemySprite.y, '#ff4444');
-      
+
       this.updateObjectivesHUD();
       this.checkStageCompletion();
-
     } else {
       player.setVelocityX(player.x < enemySprite.x ? -150 : 150);
       this.damagePlayer(20);
@@ -1035,12 +1153,10 @@ export default class PlayScene extends Phaser.Scene {
     AudioSynth.playSFX('laser');
 
     // If boss is active, auto-aim toward the boss
-    let velX, velY = 0;
+    let velX,
+      velY = 0;
     if (this.bossActive && this.boss && this.boss.active) {
-      const angle = Phaser.Math.Angle.Between(
-        this.player.x, this.player.y,
-        this.boss.x, this.boss.y
-      );
+      const angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.boss.x, this.boss.y);
       const speed = 520;
       velX = Math.cos(angle) * speed;
       velY = Math.sin(angle) * speed;
@@ -1099,13 +1215,16 @@ export default class PlayScene extends Phaser.Scene {
     // Pulse animation
     this.tweens.add({
       targets: [this._shieldGraphic, this._shieldGraphicBorder],
-      scaleX: 1.15, scaleY: 1.15,
-      duration: 400, yoyo: true, repeat: 5,
+      scaleX: 1.15,
+      scaleY: 1.15,
+      duration: 400,
+      yoyo: true,
+      repeat: 5,
       onComplete: () => {
         if (this._shieldGraphic) this._shieldGraphic.destroy();
         if (this._shieldGraphicBorder) this._shieldGraphicBorder.destroy();
         this.shieldActive = false;
-      }
+      },
     });
     AudioSynth.playSFX('collect');
   }
@@ -1115,36 +1234,39 @@ export default class PlayScene extends Phaser.Scene {
     this.lastTriple = time + 1200;
     AudioSynth.playSFX('laser');
 
-    const angles = this.bossActive && this.boss && this.boss.active
-      ? [
-          Phaser.Math.Angle.Between(this.player.x, this.player.y, this.boss.x, this.boss.y) - 0.15,
-          Phaser.Math.Angle.Between(this.player.x, this.player.y, this.boss.x, this.boss.y),
-          Phaser.Math.Angle.Between(this.player.x, this.player.y, this.boss.x, this.boss.y) + 0.15
-        ]
-      : [
-          this.player.flipX ? Math.PI + 0.15 : -0.15,
-          this.player.flipX ? Math.PI        :  0,
-          this.player.flipX ? Math.PI - 0.15 :  0.15
-        ];
+    const angles =
+      this.bossActive && this.boss && this.boss.active
+        ? [
+            Phaser.Math.Angle.Between(this.player.x, this.player.y, this.boss.x, this.boss.y) - 0.15,
+            Phaser.Math.Angle.Between(this.player.x, this.player.y, this.boss.x, this.boss.y),
+            Phaser.Math.Angle.Between(this.player.x, this.player.y, this.boss.x, this.boss.y) + 0.15,
+          ]
+        : [
+            this.player.flipX ? Math.PI + 0.15 : -0.15,
+            this.player.flipX ? Math.PI : 0,
+            this.player.flipX ? Math.PI - 0.15 : 0.15,
+          ];
 
     const speed = 500;
     const aHex = this.blueprint.colors?.secondary || '#06b6d4';
     const aColor = Phaser.Display.Color.HexStringToColor(aHex).color;
 
-    angles.forEach(angle => {
+    angles.forEach((angle) => {
       const shot = this.projectiles.create(this.player.x, this.player.y, 'collect_tex');
       shot.setScale(0.6);
       shot.body.setAllowGravity(false);
       shot.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
       shot.setTint(aColor);
-      this.time.delayedCall(3000, () => { if (shot.active) shot.destroy(); });
+      this.time.delayedCall(3000, () => {
+        if (shot.active) shot.destroy();
+      });
     });
   }
 
   shootEnemy(projectile, enemySprite) {
     if (projectile.body) projectile.body.enable = false;
     projectile.destroy();
-    
+
     const enemyState = enemySprite.getData('stateObject');
     if (!enemyState) {
       enemySprite.destroy();
@@ -1191,7 +1313,9 @@ export default class PlayScene extends Phaser.Scene {
       AudioSynth.playSFX('collect');
       if (this._shieldGraphic) {
         this._shieldGraphic.setAlpha(0.9);
-        this.time.delayedCall(80, () => { if (this._shieldGraphic) this._shieldGraphic.setAlpha(0.35); });
+        this.time.delayedCall(80, () => {
+          if (this._shieldGraphic) this._shieldGraphic.setAlpha(0.35);
+        });
       }
       return;
     }
@@ -1199,10 +1323,10 @@ export default class PlayScene extends Phaser.Scene {
     this.health = Math.max(0, this.health - amount);
     this.healthText.setText(`HEALTH: ${Math.floor(this.health)}%`);
     this.updateHealthBar();
-    
+
     AudioSynth.playSFX('hurt');
     this.cameras.main.shake(150, 0.015);
-    
+
     this.player.setTint(0xff0000);
     this.time.delayedCall(150, () => {
       if (this.player.active) this.player.clearTint();
@@ -1228,7 +1352,7 @@ export default class PlayScene extends Phaser.Scene {
     const minHp = 300; // always at least 300 HP → ~6 hits
     this.bossMaxHealth = Math.max(rawHp > 0 ? rawHp : 500, minHp);
     // Sync the stateObject hp to match the enforced value so bossState.hp stays consistent
-    stageBoss.hp    = this.bossMaxHealth;
+    stageBoss.hp = this.bossMaxHealth;
     stageBoss.maxHp = this.bossMaxHealth;
     this.bossHealth = this.bossMaxHealth;
 
@@ -1247,7 +1371,7 @@ export default class PlayScene extends Phaser.Scene {
     this.updateBossHealthBar();
 
     this.physics.add.overlap(this.projectiles, this.boss, this.hitBoss, null, this);
-    
+
     this.objectiveText.setText(`DEFEAT THE BOSS: ${stageBoss.name.toUpperCase()}`);
     this.cameras.main.shake(300, 0.01);
   }
@@ -1255,14 +1379,14 @@ export default class PlayScene extends Phaser.Scene {
   fireBossLaser() {
     if (!this.boss || !this.boss.active) return;
     AudioSynth.playSFX('laser');
-    
+
     const laser = this.bossProjectiles.create(this.boss.x - 45, this.boss.y, 'enemy_tex');
     laser.setScale(0.6);
     laser.body.setAllowGravity(false);
-    
+
     const angle = Phaser.Math.Angle.Between(this.boss.x, this.boss.y, this.player.x, this.player.y);
     const speed = 180;
-    
+
     laser.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
 
     this.time.delayedCall(3000, () => {
@@ -1276,7 +1400,7 @@ export default class PlayScene extends Phaser.Scene {
 
     // Invincibility frames: ignore rapid overlaps within 150ms
     const now = this.time.now;
-    if (this.bossLastHurt && (now - this.bossLastHurt < 150)) {
+    if (this.bossLastHurt && now - this.bossLastHurt < 150) {
       if (projectile.body) projectile.body.enable = false;
       if (typeof projectile.destroy === 'function') projectile.destroy();
       return;
@@ -1312,8 +1436,8 @@ export default class PlayScene extends Phaser.Scene {
     this._bossDefeating = true;
 
     // Capture position BEFORE destroying sprite
-    const bx = (bossSprite && bossSprite.active) ? bossSprite.x : this.scale.width / 2;
-    const by = (bossSprite && bossSprite.active) ? bossSprite.y : this.scale.height / 2;
+    const bx = bossSprite && bossSprite.active ? bossSprite.x : this.scale.width / 2;
+    const by = bossSprite && bossSprite.active ? bossSprite.y : this.scale.height / 2;
 
     // Mark boss state as defeated
     const bossState = bossSprite ? bossSprite.getData('stateObject') : null;
@@ -1343,21 +1467,30 @@ export default class PlayScene extends Phaser.Scene {
     const width = this.scale.width;
     const height = this.scale.height;
 
-    const bannerBg = this.add.rectangle(width / 2, height / 2, 420, 80, 0x1e1b4b, 0.93)
+    const bannerBg = this.add
+      .rectangle(width / 2, height / 2, 420, 80, 0x1e1b4b, 0.93)
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(90)
       .setStrokeStyle(3, 0xff4444);
 
-    const bannerText = this.add.text(width / 2, height / 2 - 12, 'BOSS DEFEATED!', {
-      font: 'bold 32px Outfit, sans-serif',
-      fill: '#ff6666'
-    }).setOrigin(0.5).setScrollFactor(0).setDepth(91);
+    const bannerText = this.add
+      .text(width / 2, height / 2 - 12, 'BOSS DEFEATED!', {
+        font: 'bold 32px Outfit, sans-serif',
+        fill: '#ff6666',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(91);
 
-    const subText = this.add.text(width / 2, height / 2 + 22, 'Stage Clear — Advancing...', {
-      font: '16px Outfit, sans-serif',
-      fill: '#fde68a'
-    }).setOrigin(0.5).setScrollFactor(0).setDepth(91);
+    const subText = this.add
+      .text(width / 2, height / 2 + 22, 'Stage Clear — Advancing...', {
+        font: '16px Outfit, sans-serif',
+        fill: '#fde68a',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(91);
 
     // Pop-in animation
     bannerBg.setScale(0.1);
@@ -1369,13 +1502,13 @@ export default class PlayScene extends Phaser.Scene {
       scaleX: 1,
       scaleY: 1,
       duration: 350,
-      ease: 'Back.easeOut'
+      ease: 'Back.easeOut',
     });
     this.tweens.add({
       targets: subText,
       alpha: 1,
       delay: 300,
-      duration: 300
+      duration: 300,
     });
 
     // Fade out after 2 seconds, then trigger stage completion
@@ -1391,7 +1524,7 @@ export default class PlayScene extends Phaser.Scene {
           this._bossDefeating = false;
           this.updateObjectivesHUD();
           this.checkStageCompletion();
-        }
+        },
       });
     });
   }
@@ -1404,7 +1537,7 @@ export default class PlayScene extends Phaser.Scene {
     const hasBoss = !!stage.boss;
     const bossDefeated = !hasBoss || stage.boss.defeated;
     const objectiveFinished = this.score >= this.getStageRequiredScore();
-    const enemiesDefeated = Array.isArray(stage.enemies) ? stage.enemies.every(e => e.defeated) : true;
+    const enemiesDefeated = Array.isArray(stage.enemies) ? stage.enemies.every((e) => e.defeated) : true;
 
     let stageCompleted = false;
     if (hasBoss) {
@@ -1429,25 +1562,42 @@ export default class PlayScene extends Phaser.Scene {
     const height = this.scale.height;
 
     // Create a gorgeous visual overlay panel
-    this.completeOverlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.75).setScrollFactor(0).setDepth(100);
-    
-    // Panel background
-    this.completePanel = this.add.rectangle(width / 2, height / 2, 400, 180, 0x0f172a, 0.9).setOrigin(0.5).setScrollFactor(0).setDepth(101).setStrokeStyle(3, 0xfde68a);
+    this.completeOverlay = this.add
+      .rectangle(width / 2, height / 2, width, height, 0x000000, 0.75)
+      .setScrollFactor(0)
+      .setDepth(100);
 
-    this.completeText = this.add.text(width / 2, height / 2 - 30, 'STAGE COMPLETE!', {
-      font: 'bold 36px Outfit, sans-serif',
-      fill: '#fde68a'
-    }).setOrigin(0.5).setScrollFactor(0).setDepth(102);
+    // Panel background
+    this.completePanel = this.add
+      .rectangle(width / 2, height / 2, 400, 180, 0x0f172a, 0.9)
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(101)
+      .setStrokeStyle(3, 0xfde68a);
+
+    this.completeText = this.add
+      .text(width / 2, height / 2 - 30, 'STAGE COMPLETE!', {
+        font: 'bold 36px Outfit, sans-serif',
+        fill: '#fde68a',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(102);
 
     const nextStageNum = this.currentStageIndex + 2;
-    const subTextMsg = this.currentStageIndex >= this.stages.length - 1 
-      ? 'Entering final dream victory...' 
-      : `Preparing Stage ${nextStageNum}...`;
+    const subTextMsg =
+      this.currentStageIndex >= this.stages.length - 1
+        ? 'Entering final dream victory...'
+        : `Preparing Stage ${nextStageNum}...`;
 
-    this.completeSubText = this.add.text(width / 2, height / 2 + 25, subTextMsg, {
-      font: 'bold 16px Outfit, sans-serif',
-      fill: '#cbd5e1'
-    }).setOrigin(0.5).setScrollFactor(0).setDepth(102);
+    this.completeSubText = this.add
+      .text(width / 2, height / 2 + 25, subTextMsg, {
+        font: 'bold 16px Outfit, sans-serif',
+        fill: '#cbd5e1',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(102);
 
     // Entrance animation
     this.completePanel.setScale(0, 0);
@@ -1459,7 +1609,7 @@ export default class PlayScene extends Phaser.Scene {
       scaleX: 1,
       scaleY: 1,
       duration: 400,
-      ease: 'Back.easeOut'
+      ease: 'Back.easeOut',
     });
 
     this.time.delayedCall(2200, () => {
@@ -1484,7 +1634,7 @@ export default class PlayScene extends Phaser.Scene {
     this.currentStageIndex += 1;
     this.score = 0;
     this.health = Math.min(100, this.health + 25);
-    
+
     this.scoreText.setText(`${this._scoreLabel}: 0`);
     this.healthText.setText(`HEALTH: ${this.health}%`);
     this.updateHealthBar();
@@ -1499,7 +1649,11 @@ export default class PlayScene extends Phaser.Scene {
     this.projectiles.clear(true, true);
     this.bossProjectiles.clear(true, true);
 
-    const playerStartY = this.genre.includes('runner') ? 250 : (this.genre.includes('driving') || this.genre.includes('racing') ? 360 : this.scale.height - 150);
+    const playerStartY = this.genre.includes('runner')
+      ? 250
+      : this.genre.includes('driving') || this.genre.includes('racing')
+        ? 360
+        : this.scale.height - 150;
     this.player.setPosition(100, playerStartY);
     this.player.setVelocity(0, 0);
     this.bossSpawned = false;
@@ -1512,11 +1666,13 @@ export default class PlayScene extends Phaser.Scene {
 
     this.generateLevel(this.scale.width, this.scale.height);
 
-    this.stageText.setText(`STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`);
+    this.stageText.setText(
+      `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`
+    );
     this.objectiveText.setText(`GOAL: ${this.getCurrentObjective()}`);
-    
+
     this.updateObjectivesHUD();
-    
+
     this.cameras.main.flash(350, 34, 211, 238);
   }
 
@@ -1527,17 +1683,17 @@ export default class PlayScene extends Phaser.Scene {
       const circ = this.add.circle(x, y, 3, color);
       this.physics.add.existing(circ);
       circ.body.setAllowGravity(false);
-      
+
       const angle = Math.random() * Math.PI * 2;
       const speed = Math.random() * 100 + 50;
       circ.body.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
-      
+
       this.tweens.add({
         targets: circ,
         alpha: 0,
         scale: 0.1,
         duration: 400,
-        onComplete: () => circ.destroy()
+        onComplete: () => circ.destroy(),
       });
     }
   }
@@ -1547,7 +1703,7 @@ export default class PlayScene extends Phaser.Scene {
     if (this.gameOverTriggered) return;
     this.gameOverTriggered = true;
     this.bossActive = false;
-    
+
     if (this.boss) {
       this.createSpark(this.boss.x, this.boss.y, '#ffff00');
       this.boss.destroy();
@@ -1561,24 +1717,69 @@ export default class PlayScene extends Phaser.Scene {
 
     this.completionTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
 
-    const overlay = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, this.scale.width, this.scale.height, 0x000000, 0.6).setOrigin(0.5).setDepth(80);
-    const panel = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, 420, 260, 0x0f172a, 0.95).setOrigin(0.5).setStrokeStyle(2, 0x22d3ee).setDepth(81);
-    const title = this.add.text(this.scale.width / 2, this.scale.height / 2 - 50, 'DREAM COMPLETE', { font: 'bold 32px Outfit, sans-serif', fill: '#f8fafc' }).setOrigin(0.5).setDepth(82);
-    const sub = this.add.text(this.scale.width / 2, this.scale.height / 2 - 4, this.blueprint.winCondition || 'All stages cleared and the final boss is defeated.', { font: '16px Outfit, sans-serif', fill: '#cbd5e1', wordWrap: { width: 340 } }).setOrigin(0.5).setDepth(82);
-    const scoreText = this.add.text(this.scale.width / 2, this.scale.height / 2 + 40, `Score: ${this.score}`, { font: 'bold 20px Outfit, sans-serif', fill: '#fde68a' }).setOrigin(0.5).setDepth(82);
-    const timeText = this.add.text(this.scale.width / 2, this.scale.height / 2 + 72, `Time: ${this.completionTime}s`, { font: 'bold 18px Outfit, sans-serif', fill: '#86efac' }).setOrigin(0.5).setDepth(82);
+    const overlay = this.add
+      .rectangle(this.scale.width / 2, this.scale.height / 2, this.scale.width, this.scale.height, 0x000000, 0.6)
+      .setOrigin(0.5)
+      .setDepth(80);
+    const panel = this.add
+      .rectangle(this.scale.width / 2, this.scale.height / 2, 420, 260, 0x0f172a, 0.95)
+      .setOrigin(0.5)
+      .setStrokeStyle(2, 0x22d3ee)
+      .setDepth(81);
+    const title = this.add
+      .text(this.scale.width / 2, this.scale.height / 2 - 50, 'DREAM COMPLETE', {
+        font: 'bold 32px Outfit, sans-serif',
+        fill: '#f8fafc',
+      })
+      .setOrigin(0.5)
+      .setDepth(82);
+    const sub = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2 - 4,
+        this.blueprint.winCondition || 'All stages cleared and the final boss is defeated.',
+        { font: '16px Outfit, sans-serif', fill: '#cbd5e1', wordWrap: { width: 340 } }
+      )
+      .setOrigin(0.5)
+      .setDepth(82);
+    const scoreText = this.add
+      .text(this.scale.width / 2, this.scale.height / 2 + 40, `Score: ${this.score}`, {
+        font: 'bold 20px Outfit, sans-serif',
+        fill: '#fde68a',
+      })
+      .setOrigin(0.5)
+      .setDepth(82);
+    const timeText = this.add
+      .text(this.scale.width / 2, this.scale.height / 2 + 72, `Time: ${this.completionTime}s`, {
+        font: 'bold 18px Outfit, sans-serif',
+        fill: '#86efac',
+      })
+      .setOrigin(0.5)
+      .setDepth(82);
 
-    this.tweens.add({ targets: panel, scaleX: 1.02, scaleY: 1.02, duration: 800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    this.tweens.add({
+      targets: panel,
+      scaleX: 1.02,
+      scaleY: 1.02,
+      duration: 800,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
     this.tweens.add({ targets: title, scale: 1.05, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
     for (let i = 0; i < 24; i++) {
-      this.createSpark(this.scale.width / 2 + (Math.random() - 0.5) * 240, this.scale.height / 2 - 90 + Math.random() * 120, '#fde68a');
+      this.createSpark(
+        this.scale.width / 2 + (Math.random() - 0.5) * 240,
+        this.scale.height / 2 - 90 + Math.random() * 120,
+        '#fde68a'
+      );
     }
 
     this.time.delayedCall(900, () => {
       this.onWin({
         score: this.score,
-        completionTime: this.completionTime
+        completionTime: this.completionTime,
       });
     });
   }
@@ -1599,8 +1800,7 @@ export default class PlayScene extends Phaser.Scene {
 
     this.onLose({
       score: this.score,
-      completionTime: this.completionTime
+      completionTime: this.completionTime,
     });
   }
 }
-

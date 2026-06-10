@@ -4,15 +4,15 @@ import { Compass, Sparkles, Gamepad2, Award, History, Activity, Zap, Play } from
 export default function DashboardPage({ user, dreams, scores, setActivePage, setSelectedDream }) {
   // Compute user statistics
   const totalGames = dreams.length;
-  const userScores = scores.filter(s => s.userId === user.id);
-  const maxScore = userScores.length > 0 ? Math.max(...userScores.map(s => s.score)) : 0;
-  
+  const userScores = scores.filter((s) => s.userId === user.id);
+  const maxScore = userScores.length > 0 ? Math.max(...userScores.map((s) => s.score)) : 0;
+
   // Calculate badges unlocked based on achievements
   const badges = [
     { name: 'Dreamweaver Novice', desc: 'Synthesized your first dream game', unlocked: totalGames >= 1 },
     { name: 'Dream Lord', desc: 'Synthesized 5 or more games', unlocked: totalGames >= 5 },
     { name: 'Synth Maestro', desc: 'Scored 100+ points in a single session', unlocked: maxScore >= 100 },
-    { name: 'Void Walker', desc: 'Synthesized a Fused hybrid dream', unlocked: dreams.some(d => d.isFused) }
+    { name: 'Void Walker', desc: 'Synthesized a Fused hybrid dream', unlocked: dreams.some((d) => d.isFused) },
   ];
 
   const recentDreams = dreams.slice().reverse().slice(0, 3); // Last 3 dreams
@@ -22,13 +22,12 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
       {/* Header Welcome Card */}
       <div className="glass-panel p-8 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden bg-gradient-to-r from-[var(--bg-secondary)] to-black">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--accent-glow)] rounded-full filter blur-3xl pointer-events-none opacity-40" />
-        
+
         <div className="flex flex-col gap-1.5 text-left z-10">
-          <h2 className="text-3xl font-black text-white font-[var(--title-font)]">
-            WELCOME TO YOUR COGNITIVE DOCK
-          </h2>
+          <h2 className="text-3xl font-black text-white font-[var(--title-font)]">WELCOME TO YOUR COGNITIVE DOCK</h2>
           <p className="text-gray-400 text-sm font-medium">
-            Agent <span className="text-white font-bold">{user.username}</span>, your dream synthesis nodes are fully calibrated.
+            Agent <span className="text-white font-bold">{user.username}</span>, your dream synthesis nodes are fully
+            calibrated.
           </p>
         </div>
 
@@ -70,7 +69,7 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
           <div className="text-left">
             <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Achievements Unlocked</span>
             <h3 className="text-3xl font-black text-white mt-0.5">
-              {badges.filter(b => b.unlocked).length} / {badges.length}
+              {badges.filter((b) => b.unlocked).length} / {badges.length}
             </h3>
           </div>
         </div>
@@ -86,7 +85,7 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
               RECENT DREAMS
             </h3>
             {totalGames > 3 && (
-              <button 
+              <button
                 onClick={() => setActivePage('history')}
                 className="text-xs text-[var(--accent-color)] font-bold hover:underline"
               >
@@ -98,7 +97,7 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
           {recentDreams.length > 0 ? (
             <div className="flex flex-col gap-4">
               {recentDreams.map((dream) => (
-                <div 
+                <div
                   key={dream.id}
                   className="glass-panel p-5 rounded-xl border border-white/5 bg-white/5 flex items-center justify-between gap-4 glass-panel-hover"
                 >
@@ -114,9 +113,7 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-gray-400 max-w-lg line-clamp-1 leading-relaxed">
-                      {dream.description}
-                    </p>
+                    <p className="text-xs text-gray-400 max-w-lg line-clamp-1 leading-relaxed">{dream.description}</p>
                     <span className="text-[9px] text-gray-500 font-mono mt-0.5">
                       CREATED: {new Date(dream.createdAt).toLocaleDateString()}
                     </span>
@@ -151,23 +148,21 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
 
           <div className="glass-panel p-6 rounded-2xl flex flex-col gap-4">
             {badges.map((badge, idx) => (
-              <div 
+              <div
                 key={idx}
                 className={`flex items-start gap-3.5 p-3.5 rounded-xl border transition-all ${
-                  badge.unlocked 
-                    ? 'bg-white/5 border-white/10 opacity-100' 
-                    : 'bg-black/20 border-white/5 opacity-40'
+                  badge.unlocked ? 'bg-white/5 border-white/10 opacity-100' : 'bg-black/20 border-white/5 opacity-40'
                 }`}
               >
-                <div className={`p-2 rounded-lg font-black text-xs shrink-0 ${
-                  badge.unlocked ? 'bg-yellow-500/10 text-yellow-400' : 'bg-gray-500/10 text-gray-400'
-                }`}>
+                <div
+                  className={`p-2 rounded-lg font-black text-xs shrink-0 ${
+                    badge.unlocked ? 'bg-yellow-500/10 text-yellow-400' : 'bg-gray-500/10 text-gray-400'
+                  }`}
+                >
                   {badge.unlocked ? '★' : '☆'}
                 </div>
                 <div className="flex flex-col gap-0.5 text-xs">
-                  <span className={`font-bold ${badge.unlocked ? 'text-white' : 'text-gray-500'}`}>
-                    {badge.name}
-                  </span>
+                  <span className={`font-bold ${badge.unlocked ? 'text-white' : 'text-gray-500'}`}>{badge.name}</span>
                   <span className="text-[10px] text-gray-400 leading-normal">{badge.desc}</span>
                 </div>
               </div>

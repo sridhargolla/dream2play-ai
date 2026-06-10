@@ -21,11 +21,11 @@ export default function LandingPage({ onLoginSuccess }) {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
-      
+
       if (!res.ok) {
         throw new Error(data.message || 'Authentication failed');
       }
@@ -48,15 +48,18 @@ export default function LandingPage({ onLoginSuccess }) {
         </div>
 
         <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight text-white font-[var(--title-font)]">
-          DREAM IT.<br />
-          SYNTHESIZE IT.<br />
+          DREAM IT.
+          <br />
+          SYNTHESIZE IT.
+          <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-color)] to-[var(--secondary-color)] neon-text-glow">
             PLAY IT LIVE.
           </span>
         </h1>
 
         <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xl font-medium">
-          Dream2Play AI extracts themes, objectives, powerups, and enemies from your dream descriptions to build instant, browser-playable 2D games. Customize visuals, controls, and soundscapes dynamically in real-time.
+          Dream2Play AI extracts themes, objectives, powerups, and enemies from your dream descriptions to build
+          instant, browser-playable 2D games. Customize visuals, controls, and soundscapes dynamically in real-time.
         </p>
 
         {/* Feature grid */}
@@ -66,8 +69,12 @@ export default function LandingPage({ onLoginSuccess }) {
               <Gamepad2 className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider font-[var(--title-font)]">Adaptive Game Loop</h4>
-              <p className="text-[10px] text-gray-400 mt-0.5">Controls, gravity constants, and enemy models scale with your dream details.</p>
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider font-[var(--title-font)]">
+                Adaptive Game Loop
+              </h4>
+              <p className="text-[10px] text-gray-400 mt-0.5">
+                Controls, gravity constants, and enemy models scale with your dream details.
+              </p>
             </div>
           </div>
 
@@ -76,8 +83,12 @@ export default function LandingPage({ onLoginSuccess }) {
               <Wand2 className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider font-[var(--title-font)]">Synth Soundscapes</h4>
-              <p className="text-[10px] text-gray-400 mt-0.5">Procedural Web Audio synthesizer generates chiptunes and effects in-browser.</p>
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider font-[var(--title-font)]">
+                Synth Soundscapes
+              </h4>
+              <p className="text-[10px] text-gray-400 mt-0.5">
+                Procedural Web Audio synthesizer generates chiptunes and effects in-browser.
+              </p>
             </div>
           </div>
         </div>
@@ -87,7 +98,7 @@ export default function LandingPage({ onLoginSuccess }) {
       <div className="lg:col-span-5 w-full">
         <div className="glass-panel p-8 rounded-2xl flex flex-col gap-6 relative overflow-hidden bg-[#12131a]/85 border border-white/10">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[var(--accent-color)] to-transparent" />
-          
+
           <div className="flex items-center justify-between border-b border-white/5 pb-4">
             <h3 className="text-lg font-black text-white font-[var(--title-font)]">
               {isLogin ? 'LOG IN' : 'CREATE ACCOUNT'}

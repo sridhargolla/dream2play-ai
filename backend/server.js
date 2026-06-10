@@ -58,14 +58,14 @@ app.post('/api/auth/register', async (req, res) => {
     const newUser = localDb.createUser({
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     const token = jwt.sign({ id: newUser.id, username: newUser.username }, JWT_SECRET, { expiresIn: '7d' });
 
     res.status(201).json({
       token,
-      user: { id: newUser.id, username: newUser.username, email: newUser.email }
+      user: { id: newUser.id, username: newUser.username, email: newUser.email },
     });
   } catch (err) {
     res.status(500).json({ message: 'Registration failed', error: err.message });
@@ -95,7 +95,7 @@ app.post('/api/auth/login', async (req, res) => {
 
     res.json({
       token,
-      user: { id: user.id, username: user.username, email: user.email }
+      user: { id: user.id, username: user.username, email: user.email },
     });
   } catch (err) {
     res.status(500).json({ message: 'Login failed', error: err.message });
@@ -148,7 +148,7 @@ app.post('/api/dreams/generate', authenticateToken, async (req, res) => {
       userId: req.user.id,
       title,
       description,
-      blueprint
+      blueprint,
     });
 
     res.status(201).json(newDream);
@@ -187,7 +187,10 @@ app.post('/api/dreams/fuse', authenticateToken, async (req, res) => {
     const fusedDescription = `A hybrid dream fusing "${dream1.title}" and "${dream2.title}". Description: ${dream1.description.slice(0, 50)}... and ${dream2.description.slice(0, 50)}...`;
 
     // Generate realistic fused assets
-    const assets = await generateAndSaveAssets(fusedBlueprint, dreamId, apiKey, { title: fusedTitle, description: fusedDescription });
+    const assets = await generateAndSaveAssets(fusedBlueprint, dreamId, apiKey, {
+      title: fusedTitle,
+      description: fusedDescription,
+    });
     fusedBlueprint.assets = assets;
 
     const newDream = localDb.saveDream({
@@ -197,7 +200,7 @@ app.post('/api/dreams/fuse', authenticateToken, async (req, res) => {
       description: fusedDescription,
       blueprint: fusedBlueprint,
       isFused: true,
-      parentDreams: [dreamId1, dreamId2]
+      parentDreams: [dreamId1, dreamId2],
     });
 
     res.status(201).json(newDream);
@@ -246,7 +249,7 @@ app.post('/api/scores', authenticateToken, (req, res) => {
       dreamTitle,
       score: parseInt(score, 10),
       completionTime: parseFloat(completionTime),
-      difficulty
+      difficulty,
     });
 
     res.status(201).json(newScore);

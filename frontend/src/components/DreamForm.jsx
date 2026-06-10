@@ -22,7 +22,7 @@ export default function DreamForm({ onSubmit, isGenerating }) {
     'Generating theme-specific hero, enemy, boss, collectible, and background assets...',
     'Saving generated assets to local database storage...',
     'Calibrating AudioSynth oscillators & sound effects...',
-    'Rendering playable staged game...'
+    'Rendering playable staged game...',
   ];
 
   // OpenAI Key handling
@@ -43,7 +43,7 @@ export default function DreamForm({ onSubmit, isGenerating }) {
 
       rec.onresult = (event) => {
         const transcript = event.results[event.results.length - 1][0].transcript;
-        setDescription(prev => prev + (prev ? ' ' : '') + transcript);
+        setDescription((prev) => prev + (prev ? ' ' : '') + transcript);
       };
 
       rec.onerror = (e) => {
@@ -90,8 +90,8 @@ export default function DreamForm({ onSubmit, isGenerating }) {
     if (isGenerating && logIndex < compilationLogs.length) {
       const delay = logIndex === 2 ? 1500 : 700; // Give NLP extraction slightly longer
       const timer = setTimeout(() => {
-        setLogs(prev => [...prev, compilationLogs[logIndex]]);
-        setLogIndex(prev => prev + 1);
+        setLogs((prev) => [...prev, compilationLogs[logIndex]]);
+        setLogIndex((prev) => prev + 1);
       }, delay);
       return () => clearTimeout(timer);
     }
@@ -109,7 +109,10 @@ export default function DreamForm({ onSubmit, isGenerating }) {
   return (
     <div className="w-full max-w-2xl mx-auto">
       {!isGenerating ? (
-        <form onSubmit={handleSubmit} className="glass-panel p-8 rounded-2xl flex flex-col gap-6 relative overflow-hidden">
+        <form
+          onSubmit={handleSubmit}
+          className="glass-panel p-8 rounded-2xl flex flex-col gap-6 relative overflow-hidden"
+        >
           {/* Scanning line for futuristic vibe */}
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[var(--accent-color)] to-transparent animate-pulse" />
 
@@ -119,7 +122,8 @@ export default function DreamForm({ onSubmit, isGenerating }) {
               DREAM DECODING TERMINAL
             </h2>
             <p className="text-xs text-gray-400">
-              Input details of your dream. The AI will translate them into playable gravity, sound frequencies, and custom assets.
+              Input details of your dream. The AI will translate them into playable gravity, sound frequencies, and
+              custom assets.
             </p>
           </div>
 
@@ -161,7 +165,7 @@ export default function DreamForm({ onSubmit, isGenerating }) {
                 )}
               </button>
             </div>
-            
+
             <textarea
               required
               rows={5}

@@ -28,7 +28,7 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
       confetti({
         particleCount: 120,
         spread: 70,
-        origin: { y: 0.6 }
+        origin: { y: 0.6 },
       });
     };
 
@@ -52,20 +52,20 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
   const handleRestart = () => {
     setGameState('playing');
     setScoreSubmitted(false);
-    
+
     // Destroy previous game and rebuild
     if (gameRef.current) {
       gameRef.current.destroy(true);
     }
-    
+
     const config = createGameConfig(
-      containerRef.current, 
-      dream.blueprint, 
+      containerRef.current,
+      dream.blueprint,
       (stats) => {
         setGameStats(stats);
         setGameState('win');
         confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
-      }, 
+      },
       (stats) => {
         setGameStats(stats);
         setGameState('lose');
@@ -82,7 +82,7 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
         score: gameStats.score,
         completionTime: gameStats.completionTime,
         difficulty: dream.blueprint.difficulty,
-        dreamTitle: dream.title
+        dreamTitle: dream.title,
       });
       setScoreSubmitted(true);
     } catch (err) {
@@ -123,7 +123,6 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
             {gameState !== 'playing' && (
               <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-6 z-30 animate-fade-in">
                 <div className="max-w-md w-full glass-panel p-8 rounded-2xl border border-white/10 text-center flex flex-col gap-6 relative">
-                  
                   {gameState === 'win' ? (
                     <>
                       <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-yellow-500/10 border border-yellow-500/30 p-3 rounded-full text-yellow-400 animate-float">
@@ -132,9 +131,7 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
                       <h2 className="text-3xl font-black text-yellow-400 tracking-wider font-[var(--title-font)] uppercase pt-4">
                         Victory Achieved!
                       </h2>
-                      <p className="text-xs text-gray-300 italic">
-                        "{dream.blueprint.stories.ending}"
-                      </p>
+                      <p className="text-xs text-gray-300 italic">"{dream.blueprint.stories.ending}"</p>
                     </>
                   ) : (
                     <>
@@ -204,7 +201,10 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
             )}
           </div>
           <span className="text-[10px] text-gray-500 font-mono mt-3">
-            MOVE: ← → Arrows &nbsp;|&nbsp; JUMP: ↑ Arrow &nbsp;|&nbsp; SHOOT: Space &nbsp;|&nbsp; <span className="text-cyan-400">[Q] Dash</span> &nbsp;|&nbsp; <span className="text-violet-400">[E] Shield</span> &nbsp;|&nbsp; <span className="text-sky-400">[R] Triple Shot</span>
+            MOVE: ← → Arrows &nbsp;|&nbsp; JUMP: ↑ Arrow &nbsp;|&nbsp; SHOOT: Space &nbsp;|&nbsp;{' '}
+            <span className="text-cyan-400">[Q] Dash</span> &nbsp;|&nbsp;{' '}
+            <span className="text-violet-400">[E] Shield</span> &nbsp;|&nbsp;{' '}
+            <span className="text-sky-400">[R] Triple Shot</span>
           </span>
         </div>
 
@@ -248,10 +248,14 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
 
           <div className="glass-panel p-6 rounded-2xl flex flex-col gap-3 relative overflow-hidden bg-gradient-to-br from-[var(--bg-secondary)] to-black">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--accent-color)]/5 rounded-full filter blur-xl pointer-events-none" />
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider font-[var(--title-font)]">Dream Storyline</h4>
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider font-[var(--title-font)]">
+              Dream Storyline
+            </h4>
             <div className="flex flex-col gap-3 text-xs leading-relaxed text-gray-300">
               <p>{dream.blueprint.stories.intro}</p>
-              <p className="font-semibold text-white border-l-2 border-[var(--accent-color)] pl-2">{dream.blueprint.stories.mission}</p>
+              <p className="font-semibold text-white border-l-2 border-[var(--accent-color)] pl-2">
+                {dream.blueprint.stories.mission}
+              </p>
             </div>
           </div>
         </div>

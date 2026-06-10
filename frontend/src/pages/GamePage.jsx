@@ -25,17 +25,11 @@ export default function GamePage({ dream, onBack, onSaveScore }) {
             G_ID: {dream.id}
           </span>
         </h2>
-        <p className="text-xs text-gray-400 mt-1 max-w-xl font-medium">
-          Dream Description: "{dream.description}"
-        </p>
+        <p className="text-xs text-gray-400 mt-1 max-w-xl font-medium">Dream Description: "{dream.description}"</p>
       </div>
 
       {/* Phaser Wrapper */}
-      <GameCanvas 
-        dream={dream} 
-        onBack={onBack} 
-        onSaveScore={onSaveScore} 
-      />
+      <GameCanvas dream={dream} onBack={onBack} onSaveScore={onSaveScore} />
     </div>
   );
 }

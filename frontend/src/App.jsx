@@ -12,11 +12,11 @@ export default function App() {
   const [activePage, setActivePage] = useState('landing');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user_details')) || null);
   const [token, setToken] = useState(localStorage.getItem('auth_token') || null);
-  
+
   const [dreams, setDreams] = useState([]);
   const [scores, setScores] = useState([]);
   const [selectedDream, setSelectedDream] = useState(null);
-  
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -49,7 +49,7 @@ export default function App() {
     if (!token) return;
     try {
       const res = await fetch('/api/dreams', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const data = await res.json();
@@ -86,34 +86,33 @@ export default function App() {
   const handleGenerateGame = async ({ title, description, openaiKey }) => {
     if (!token) return;
     setIsGenerating(true);
-    
+
     // Minimum compilation animation duration (8.5 seconds) to present the terminal sequence
-    const minAnimPromise = new Promise(resolve => setTimeout(resolve, 8500));
-    
+    const minAnimPromise = new Promise((resolve) => setTimeout(resolve, 8500));
+
     try {
       const apiPromise = fetch('/api/dreams/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'x-openai-key': openaiKey || ''
+          Authorization: `Bearer ${token}`,
+          'x-openai-key': openaiKey || '',
         },
-        body: JSON.stringify({ title, description })
+        body: JSON.stringify({ title, description }),
       });
 
       // Wait for both the API call to resolve and the minimum compilation animation timer
       const [res] = await Promise.all([apiPromise, minAnimPromise]);
       const data = await res.json();
-      
+
       if (!res.ok) {
         throw new Error(data.message || 'Generation failed');
       }
 
-      setDreams(prev => [...prev, data]);
+      setDreams((prev) => [...prev, data]);
       setSelectedDream(data);
       setIsGenerating(false);
       setActivePage('game');
-
     } catch (err) {
       alert(err.message);
       setIsGenerating(false);
@@ -129,10 +128,10 @@ export default function App() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'x-openai-key': openaiKey
+          Authorization: `Bearer ${token}`,
+          'x-openai-key': openaiKey,
         },
-        body: JSON.stringify({ dreamId1, dreamId2 })
+        body: JSON.stringify({ dreamId1, dreamId2 }),
       });
 
       const data = await res.json();
@@ -140,7 +139,7 @@ export default function App() {
         throw new Error(data.message || 'Fusion failed');
       }
 
-      setDreams(prev => [...prev, data]);
+      setDreams((prev) => [...prev, data]);
       setSelectedDream(data);
       setActivePage('game');
     } catch (err) {
@@ -155,11 +154,11 @@ export default function App() {
     try {
       const res = await fetch(`/api/dreams/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.ok) {
-        setDreams(prev => prev.filter(d => d.id !== id));
+        setDreams((prev) => prev.filter((d) => d.id !== id));
       } else {
         const data = await res.json();
         alert(data.message);
@@ -177,9 +176,9 @@ export default function App() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(scorePayload)
+        body: JSON.stringify(scorePayload),
       });
       if (res.ok) {
         fetchScores(); // Refresh leaderboard
@@ -193,7 +192,7 @@ export default function App() {
   };
 
   const toggleMute = () => {
-    setIsMuted(prev => !prev);
+    setIsMuted((prev) => !prev);
   };
 
   // Render current active page
@@ -261,9 +260,7 @@ export default function App() {
       />
 
       {/* Main Page Content */}
-      <main className="flex-1 w-full max-w-7xl mx-auto py-8">
-        {renderPage()}
-      </main>
+      <main className="flex-1 w-full max-w-7xl mx-auto py-8">{renderPage()}</main>
 
       {/* Footer */}
       <footer className="py-6 border-t border-white/5 bg-black/40 text-center text-[10px] text-gray-500 font-mono tracking-wider">
