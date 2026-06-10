@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+/* Theme definitions mapped to CSS Custom Properties */
+:root {
+  --bg-primary: #0a0b10;
+  --bg-secondary: #12131a;
+  --accent-color: #8b5cf6;
+  --accent-glow: rgba(139, 92, 246, 0.4);
+  --secondary-color: #06b6d4;
+  --danger-color: #ec4899;
+  --font-family: 'Outfit', sans-serif;
+  --title-font: 'Outfit', sans-serif;
+  --card-border: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="sci-fi"] {
+  --bg-primary: #020617;
+  --bg-secondary: #0b1329;
+  --accent-color: #06b6d4;
+  --accent-glow: rgba(6, 182, 212, 0.4);
+  --secondary-color: #3b82f6;
+  --danger-color: #ef4444;
+  --font-family: 'Outfit', sans-serif;
+  --title-font: 'Orbitron', sans-serif;
+  --card-border: rgba(6, 182, 212, 0.15);
+}
+
+[data-theme="horror"] {
+  --bg-primary: #090505;
+  --bg-secondary: #1a0b0b;
+  --accent-color: #dc2626;
+  --accent-glow: rgba(220, 38, 38, 0.4);
+  --secondary-color: #450a0a;
+  --danger-color: #991b1b;
+  --font-family: 'Outfit', sans-serif;
+  --title-font: 'Creepster', sans-serif;
+  --card-border: rgba(220, 38, 38, 0.15);
+}
+
+[data-theme="fantasy"] {
+  --bg-primary: #0b0214;
+  --bg-secondary: #1d0f30;
+  --accent-color: #d946ef;
+  --accent-glow: rgba(217, 70, 239, 0.4);
+  --secondary-color: #f59e0b;
+  --danger-color: #8b5cf6;
+  --font-family: 'Outfit', sans-serif;
+  --title-font: 'Cinzel', sans-serif;
+  --card-border: rgba(217, 70, 239, 0.15);
+}
+
+[data-theme="adventure"] {
+  --bg-primary: #022c22;
+  --bg-secondary: #064e3b;
+  --accent-color: #10b981;
+  --accent-glow: rgba(16, 185, 129, 0.4);
+  --secondary-color: #f59e0b;
+  --danger-color: #ef4444;
+  --font-family: 'Outfit', sans-serif;
+  --title-font: 'Outfit', sans-serif;
+  --card-border: rgba(16, 185, 129, 0.15);
+}
+
+[data-theme="mystery"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --accent-color: #6366f1;
+  --accent-glow: rgba(99, 102, 241, 0.4);
+  --secondary-color: #64748b;
+  --danger-color: #f59e0b;
+  --font-family: 'Outfit', sans-serif;
+  --title-font: 'Special Elite', sans-serif;
+  --card-border: rgba(99, 102, 241, 0.15);
+}
+
+/* Base style resets and transitions */
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  color: #f3f4f6;
+  transition: background-color 0.8s ease, color 0.5s ease;
+  min-height: 100vh;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--title-font);
+  transition: font-family 0.8s ease;
+}
+
+/* Scrollbar customizations */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  border: 1px solid var(--card-border);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Glassmorphism card utility classes */
+.glass-panel {
+  background: rgba(18, 19, 26, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s ease;
+}
+
+.glass-panel-hover:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 15px 0 var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+/* Glowing text and borders */
+.neon-text-glow {
+  text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-glow);
+}
+
+.neon-border-glow {
+  box-shadow: 0 0 15px 0 var(--accent-glow);
+}
+
+/* Retro background scanlines & grid effects */
+.grid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: -10;
+}
+
+.radial-glow {
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 80vw;
+  height: 50vh;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -9;
+  filter: blur(50px);
+  transition: background 0.8s ease;
+}
+
+/* Dynamic floating animation keyframe */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Hologram scanning effect */
+.scanline::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}

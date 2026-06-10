@@ -1,0 +1,147 @@
+{
+  "users": [
+    {
+      "id": "1781066281863",
+      "username": "sridhargolla",
+      "email": "sridharyadav174@gmail.com",
+      "password": "$2a$10$9Rst72XZpsDRWQYEqFmCKug5V6SZjLU6Ei6un/b5vzC44cVR2UOoW"
+    }
+  ],
+  "dreams": [
+    {
+      "id": "1781066356568",
+      "createdAt": "2026-06-10T04:39:16.568Z",
+      "userId": "1781066281863",
+      "title": "cyberpunk battle",
+      "description": "\"I was flying over a cyberpunk city while giant dragons chased me.\"",
+      "blueprint": {
+        "hero": "Cyborg Explorer",
+        "world": "Cyber Station",
+        "enemies": [
+          "Sentry Drone",
+          "Laser Bot"
+        ],
+        "boss": "AI Overlord Prime",
+        "objective": "Disable the central core and download the data files.",
+        "powerups": [
+          "Shield Shield",
+          "Laser Overcharge"
+        ],
+        "mood": "Sci-Fi",
+        "genre": "Platformer-Jetpack",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#030712",
+          "accent": "#06b6d4",
+          "secondary": "#3b82f6",
+          "hazard": "#f43f5e",
+          "player": "#22c55e",
+          "text": "#ffffff"
+        },
+        "physics": {
+          "gravity": 150,
+          "speed": 220,
+          "jump": -200,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "You wake up in a surreal dreamscape. You are the legendary Cyborg Explorer, standing at the threshold of a mysterious landscape. The air is thick with tension as echoes of Sentry Drone growls reverberate in the distance.",
+          "mission": "Your quest is clear: Disable the central core and download the data files. Beware, for AI Overlord Prime is guarding the core exit and will do everything in its power to stop you.",
+          "ending": "With a final surge of power, AI Overlord Prime crumbles to dust. The dreamscape begins to shatter into particles of pure light. You open your eyes, returning to the waking world, carrying the high score of a champion."
+        }
+      }
+    },
+    {
+      "id": "1781067193342",
+      "createdAt": "2026-06-10T04:53:13.342Z",
+      "userId": "1781066281863",
+      "title": "Labyrinth of Echoes  ",
+      "description": "Explore a shifting maze woven from fragments of your past dreams, where choices reshape the paths and emotions alter the world around you.",
+      "blueprint": {
+        "hero": "Jungle Explorer",
+        "world": "Green Canopy",
+        "enemies": [
+          "Bouncing Slime",
+          "Wild Bat"
+        ],
+        "boss": "Giga Gorilla King",
+        "objective": "Collect all gold coins and reach the sacred temple gate.",
+        "powerups": [
+          "Speed Boots",
+          "Extra Heart"
+        ],
+        "mood": "Adventure",
+        "genre": "Retro-Explorer",
+        "difficulty": "Easy",
+        "colors": {
+          "bg": "#022c22",
+          "accent": "#10b981",
+          "secondary": "#f59e0b",
+          "hazard": "#ef4444",
+          "player": "#10b981",
+          "text": "#f3f4f6"
+        },
+        "physics": {
+          "gravity": 350,
+          "speed": 240,
+          "jump": -360,
+          "bounce": 0.2
+        },
+        "stories": {
+          "intro": "You wake up in a surreal dreamscape. You are the legendary Jungle Explorer, standing at the threshold of a mysterious landscape. The air is thick with tension as echoes of Bouncing Slime growls reverberate in the distance.",
+          "mission": "Your quest is clear: Collect all gold coins and reach the sacred temple gate. Beware, for Giga Gorilla King is guarding the core exit and will do everything in its power to stop you.",
+          "ending": "With a final surge of power, Giga Gorilla King crumbles to dust. The dreamscape begins to shatter into particles of pure light. You open your eyes, returning to the waking world, carrying the high score of a champion."
+        }
+      }
+    },
+    {
+      "id": "1781067812574",
+      "createdAt": "2026-06-10T05:03:32.574Z",
+      "userId": "1781066281863",
+      "title": "Fused: cyberpunk battl + Labyrinth of Ec",
+      "description": "A hybrid dream fusing \"cyberpunk battle\" and \"Labyrinth of Echoes  \". Description: \"I was flying over a cyberpunk city while giant dr... and Explore a shifting maze woven from fragments of yo...",
+      "blueprint": {
+        "hero": "Cyborg Explorer / Jungle Explorer Hybrid",
+        "world": "Cyber Station x Green Canopy",
+        "enemies": [
+          "Sentry Drone",
+          "Laser Bot"
+        ],
+        "boss": "AI Overlord Prime-Giga Gorilla King Chimera",
+        "objective": "Disable the central core and download the data files.",
+        "powerups": [
+          "Shield Shield",
+          "Laser Overcharge"
+        ],
+        "mood": "Sci-Fi",
+        "genre": "Platformer-Jetpack",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#030712",
+          "accent": "#06b6d4",
+          "secondary": "#3b82f6",
+          "hazard": "#f43f5e",
+          "player": "#22c55e",
+          "text": "#ffffff"
+        },
+        "physics": {
+          "gravity": 150,
+          "speed": 220,
+          "jump": -200,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "An anomaly in the dreaming dimension has collapsed two realities. You stand as the fused Cyborg Explorer / Jungle Explorer Hybrid.",
+          "mission": "Survive the combined forces of Sentry Drone and Bouncing Slime and defeat the fused boss!",
+          "ending": "With a final surge of power, AI Overlord Prime crumbles to dust. The dreamscape begins to shatter into particles of pure light. You open your eyes, returning to the waking world, carrying the high score of a champion."
+        }
+      },
+      "isFused": true,
+      "parentDreams": [
+        "1781066356568",
+        "1781067193342"
+      ]
+    }
+  ],
+  "scores": []
+}
