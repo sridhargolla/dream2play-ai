@@ -204,7 +204,7 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
             )}
           </div>
           <span className="text-[10px] text-gray-500 font-mono mt-3">
-            CONTROLS: Use Left/Right Arrow to Move | Up Arrow to Jump / Jetpack | Spacebar to Shoot
+            MOVE: ← → Arrows &nbsp;|&nbsp; JUMP: ↑ Arrow &nbsp;|&nbsp; SHOOT: Space &nbsp;|&nbsp; <span className="text-cyan-400">[Q] Dash</span> &nbsp;|&nbsp; <span className="text-violet-400">[E] Shield</span> &nbsp;|&nbsp; <span className="text-sky-400">[R] Triple Shot</span>
           </span>
         </div>
 

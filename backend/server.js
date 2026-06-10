@@ -3,7 +3,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const path = require('path');
 const { analyzeDream, fuseDreams } = require('./utils/analyzer');
+const { generateAndSaveAssets } = require('./utils/imageGenerator');
 const localDb = require('./utils/localdb');
 
 dotenv.config();
@@ -14,6 +16,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dream2play_secret_key_12345';
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- JWT AUTHENTICATION MIDDLEWARE ---
 const authenticateToken = (req, res, next) => {
@@ -130,9 +133,18 @@ app.post('/api/dreams/generate', authenticateToken, async (req, res) => {
     }
 
     // Call analyzer to build structured JSON blueprint
-    const blueprint = await analyzeDream(title, description, req.headers['x-openai-key']);
+    const apiKey = req.headers['x-openai-key'];
+    const blueprint = await analyzeDream(title, description, apiKey);
+
+    // Pre-generate a unique ID to link with local assets
+    const dreamId = Date.now().toString();
+
+    // Generate realistic visual assets
+    const assets = await generateAndSaveAssets(blueprint, dreamId, apiKey, { title, description });
+    blueprint.assets = assets;
 
     const newDream = localDb.saveDream({
+      id: dreamId,
       userId: req.user.id,
       title,
       description,
@@ -165,12 +177,21 @@ app.post('/api/dreams/fuse', authenticateToken, async (req, res) => {
       return res.status(403).json({ message: 'Unauthorized to fuse these dreams' });
     }
 
-    const fusedBlueprint = await fuseDreams(dream1, dream2, req.headers['x-openai-key']);
+    const apiKey = req.headers['x-openai-key'];
+    const fusedBlueprint = await fuseDreams(dream1, dream2, apiKey);
+
+    // Pre-generate unique ID for the fused dream
+    const dreamId = Date.now().toString();
 
     const fusedTitle = `Fused: ${dream1.title.slice(0, 15)} + ${dream2.title.slice(0, 15)}`;
     const fusedDescription = `A hybrid dream fusing "${dream1.title}" and "${dream2.title}". Description: ${dream1.description.slice(0, 50)}... and ${dream2.description.slice(0, 50)}...`;
 
+    // Generate realistic fused assets
+    const assets = await generateAndSaveAssets(fusedBlueprint, dreamId, apiKey, { title: fusedTitle, description: fusedDescription });
+    fusedBlueprint.assets = assets;
+
     const newDream = localDb.saveDream({
+      id: dreamId,
       userId: req.user.id,
       title: fusedTitle,
       description: fusedDescription,

@@ -13,14 +13,16 @@ export default function DreamForm({ onSubmit, isGenerating }) {
   // Load custom logs when generating
   const compilationLogs = [
     'Initializing Neural Dream Compiler v1.0.4...',
-    'Connecting to NLP Mood & Intent Recognizer...',
-    'Extracting dream vectors: mood, genre, entities...',
-    'Synthesizing player controls (calculating gravity coefficients)...',
-    'Synthesizing vector assets in Phaser texture cache...',
-    'Procedurally mapping platforms, collectibles, and hazards...',
-    'Calibrating AudioSynth oscillators & scale frequencies...',
-    'Deploying Boss Fight parameters...',
-    'Dream compiled! Game ready for deployment.'
+    'Reading user prompt and locking requested theme...',
+    'Generating strict staged Blueprint JSON...',
+    'Validating enemies, bosses, defeat states, and stage completion logic...',
+    'Generating playable game object projection...',
+    'Synthesizing player physics and progression gates...',
+    'Initiating parallel AI image synthesis engines...',
+    'Generating theme-specific hero, enemy, boss, collectible, and background assets...',
+    'Saving generated assets to local database storage...',
+    'Calibrating AudioSynth oscillators & sound effects...',
+    'Rendering playable staged game...'
   ];
 
   // OpenAI Key handling
@@ -223,7 +225,7 @@ export default function DreamForm({ onSubmit, isGenerating }) {
           </div>
 
           <div className="text-center text-xs text-gray-400 mt-2">
-            Estimated compilation time: ~5 seconds. Do not close this browser tab.
+            Estimated compilation time: ~8–12 seconds. Do not close this browser tab.
           </div>
         </div>
       )}

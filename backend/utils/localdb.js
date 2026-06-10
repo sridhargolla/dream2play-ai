@@ -59,7 +59,7 @@ function getDreamsByUser(userId) {
 
 function saveDream(dream) {
   const db = readDb();
-  const newDream = { id: Date.now().toString(), createdAt: new Date().toISOString(), ...dream };
+  const newDream = { id: dream.id || Date.now().toString(), createdAt: new Date().toISOString(), ...dream };
   db.dreams.push(newDream);
   writeDb(db);
   return newDream;

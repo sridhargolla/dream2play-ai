@@ -87,8 +87,11 @@ export default function App() {
     if (!token) return;
     setIsGenerating(true);
     
+    // Minimum compilation animation duration (8.5 seconds) to present the terminal sequence
+    const minAnimPromise = new Promise(resolve => setTimeout(resolve, 8500));
+    
     try {
-      const res = await fetch('/api/dreams/generate', {
+      const apiPromise = fetch('/api/dreams/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,19 +101,18 @@ export default function App() {
         body: JSON.stringify({ title, description })
       });
 
+      // Wait for both the API call to resolve and the minimum compilation animation timer
+      const [res] = await Promise.all([apiPromise, minAnimPromise]);
       const data = await res.json();
       
       if (!res.ok) {
         throw new Error(data.message || 'Generation failed');
       }
 
-      // Add artificially delayed presentation compiler loop to show terminal compile
-      setTimeout(() => {
-        setDreams(prev => [...prev, data]);
-        setSelectedDream(data);
-        setIsGenerating(false);
-        setActivePage('game');
-      }, 6200); // 6.2s matches compilation visual sequence
+      setDreams(prev => [...prev, data]);
+      setSelectedDream(data);
+      setIsGenerating(false);
+      setActivePage('game');
 
     } catch (err) {
       alert(err.message);
