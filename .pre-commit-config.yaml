@@ -21,11 +21,32 @@ repos:
         files: \.(js|jsx)$
         pass_filenames: false
 
+      - id: oxlint
+        name: oxlint
+        entry: npx oxlint .
+        language: system
+        files: \.(js|jsx|ts|tsx)$
+        pass_filenames: false
+
+      - id: biome
+        name: biome
+        entry: npx biome check .
+        language: system
+        files: \.(js|jsx|ts|tsx|json)$
+        pass_filenames: false
+
       - id: prettier
         name: prettier
         entry: npx prettier --check .
         language: system
         files: \.(js|jsx|json|css|md)$
+        pass_filenames: false
+
+      - id: tsc
+        name: typescript type-check
+        entry: npx tsc --noEmit
+        language: system
+        files: \.(ts|tsx|js|jsx)$
         pass_filenames: false
 
       - id: knip

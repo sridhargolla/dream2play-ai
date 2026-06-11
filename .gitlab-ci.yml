@@ -17,6 +17,16 @@ lint_job:
   script:
     - npx eslint .
 
+oxlint_job:
+  stage: lint
+  script:
+    - npx oxlint .
+
+biome_job:
+  stage: lint
+  script:
+    - npx biome check .
+
 format_job:
   stage: format
   script:
@@ -25,7 +35,7 @@ format_job:
 type_check_job:
   stage: type_check
   script:
-    - npx knip
+    - npx tsc --noEmit
 
 test_job:
   stage: test
@@ -44,7 +54,7 @@ audit_job:
 
 gitleaks_job:
   stage: secret-scan
-  image: 
+  image:
     name: zricethezav/gitleaks:latest
     entrypoint: [""]
   before_script: []
