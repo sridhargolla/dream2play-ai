@@ -20,3 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Corrected parameter order overlap issue in Phaser colliders for boss damage.
 - Scaled boss aggressiveness across 3 combat phases depending on HP.
 - Added comprehensive unit tests for boss HP and collision handlers.
+
+### Documentation
+- Added project metadata notes including description, git tags, and pre-commit hook analysis.

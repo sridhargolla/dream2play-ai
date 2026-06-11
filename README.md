@@ -92,6 +92,17 @@ npm run dev:frontend  # UI only
 - **Backend:** Node.js, Express, JWT auth, JSON file DB
 - **AI:** OpenAI GPT-3.5 (blueprint) + DALL-E 3 (assets, optional)
 
+## Project Metadata
+
+- Description: Dream2Play AI transforms dream descriptions into playable browser games using AI and Phaser 3.
+- Git tags: v1.0.0, v1.0.1, v1.0.2
+
+## Pre-commit Hook Analysis
+
+- Hook repositories configured: 3
+- Total hooks configured: 12
+- Included tools: eslint, oxlint, biome, prettier, TypeScript type-check via the pre-commit typecheck hook using npm run typecheck (tsc --noEmit), Knip, npm audit, Gitleaks, and basic pre-commit hygiene checks.
+
 ## License
 
 MIT License — Copyright (c) 2026 Dream2play AI Team
