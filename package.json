@@ -11,13 +11,19 @@
   "scripts": {
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "vitest run",
-    "prepare": "husky"
+    "test": "vitest run --coverage",
+    "typecheck": "knip",
+    "prepare": "husky",
+    "dev": "npm run dev --workspace=backend & npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^1.5.0",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
+    "knip": "^5.0.0",
     "prettier": "^3.2.5",
     "vitest": "^1.5.0"
   }

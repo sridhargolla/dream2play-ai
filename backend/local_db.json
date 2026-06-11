@@ -5,143 +5,5087 @@
       "username": "sridhargolla",
       "email": "sridharyadav174@gmail.com",
       "password": "$2a$10$9Rst72XZpsDRWQYEqFmCKug5V6SZjLU6Ei6un/b5vzC44cVR2UOoW"
+    },
+    {
+      "id": "1781153367314",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781153400232",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781156038600",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781156689289",
+      "username": "SelfRun",
+      "email": "selfrun1781156689@dream2play.ai",
+      "password": "$2a$10$JiFd3fdo1G0aHVjjYv4mkuPSb0PWqK./HJFqTajdWl1E0N9qsb7lK"
+    },
+    {
+      "id": "1781156741523",
+      "username": "SelfRun",
+      "email": "selfrun1781156741@dream2play.ai",
+      "password": "$2a$10$jbFrN.m2/KjxczU50Qo8dOKSNQqZyHfMZoO92KGBAVX.NVlnE1y4W"
+    },
+    {
+      "id": "1781156778543",
+      "username": "SelfRun",
+      "email": "selfrun1781156778@dream2play.ai",
+      "password": "$2a$10$y7gq3UzIsjjN5k9PanktM..nfrzXvgXCg.jYWN6XYJcu.gCJxBFx2"
+    },
+    {
+      "id": "1781156787210",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781164429445",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781168961101",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781169116524",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781175804086",
+      "username": "testuser",
+      "email": "test@example.com"
     }
   ],
   "dreams": [
     {
-      "id": "1781066356568",
-      "createdAt": "2026-06-10T04:39:16.568Z",
+      "id": "1781149243872",
+      "createdAt": "2026-06-11T03:40:46.929Z",
       "userId": "1781066281863",
-      "title": "cyberpunk battle",
-      "description": "\"I was flying over a cyberpunk city while giant dragons chased me.\"",
+      "title": "block  battle",
+      "description": "blocks+ hero +hostiles+boss\n",
       "blueprint": {
-        "hero": "Cyborg Explorer",
-        "world": "Cyber Station",
-        "enemies": [
-          "Sentry Drone",
-          "Laser Bot"
-        ],
-        "boss": "AI Overlord Prime",
-        "objective": "Disable the central core and download the data files.",
-        "powerups": [
-          "Shield Shield",
-          "Laser Overcharge"
-        ],
-        "mood": "Sci-Fi",
-        "genre": "Platformer-Jetpack",
-        "difficulty": "Medium",
-        "colors": {
-          "bg": "#030712",
-          "accent": "#06b6d4",
-          "secondary": "#3b82f6",
-          "hazard": "#f43f5e",
-          "player": "#22c55e",
-          "text": "#ffffff"
+        "title": "block  battle",
+        "theme": "Superhero in Surreal Void",
+        "genre": "battle_royale",
+        "intent": {
+          "character": "Apex Hero",
+          "characterType": "human",
+          "vehicle": null,
+          "location": "Surreal Void",
+          "weapons": [
+            "Shield Blast"
+          ],
+          "actions": [
+            "Super Punch",
+            "Shield Blast",
+            "Flight"
+          ],
+          "scoreLabel": "KILLS",
+          "subType": "superhero"
         },
-        "physics": {
-          "gravity": 150,
+        "player": {
+          "name": "Apex Hero",
+          "type": "human",
+          "subType": "superhero",
+          "appearance": "Caped superhero suit",
+          "hp": 100,
+          "maxHp": 100,
           "speed": 220,
-          "jump": -200,
-          "bounce": 0.1
+          "jumpForce": -350,
+          "gravity": 300,
+          "colors": {
+            "bg": "#0f172a",
+            "accent": "#facc15",
+            "secondary": "#f97316",
+            "hazard": "#ef4444",
+            "player": "#eab308",
+            "text": "#ffffff"
+          },
+          "abilities": [
+            "Super Punch",
+            "Shield Blast",
+            "Flight"
+          ]
         },
-        "stories": {
-          "intro": "You wake up in a surreal dreamscape. You are the legendary Cyborg Explorer, standing at the threshold of a mysterious landscape. The air is thick with tension as echoes of Sentry Drone growls reverberate in the distance.",
-          "mission": "Your quest is clear: Disable the central core and download the data files. Beware, for AI Overlord Prime is guarding the core exit and will do everything in its power to stop you.",
-          "ending": "With a final surge of power, AI Overlord Prime crumbles to dust. The dreamscape begins to shatter into particles of pure light. You open your eyes, returning to the waking world, carrying the high score of a champion."
-        }
-      }
-    },
-    {
-      "id": "1781067193342",
-      "createdAt": "2026-06-10T04:53:13.342Z",
-      "userId": "1781066281863",
-      "title": "Labyrinth of Echoes  ",
-      "description": "Explore a shifting maze woven from fragments of your past dreams, where choices reshape the paths and emotions alter the world around you.",
-      "blueprint": {
-        "hero": "Jungle Explorer",
-        "world": "Green Canopy",
-        "enemies": [
-          "Bouncing Slime",
-          "Wild Bat"
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Surreal Void — Opening Grounds",
+            "objective": "Eliminate all 3 rivals and stay inside the zone.",
+            "blocks": [
+              {
+                "id": "b_1_ground_1",
+                "x": 200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_2",
+                "x": 600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_3",
+                "x": 1000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_4",
+                "x": 1400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_5",
+                "x": 1800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_6",
+                "x": 2200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_7",
+                "x": 2600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_8",
+                "x": 3000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_9",
+                "x": 3400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_10",
+                "x": 3800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_11",
+                "x": 4200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_12",
+                "x": 4600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_13",
+                "x": 5000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_loot_14",
+                "x": 600,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_15",
+                "x": 1300,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_16",
+                "x": 2000,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_17",
+                "x": 2700,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_18",
+                "x": 3400,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_19",
+                "x": 4100,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Rival Sniper",
+                "x": 800,
+                "y": 390,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Assault Trooper",
+                "x": 1380,
+                "y": 390,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Apex Hunter",
+                "x": 1960,
+                "y": 390,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_4",
+                "name": "Recon Agent",
+                "x": 2540,
+                "y": 390,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 12,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_5",
+                "name": "Rival Sniper",
+                "x": 3120,
+                "y": 390,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_6",
+                "name": "Assault Trooper",
+                "x": 3700,
+                "y": 390,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_7",
+                "name": "Apex Hunter",
+                "x": 4280,
+                "y": 390,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "Warlord X",
+              "x": 4500,
+              "y": 200,
+              "hp": 150,
+              "maxHp": 150,
+              "phases": [
+                "Phase 1: Rocket Launcher",
+                "Phase 2: Minigun Rain"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Surreal Void — Midfield Assault",
+            "objective": "Eliminate all 4 rivals and stay inside the zone.",
+            "blocks": [
+              {
+                "id": "b_2_ground_1",
+                "x": 200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_2",
+                "x": 600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_3",
+                "x": 1000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_4",
+                "x": 1400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_5",
+                "x": 1800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_6",
+                "x": 2200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_7",
+                "x": 2600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_8",
+                "x": 3000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_9",
+                "x": 3400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_10",
+                "x": 3800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_11",
+                "x": 4200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_12",
+                "x": 4600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_13",
+                "x": 5000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_loot_14",
+                "x": 600,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_15",
+                "x": 1300,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_16",
+                "x": 2000,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_17",
+                "x": 2700,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_18",
+                "x": 3400,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_19",
+                "x": 4100,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Rival Sniper",
+                "x": 800,
+                "y": 390,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Assault Trooper",
+                "x": 1380,
+                "y": 390,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Apex Hunter",
+                "x": 1960,
+                "y": 390,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_4",
+                "name": "Recon Agent",
+                "x": 2540,
+                "y": 390,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 12,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_5",
+                "name": "Rival Sniper",
+                "x": 3120,
+                "y": 390,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_6",
+                "name": "Assault Trooper",
+                "x": 3700,
+                "y": 390,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_7",
+                "name": "Apex Hunter",
+                "x": 4280,
+                "y": 390,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "Warlord X Mk.2",
+              "x": 4500,
+              "y": 200,
+              "hp": 250,
+              "maxHp": 250,
+              "phases": [
+                "Phase 1: Rocket Launcher",
+                "Phase 2: Minigun Rain"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Surreal Void — Final Stronghold",
+            "objective": "Eliminate all 5 rivals and stay inside the zone.",
+            "blocks": [
+              {
+                "id": "b_3_ground_1",
+                "x": 200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_2",
+                "x": 600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_3",
+                "x": 1000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_4",
+                "x": 1400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_5",
+                "x": 1800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_6",
+                "x": 2200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_7",
+                "x": 2600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_8",
+                "x": 3000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_9",
+                "x": 3400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_10",
+                "x": 3800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_11",
+                "x": 4200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_12",
+                "x": 4600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_13",
+                "x": 5000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_loot_14",
+                "x": 600,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_15",
+                "x": 1300,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_16",
+                "x": 2000,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_17",
+                "x": 2700,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_18",
+                "x": 3400,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_19",
+                "x": 4100,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_3_1",
+                "name": "Rival Sniper",
+                "x": 800,
+                "y": 390,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_2",
+                "name": "Assault Trooper",
+                "x": 1380,
+                "y": 390,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_3",
+                "name": "Apex Hunter",
+                "x": 1960,
+                "y": 390,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_4",
+                "name": "Recon Agent",
+                "x": 2540,
+                "y": 390,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 12,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_5",
+                "name": "Rival Sniper",
+                "x": 3120,
+                "y": 390,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_6",
+                "name": "Assault Trooper",
+                "x": 3700,
+                "y": 390,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_7",
+                "name": "Apex Hunter",
+                "x": 4280,
+                "y": 390,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_3",
+              "name": "Warlord X Mk.3",
+              "x": 4500,
+              "y": 200,
+              "hp": 350,
+              "maxHp": 350,
+              "phases": [
+                "Phase 1: Standard assault",
+                "Phase 2: Minigun Rain",
+                "Phase 3: Final Rage Mode"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
         ],
-        "boss": "Giga Gorilla King",
-        "objective": "Collect all gold coins and reach the sacred temple gate.",
+        "winCondition": "Complete all missions in Surreal Void and defeat Warlord X Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Apex Hero",
+        "world": "Superhero in Surreal Void",
+        "enemies": [
+          "Rival Sniper",
+          "Assault Trooper",
+          "Apex Hunter",
+          "Recon Agent"
+        ],
+        "boss": "Warlord X Mk.3",
+        "objective": "Eliminate all 5 rivals and stay inside the zone.",
         "powerups": [
-          "Speed Boots",
-          "Extra Heart"
+          "Super Punch",
+          "Shield Blast",
+          "Flight"
         ],
         "mood": "Adventure",
-        "genre": "Retro-Explorer",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "colors": {
-          "bg": "#022c22",
-          "accent": "#10b981",
-          "secondary": "#f59e0b",
+          "bg": "#0f172a",
+          "accent": "#facc15",
+          "secondary": "#f97316",
           "hazard": "#ef4444",
-          "player": "#10b981",
-          "text": "#f3f4f6"
+          "player": "#eab308",
+          "text": "#ffffff"
         },
         "physics": {
-          "gravity": 350,
-          "speed": 240,
-          "jump": -360,
-          "bounce": 0.2
+          "gravity": 300,
+          "speed": 220,
+          "jump": -350,
+          "bounce": 0.1
         },
         "stories": {
-          "intro": "You wake up in a surreal dreamscape. You are the legendary Jungle Explorer, standing at the threshold of a mysterious landscape. The air is thick with tension as echoes of Bouncing Slime growls reverberate in the distance.",
-          "mission": "Your quest is clear: Collect all gold coins and reach the sacred temple gate. Beware, for Giga Gorilla King is guarding the core exit and will do everything in its power to stop you.",
-          "ending": "With a final surge of power, Giga Gorilla King crumbles to dust. The dreamscape begins to shatter into particles of pure light. You open your eyes, returning to the waking world, carrying the high score of a champion."
+          "intro": "You deploy as Apex Hero. The battle begins in Surreal Void.",
+          "mission": "Mission: Eliminate all 5 rivals and stay inside the zone. Defeat the fearsome Warlord X Mk.3!",
+          "ending": "Warlord X Mk.3 falls. Apex Hero has conquered Surreal Void!"
+        },
+        "assets": {
+          "hero": "/uploads/1781149243872_hero.svg",
+          "enemy": "/uploads/1781149243872_enemy.svg",
+          "boss": "/uploads/1781149243872_boss.svg",
+          "background": "/uploads/1781149243872_background.svg",
+          "collectible": "/uploads/1781149243872_collectible.svg"
         }
       }
     },
     {
-      "id": "1781067812574",
-      "createdAt": "2026-06-10T05:03:32.574Z",
-      "userId": "1781066281863",
-      "title": "Fused: cyberpunk battl + Labyrinth of Ec",
-      "description": "A hybrid dream fusing \"cyberpunk battle\" and \"Labyrinth of Echoes  \". Description: \"I was flying over a cyberpunk city while giant dr... and Explore a shifting maze woven from fragments of yo...",
+      "id": "1781156689325",
+      "createdAt": "2026-06-11T05:44:50.848Z",
+      "userId": "1781156689289",
+      "title": "Telugu sky warrior",
+      "description": "???? ?????????? ?????? ??????? ??? ?????????? ?????? ??????? ???? ???????? ??????? ??????? ????????",
       "blueprint": {
-        "hero": "Cyborg Explorer / Jungle Explorer Hybrid",
-        "world": "Cyber Station x Green Canopy",
+        "title": "Telugu sky warrior",
+        "theme": "Military in Surreal Void",
+        "genre": "shooter",
+        "intent": {
+          "character": "Combat Soldier",
+          "characterType": "human",
+          "vehicle": null,
+          "location": "Surreal Void",
+          "weapons": [
+            "Fire Rifle"
+          ],
+          "actions": [
+            "Fire Rifle",
+            "Grenade",
+            "Roll"
+          ],
+          "scoreLabel": "KILLS",
+          "subType": "soldier"
+        },
+        "player": {
+          "name": "Combat Soldier",
+          "type": "human",
+          "subType": "soldier",
+          "appearance": "Tactical gear with rifle",
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 220,
+          "jumpForce": -350,
+          "gravity": 300,
+          "colors": {
+            "bg": "#1c1917",
+            "accent": "#4ade80",
+            "secondary": "#facc15",
+            "hazard": "#f43f5e",
+            "player": "#84cc16",
+            "text": "#fafaf9"
+          },
+          "abilities": [
+            "Fire Rifle",
+            "Grenade",
+            "Roll"
+          ]
+        },
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Surreal Void — Opening Grounds",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_1_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_3",
+                "x": 612,
+                "y": 211.43059616843945,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_4",
+                "x": 612,
+                "y": 186.43059616843945,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_5",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_6",
+                "x": 932,
+                "y": 232.83542922946955,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_7",
+                "x": 932,
+                "y": 207.83542922946955,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_8",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_9",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_10",
+                "x": 1572,
+                "y": 260.4574684673862,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_11",
+                "x": 1572,
+                "y": 235.4574684673862,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_12",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_13",
+                "x": 1892,
+                "y": 241.11340892505476,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_14",
+                "x": 1892,
+                "y": 216.11340892505476,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_15",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_16",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_17",
+                "x": 2532,
+                "y": 230.21697064346625,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_18",
+                "x": 2532,
+                "y": 205.21697064346625,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_19",
+                "x": 2852,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_20",
+                "x": 2852,
+                "y": 264.11301034950725,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_21",
+                "x": 2852,
+                "y": 239.11301034950725,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_22",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_23",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_24",
+                "x": 3492,
+                "y": 216.4304488435612,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_25",
+                "x": 3492,
+                "y": 191.4304488435612,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_26",
+                "x": 3812,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_27",
+                "x": 3812,
+                "y": 211.82874194271574,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_28",
+                "x": 3812,
+                "y": 186.82874194271574,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_29",
+                "x": 4132,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_30",
+                "x": 4452,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_31",
+                "x": 4854,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Foot Soldier",
+                "x": 1572,
+                "y": 230.4574684673862,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Sniper",
+                "x": 1892,
+                "y": 211.11340892505476,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Tank Trooper",
+                "x": 2532,
+                "y": 200.21697064346625,
+                "hp": 160,
+                "maxHp": 160,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_4",
+                "name": "Assault Mech",
+                "x": 2852,
+                "y": 234.11301034950725,
+                "hp": 200,
+                "maxHp": 200,
+                "damage": 30,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_5",
+                "name": "Foot Soldier",
+                "x": 3812,
+                "y": 181.82874194271574,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "General Iron",
+              "x": 4500,
+              "y": 200,
+              "hp": 150,
+              "maxHp": 150,
+              "phases": [
+                "Phase 1: Grenade Barrage",
+                "Phase 2: Airstrike Call"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Surreal Void — Midfield Assault",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_2_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_3",
+                "x": 612,
+                "y": 210.6948770539038,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_4",
+                "x": 612,
+                "y": 185.6948770539038,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_5",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_6",
+                "x": 932,
+                "y": 234.83923685963885,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_7",
+                "x": 932,
+                "y": 209.83923685963885,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_8",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_9",
+                "x": 1252,
+                "y": 269.85967513707715,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_10",
+                "x": 1252,
+                "y": 244.85967513707715,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_11",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_12",
+                "x": 1572,
+                "y": 260.6926033747143,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_13",
+                "x": 1572,
+                "y": 235.69260337471428,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_14",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_15",
+                "x": 1892,
+                "y": 257.9740426879219,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_16",
+                "x": 1892,
+                "y": 232.9740426879219,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_17",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_18",
+                "x": 2212,
+                "y": 226.62380458941095,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_19",
+                "x": 2212,
+                "y": 201.62380458941095,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_spike_20",
+                "x": 2468,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_2_g_21",
+                "x": 2660,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_22",
+                "x": 2660,
+                "y": 206.476484361828,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_23",
+                "x": 2660,
+                "y": 181.476484361828,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_24",
+                "x": 2980,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_25",
+                "x": 3300,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_26",
+                "x": 3300,
+                "y": 249.61790190439226,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_27",
+                "x": 3300,
+                "y": 224.61790190439226,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_28",
+                "x": 3620,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_29",
+                "x": 3940,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_30",
+                "x": 3940,
+                "y": 200.21078686857226,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_31",
+                "x": 3940,
+                "y": 175.21078686857226,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_32",
+                "x": 4260,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_33",
+                "x": 4260,
+                "y": 223.23654591887544,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_34",
+                "x": 4260,
+                "y": 198.23654591887544,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_35",
+                "x": 4662,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Foot Soldier",
+                "x": 932,
+                "y": 204.83923685963885,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Sniper",
+                "x": 1572,
+                "y": 230.69260337471428,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Tank Trooper",
+                "x": 3300,
+                "y": 219.61790190439226,
+                "hp": 160,
+                "maxHp": 160,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "General Iron Mk.2",
+              "x": 4500,
+              "y": 200,
+              "hp": 250,
+              "maxHp": 250,
+              "phases": [
+                "Phase 1: Grenade Barrage",
+                "Phase 2: Airstrike Call"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Surreal Void — Final Stronghold",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_3_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_3",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_4",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_5",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_6",
+                "x": 1572,
+                "y": 254.03144348001314,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_7",
+                "x": 1572,
+                "y": 229.03144348001314,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_8",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_9",
+                "x": 1892,
+                "y": 203.66138913948691,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_10",
+                "x": 1892,
+                "y": 178.66138913948691,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_11",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_12",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_13",
+                "x": 2532,
+                "y": 240.1167413408602,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_14",
+                "x": 2532,
+                "y": 215.1167413408602,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_15",
+                "x": 2852,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_16",
+                "x": 2852,
+                "y": 263.157582363473,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_17",
+                "x": 2852,
+                "y": 238.157582363473,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_18",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_19",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_spike_20",
+                "x": 3748,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_3_g_21",
+                "x": 3940,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_22",
+                "x": 4260,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_23",
+                "x": 4260,
+                "y": 209.10147207161455,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_24",
+                "x": 4260,
+                "y": 184.10147207161455,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_25",
+                "x": 4662,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [],
+            "boss": {
+              "id": "boss_3",
+              "name": "General Iron Mk.3",
+              "x": 4500,
+              "y": 200,
+              "hp": 350,
+              "maxHp": 350,
+              "phases": [
+                "Phase 1: Standard assault",
+                "Phase 2: Airstrike Call",
+                "Phase 3: Final Rage Mode"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
+        ],
+        "winCondition": "Complete all missions in Surreal Void and defeat General Iron Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Combat Soldier",
+        "world": "Military in Surreal Void",
         "enemies": [
-          "Sentry Drone",
-          "Laser Bot"
+          "Foot Soldier",
+          "Sniper",
+          "Tank Trooper",
+          "Assault Mech"
         ],
-        "boss": "AI Overlord Prime-Giga Gorilla King Chimera",
-        "objective": "Disable the central core and download the data files.",
+        "boss": "General Iron Mk.3",
+        "objective": "Neutralise all hostiles and secure the area.",
         "powerups": [
-          "Shield Shield",
-          "Laser Overcharge"
+          "Fire Rifle",
+          "Grenade",
+          "Roll"
         ],
-        "mood": "Sci-Fi",
-        "genre": "Platformer-Jetpack",
+        "mood": "Adventure",
         "difficulty": "Medium",
         "colors": {
-          "bg": "#030712",
-          "accent": "#06b6d4",
-          "secondary": "#3b82f6",
+          "bg": "#1c1917",
+          "accent": "#4ade80",
+          "secondary": "#facc15",
+          "hazard": "#f43f5e",
+          "player": "#84cc16",
+          "text": "#fafaf9"
+        },
+        "physics": {
+          "gravity": 300,
+          "speed": 220,
+          "jump": -350,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "You deploy as Combat Soldier. The battle begins in Surreal Void.",
+          "mission": "Mission: Neutralise all hostiles and secure the area. Defeat the fearsome General Iron Mk.3!",
+          "ending": "General Iron Mk.3 falls. Combat Soldier has conquered Surreal Void!"
+        },
+        "assets": {
+          "hero": "/uploads/1781156689325_hero.svg",
+          "enemy": "/uploads/1781156689325_enemy.svg",
+          "boss": "/uploads/1781156689325_boss.svg",
+          "background": "/uploads/1781156689325_background.svg",
+          "collectible": "/uploads/1781156689325_collectible.svg"
+        }
+      }
+    },
+    {
+      "id": "1781156741560",
+      "createdAt": "2026-06-11T05:45:44.174Z",
+      "userId": "1781156741523",
+      "title": "Telugu sky warrior",
+      "description": "???? ?????????? ?????? ??????? ??? ?????????? ?????? ??????? ???? ???????? ??????? ??????? ????????",
+      "blueprint": {
+        "title": "Telugu sky warrior",
+        "theme": "Military in Surreal Void",
+        "genre": "shooter",
+        "intent": {
+          "character": "Combat Soldier",
+          "characterType": "human",
+          "vehicle": null,
+          "location": "Surreal Void",
+          "weapons": [
+            "Fire Rifle"
+          ],
+          "actions": [
+            "Fire Rifle",
+            "Grenade",
+            "Roll"
+          ],
+          "scoreLabel": "KILLS",
+          "subType": "soldier"
+        },
+        "player": {
+          "name": "Combat Soldier",
+          "type": "human",
+          "subType": "soldier",
+          "appearance": "Tactical gear with rifle",
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 220,
+          "jumpForce": -350,
+          "gravity": 300,
+          "colors": {
+            "bg": "#1c1917",
+            "accent": "#4ade80",
+            "secondary": "#facc15",
+            "hazard": "#f43f5e",
+            "player": "#84cc16",
+            "text": "#fafaf9"
+          },
+          "abilities": [
+            "Fire Rifle",
+            "Grenade",
+            "Roll"
+          ]
+        },
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Surreal Void — Opening Grounds",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_1_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_3",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_4",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_5",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_6",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_7",
+                "x": 1892,
+                "y": 225.67765729041247,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_8",
+                "x": 1892,
+                "y": 200.67765729041247,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_9",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_10",
+                "x": 2212,
+                "y": 222.31972043568317,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_11",
+                "x": 2212,
+                "y": 197.31972043568317,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_12",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_13",
+                "x": 2532,
+                "y": 253.7643951118474,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_14",
+                "x": 2532,
+                "y": 228.7643951118474,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_15",
+                "x": 2852,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_16",
+                "x": 2852,
+                "y": 215.05366443338903,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_17",
+                "x": 2852,
+                "y": 190.05366443338903,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_18",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_19",
+                "x": 3172,
+                "y": 231.60400688233193,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_20",
+                "x": 3172,
+                "y": 206.60400688233193,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_21",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_22",
+                "x": 3812,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_23",
+                "x": 4132,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_24",
+                "x": 4132,
+                "y": 246.2104083775491,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_25",
+                "x": 4132,
+                "y": 221.2104083775491,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_26",
+                "x": 4452,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_27",
+                "x": 4452,
+                "y": 248.41771394035266,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_28",
+                "x": 4452,
+                "y": 223.41771394035266,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_29",
+                "x": 4854,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Foot Soldier",
+                "x": 2212,
+                "y": 192.31972043568317,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Sniper",
+                "x": 2852,
+                "y": 185.05366443338903,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Tank Trooper",
+                "x": 4452,
+                "y": 218.41771394035266,
+                "hp": 160,
+                "maxHp": 160,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "General Iron",
+              "x": 4500,
+              "y": 200,
+              "hp": 150,
+              "maxHp": 150,
+              "phases": [
+                "Phase 1: Grenade Barrage",
+                "Phase 2: Airstrike Call"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Surreal Void — Midfield Assault",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_2_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_3",
+                "x": 612,
+                "y": 212.28789250082036,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_4",
+                "x": 612,
+                "y": 187.28789250082036,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_5",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_6",
+                "x": 932,
+                "y": 261.42442405122324,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_7",
+                "x": 932,
+                "y": 236.42442405122324,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_8",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_9",
+                "x": 1252,
+                "y": 224.67842456864304,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_10",
+                "x": 1252,
+                "y": 199.67842456864304,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_11",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_12",
+                "x": 1572,
+                "y": 260.3238072684274,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_13",
+                "x": 1572,
+                "y": 235.3238072684274,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_14",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_15",
+                "x": 1892,
+                "y": 208.4670379471333,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_16",
+                "x": 1892,
+                "y": 183.4670379471333,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_17",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_18",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_19",
+                "x": 2532,
+                "y": 227.0382422096309,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_20",
+                "x": 2532,
+                "y": 202.0382422096309,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_21",
+                "x": 2852,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_22",
+                "x": 2852,
+                "y": 222.3686752264089,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_23",
+                "x": 2852,
+                "y": 197.3686752264089,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_24",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_25",
+                "x": 3172,
+                "y": 263.15303634805673,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_26",
+                "x": 3172,
+                "y": 238.15303634805673,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_27",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_28",
+                "x": 3812,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_29",
+                "x": 3812,
+                "y": 212.74333765703807,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_30",
+                "x": 3812,
+                "y": 187.74333765703807,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_31",
+                "x": 4132,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_32",
+                "x": 4452,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_33",
+                "x": 4452,
+                "y": 254.91426790840768,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_34",
+                "x": 4452,
+                "y": 229.91426790840768,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_35",
+                "x": 4854,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Foot Soldier",
+                "x": 612,
+                "y": 182.28789250082036,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Sniper",
+                "x": 1572,
+                "y": 230.3238072684274,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Tank Trooper",
+                "x": 2532,
+                "y": 197.0382422096309,
+                "hp": 160,
+                "maxHp": 160,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_4",
+                "name": "Assault Mech",
+                "x": 3172,
+                "y": 233.15303634805673,
+                "hp": 200,
+                "maxHp": 200,
+                "damage": 30,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_5",
+                "name": "Foot Soldier",
+                "x": 4452,
+                "y": 224.91426790840768,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "General Iron Mk.2",
+              "x": 4500,
+              "y": 200,
+              "hp": 250,
+              "maxHp": 250,
+              "phases": [
+                "Phase 1: Grenade Barrage",
+                "Phase 2: Airstrike Call"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Surreal Void — Final Stronghold",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_3_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_3",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_4",
+                "x": 932,
+                "y": 248.92069070322148,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_5",
+                "x": 932,
+                "y": 223.92069070322148,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_6",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_7",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_8",
+                "x": 1572,
+                "y": 230.38010711840974,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_9",
+                "x": 1572,
+                "y": 205.38010711840974,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_10",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_11",
+                "x": 1892,
+                "y": 233.6949937567093,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_12",
+                "x": 1892,
+                "y": 208.6949937567093,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_13",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_14",
+                "x": 2212,
+                "y": 255.40666581026224,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_15",
+                "x": 2212,
+                "y": 230.40666581026224,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_16",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_17",
+                "x": 2532,
+                "y": 260.2169399148523,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_18",
+                "x": 2532,
+                "y": 235.21693991485228,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_19",
+                "x": 2852,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_20",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_21",
+                "x": 3172,
+                "y": 228.6055973028908,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_22",
+                "x": 3172,
+                "y": 203.6055973028908,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_23",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_24",
+                "x": 3812,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_25",
+                "x": 4132,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_26",
+                "x": 4132,
+                "y": 261.38092004661263,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_27",
+                "x": 4132,
+                "y": 236.38092004661263,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_28",
+                "x": 4452,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_29",
+                "x": 4854,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_3_1",
+                "name": "Foot Soldier",
+                "x": 1892,
+                "y": 203.6949937567093,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_2",
+                "name": "Sniper",
+                "x": 2212,
+                "y": 225.40666581026224,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_3",
+                "name": "Tank Trooper",
+                "x": 2532,
+                "y": 230.21693991485228,
+                "hp": 160,
+                "maxHp": 160,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_4",
+                "name": "Assault Mech",
+                "x": 3172,
+                "y": 198.6055973028908,
+                "hp": 200,
+                "maxHp": 200,
+                "damage": 30,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_3",
+              "name": "General Iron Mk.3",
+              "x": 4500,
+              "y": 200,
+              "hp": 350,
+              "maxHp": 350,
+              "phases": [
+                "Phase 1: Standard assault",
+                "Phase 2: Airstrike Call",
+                "Phase 3: Final Rage Mode"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
+        ],
+        "winCondition": "Complete all missions in Surreal Void and defeat General Iron Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Combat Soldier",
+        "world": "Military in Surreal Void",
+        "enemies": [
+          "Foot Soldier",
+          "Sniper",
+          "Tank Trooper",
+          "Assault Mech"
+        ],
+        "boss": "General Iron Mk.3",
+        "objective": "Neutralise all hostiles and secure the area.",
+        "powerups": [
+          "Fire Rifle",
+          "Grenade",
+          "Roll"
+        ],
+        "mood": "Adventure",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#1c1917",
+          "accent": "#4ade80",
+          "secondary": "#facc15",
+          "hazard": "#f43f5e",
+          "player": "#84cc16",
+          "text": "#fafaf9"
+        },
+        "physics": {
+          "gravity": 300,
+          "speed": 220,
+          "jump": -350,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "You deploy as Combat Soldier. The battle begins in Surreal Void.",
+          "mission": "Mission: Neutralise all hostiles and secure the area. Defeat the fearsome General Iron Mk.3!",
+          "ending": "General Iron Mk.3 falls. Combat Soldier has conquered Surreal Void!"
+        },
+        "assets": {
+          "hero": "/uploads/1781156741560_hero.svg",
+          "enemy": "/uploads/1781156741560_enemy.svg",
+          "boss": "/uploads/1781156741560_boss.svg",
+          "background": "/uploads/1781156741560_background.svg",
+          "collectible": "/uploads/1781156741560_collectible.svg"
+        }
+      }
+    },
+    {
+      "id": "1781156778565",
+      "createdAt": "2026-06-11T05:46:19.938Z",
+      "userId": "1781156778543",
+      "title": "Telugu sky warrior",
+      "description": "???? ?????????? ?????? ??????? ??? ?????????? ?????? ??????? ???? ???????? ??????? ??????? ????????",
+      "blueprint": {
+        "title": "Telugu sky warrior",
+        "theme": "Military in Surreal Void",
+        "genre": "shooter",
+        "intent": {
+          "character": "Combat Soldier",
+          "characterType": "human",
+          "vehicle": null,
+          "location": "Surreal Void",
+          "weapons": [
+            "Fire Rifle"
+          ],
+          "actions": [
+            "Fire Rifle",
+            "Grenade",
+            "Roll"
+          ],
+          "scoreLabel": "KILLS",
+          "subType": "soldier"
+        },
+        "player": {
+          "name": "Combat Soldier",
+          "type": "human",
+          "subType": "soldier",
+          "appearance": "Tactical gear with rifle",
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 220,
+          "jumpForce": -350,
+          "gravity": 300,
+          "colors": {
+            "bg": "#1c1917",
+            "accent": "#4ade80",
+            "secondary": "#facc15",
+            "hazard": "#f43f5e",
+            "player": "#84cc16",
+            "text": "#fafaf9"
+          },
+          "abilities": [
+            "Fire Rifle",
+            "Grenade",
+            "Roll"
+          ]
+        },
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Surreal Void — Opening Grounds",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_1_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_3",
+                "x": 612,
+                "y": 239.80852534596391,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_4",
+                "x": 612,
+                "y": 214.80852534596391,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_5",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_spike_6",
+                "x": 1188,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_1_g_7",
+                "x": 1380,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_8",
+                "x": 1380,
+                "y": 210.7222483844587,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_9",
+                "x": 1380,
+                "y": 185.7222483844587,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_spike_10",
+                "x": 1636,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_1_spike_11",
+                "x": 1764,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_1_g_12",
+                "x": 1956,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_13",
+                "x": 1956,
+                "y": 268.3497959838704,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_14",
+                "x": 1956,
+                "y": 243.34979598387042,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_15",
+                "x": 2276,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_16",
+                "x": 2596,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_17",
+                "x": 2596,
+                "y": 222.52265983768842,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_18",
+                "x": 2596,
+                "y": 197.52265983768842,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_19",
+                "x": 2916,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_20",
+                "x": 3236,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_21",
+                "x": 3236,
+                "y": 268.75347544696405,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_22",
+                "x": 3236,
+                "y": 243.75347544696405,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_23",
+                "x": 3556,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_24",
+                "x": 3876,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_25",
+                "x": 3876,
+                "y": 261.51934989579996,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_26",
+                "x": 3876,
+                "y": 236.51934989579996,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_27",
+                "x": 4196,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_spike_28",
+                "x": 4452,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_1_g_29",
+                "x": 4726,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Foot Soldier",
+                "x": 612,
+                "y": 209.80852534596391,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Sniper",
+                "x": 2596,
+                "y": 192.52265983768842,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Tank Trooper",
+                "x": 3876,
+                "y": 231.51934989579996,
+                "hp": 160,
+                "maxHp": 160,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "General Iron",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Surreal Void — Midfield Assault",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_2_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_3",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_4",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_5",
+                "x": 1252,
+                "y": 255.08596359176238,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_6",
+                "x": 1252,
+                "y": 230.08596359176238,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_7",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_8",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_9",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_10",
+                "x": 2212,
+                "y": 222.32406912392835,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_11",
+                "x": 2212,
+                "y": 197.32406912392835,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_12",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_13",
+                "x": 2532,
+                "y": 206.7234471181245,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_14",
+                "x": 2532,
+                "y": 181.7234471181245,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_15",
+                "x": 2852,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_16",
+                "x": 2852,
+                "y": 249.98714312065712,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_17",
+                "x": 2852,
+                "y": 224.98714312065712,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_18",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_19",
+                "x": 3172,
+                "y": 254.6425756979149,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_20",
+                "x": 3172,
+                "y": 229.6425756979149,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_21",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_22",
+                "x": 3492,
+                "y": 201.9519039904012,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_23",
+                "x": 3492,
+                "y": 176.9519039904012,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_24",
+                "x": 3812,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_25",
+                "x": 3812,
+                "y": 201.92317470649903,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_26",
+                "x": 3812,
+                "y": 176.92317470649903,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_27",
+                "x": 4132,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_28",
+                "x": 4132,
+                "y": 213.3885961414342,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_29",
+                "x": 4132,
+                "y": 188.3885961414342,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_30",
+                "x": 4452,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_31",
+                "x": 4854,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Foot Soldier",
+                "x": 2212,
+                "y": 192.32406912392835,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Sniper",
+                "x": 2532,
+                "y": 176.7234471181245,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Tank Trooper",
+                "x": 2852,
+                "y": 219.98714312065712,
+                "hp": 160,
+                "maxHp": 160,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_4",
+                "name": "Assault Mech",
+                "x": 3172,
+                "y": 224.6425756979149,
+                "hp": 200,
+                "maxHp": 200,
+                "damage": 30,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_5",
+                "name": "Foot Soldier",
+                "x": 3492,
+                "y": 171.9519039904012,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "General Iron Mk.2",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Surreal Void — Final Stronghold",
+            "objective": "Neutralise all hostiles and secure the area.",
+            "blocks": [
+              {
+                "id": "b_3_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_3",
+                "x": 612,
+                "y": 256.38993264172285,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_4",
+                "x": 612,
+                "y": 231.38993264172285,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_5",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_6",
+                "x": 932,
+                "y": 224.84575989336545,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_7",
+                "x": 932,
+                "y": 199.84575989336545,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_8",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_9",
+                "x": 1252,
+                "y": 262.73662324483865,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_10",
+                "x": 1252,
+                "y": 237.73662324483865,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_11",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_12",
+                "x": 1572,
+                "y": 200.76699289791614,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_13",
+                "x": 1572,
+                "y": 175.76699289791614,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_14",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_15",
+                "x": 1892,
+                "y": 254.3927901854115,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_16",
+                "x": 1892,
+                "y": 229.3927901854115,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_17",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_18",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_19",
+                "x": 2532,
+                "y": 246.4309523900495,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_20",
+                "x": 2532,
+                "y": 221.4309523900495,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_spike_21",
+                "x": 2788,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_3_g_22",
+                "x": 2980,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_23",
+                "x": 3300,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_24",
+                "x": 3620,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_25",
+                "x": 3940,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_26",
+                "x": 3940,
+                "y": 257.97659208888115,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_27",
+                "x": 3940,
+                "y": 232.97659208888115,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_28",
+                "x": 4260,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_29",
+                "x": 4662,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_3_1",
+                "name": "Foot Soldier",
+                "x": 1252,
+                "y": 232.73662324483865,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_3",
+              "name": "General Iron Mk.3",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
+        ],
+        "winCondition": "Complete all missions in Surreal Void and defeat General Iron Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Combat Soldier",
+        "world": "Military in Surreal Void",
+        "enemies": [
+          "Foot Soldier",
+          "Sniper",
+          "Tank Trooper",
+          "Assault Mech"
+        ],
+        "boss": "General Iron Mk.3",
+        "objective": "Neutralise all hostiles and secure the area.",
+        "powerups": [
+          "Fire Rifle",
+          "Grenade",
+          "Roll"
+        ],
+        "mood": "Adventure",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#1c1917",
+          "accent": "#4ade80",
+          "secondary": "#facc15",
+          "hazard": "#f43f5e",
+          "player": "#84cc16",
+          "text": "#fafaf9"
+        },
+        "physics": {
+          "gravity": 300,
+          "speed": 220,
+          "jump": -350,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "You deploy as Combat Soldier. The battle begins in Surreal Void.",
+          "mission": "Mission: Neutralise all hostiles and secure the area. Defeat the fearsome General Iron Mk.3!",
+          "ending": "General Iron Mk.3 falls. Combat Soldier has conquered Surreal Void!"
+        },
+        "assets": {
+          "hero": "/uploads/1781156778565_hero.svg",
+          "enemy": "/uploads/1781156778565_enemy.svg",
+          "boss": "/uploads/1781156778565_boss.svg",
+          "background": "/uploads/1781156778565_background.svg",
+          "collectible": "/uploads/1781156778565_collectible.svg"
+        }
+      }
+    },
+    {
+      "id": "1781159854057",
+      "createdAt": "2026-06-11T06:37:36.708Z",
+      "userId": "1781066281863",
+      "title": "want tobuy  procshe",
+      "description": "msnbjlfhgsbbvkfhdk",
+      "blueprint": {
+        "title": "want tobuy  procshe",
+        "theme": "City in Surreal Void",
+        "genre": "platformer",
+        "intent": {
+          "character": "Dream Explorer",
+          "characterType": "human",
+          "vehicle": null,
+          "location": "Surreal Void",
+          "weapons": [],
+          "actions": [
+            "Dash",
+            "Double Jump",
+            "Throw"
+          ],
+          "scoreLabel": "CASH",
+          "subType": "human_male"
+        },
+        "player": {
+          "name": "Dream Explorer",
+          "type": "human",
+          "subType": "human_male",
+          "appearance": "Traveler in casual adventure gear",
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 220,
+          "jumpForce": -350,
+          "gravity": 300,
+          "colors": {
+            "bg": "#0a0b10",
+            "accent": "#8b5cf6",
+            "secondary": "#06b6d4",
+            "hazard": "#f43f5e",
+            "player": "#22c55e",
+            "text": "#ffffff"
+          },
+          "abilities": [
+            "Dash",
+            "Double Jump",
+            "Throw"
+          ]
+        },
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Surreal Void — Opening Grounds",
+            "objective": "Scale the heights and defeat the stage boss!",
+            "blocks": [
+              {
+                "id": "b_1_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_3",
+                "x": 612,
+                "y": 224.10639728121657,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_4",
+                "x": 612,
+                "y": 199.10639728121657,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_5",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_6",
+                "x": 932,
+                "y": 256.3524311158739,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_7",
+                "x": 932,
+                "y": 231.3524311158739,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_spike_8",
+                "x": 1188,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_1_g_9",
+                "x": 1380,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_10",
+                "x": 1380,
+                "y": 268.88980912172514,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_11",
+                "x": 1380,
+                "y": 243.88980912172514,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_12",
+                "x": 1700,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_13",
+                "x": 1700,
+                "y": 211.58730100913004,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_14",
+                "x": 1700,
+                "y": 186.58730100913004,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_15",
+                "x": 2020,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_16",
+                "x": 2020,
+                "y": 225.0515931370108,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_17",
+                "x": 2020,
+                "y": 200.0515931370108,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_18",
+                "x": 2340,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_19",
+                "x": 2340,
+                "y": 208.10446623600842,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_20",
+                "x": 2340,
+                "y": 183.10446623600842,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_spike_21",
+                "x": 2596,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_1_spike_22",
+                "x": 2724,
+                "y": 435,
+                "width": 32,
+                "height": 32,
+                "type": "hazard"
+              },
+              {
+                "id": "b_1_g_23",
+                "x": 2916,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_24",
+                "x": 3236,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_25",
+                "x": 3236,
+                "y": 267.8188889958995,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_26",
+                "x": 3236,
+                "y": 242.8188889958995,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_27",
+                "x": 3556,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_28",
+                "x": 3556,
+                "y": 205.72483959169048,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_29",
+                "x": 3556,
+                "y": 180.72483959169048,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_30",
+                "x": 3876,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_31",
+                "x": 3876,
+                "y": 216.63192305577815,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_32",
+                "x": 3876,
+                "y": 191.63192305577815,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_33",
+                "x": 4196,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_f_34",
+                "x": 4196,
+                "y": 217.86469518088924,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_1_coin_35",
+                "x": 4196,
+                "y": 192.86469518088924,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_g_36",
+                "x": 4516,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_37",
+                "x": 4918,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Gang Member",
+                "x": 612,
+                "y": 194.10639728121657,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 10,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Police Officer",
+                "x": 2020,
+                "y": 195.0515931370108,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Security Guard",
+                "x": 2340,
+                "y": 178.10446623600842,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 12,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_4",
+                "name": "Crime Boss Bodyguard",
+                "x": 3556,
+                "y": 175.72483959169048,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 20,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_5",
+                "name": "Gang Member",
+                "x": 4196,
+                "y": 187.86469518088924,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 10,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "Street King",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Surreal Void — Midfield Assault",
+            "objective": "Scale the heights and defeat the stage boss!",
+            "blocks": [
+              {
+                "id": "b_2_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_3",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_4",
+                "x": 932,
+                "y": 255.41633608539496,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_5",
+                "x": 932,
+                "y": 230.41633608539496,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_6",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_7",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_8",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_9",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_10",
+                "x": 2212,
+                "y": 210.05679990262743,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_11",
+                "x": 2212,
+                "y": 185.05679990262743,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_12",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_13",
+                "x": 2852,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_14",
+                "x": 2852,
+                "y": 245.67207780219172,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_15",
+                "x": 2852,
+                "y": 220.67207780219172,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_16",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_17",
+                "x": 3172,
+                "y": 245.5194209007657,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_18",
+                "x": 3172,
+                "y": 220.5194209007657,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_19",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_20",
+                "x": 3492,
+                "y": 202.85408730082213,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_21",
+                "x": 3492,
+                "y": 177.85408730082213,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_22",
+                "x": 3812,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_23",
+                "x": 3812,
+                "y": 210.40099342261198,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_24",
+                "x": 3812,
+                "y": 185.40099342261198,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_25",
+                "x": 4132,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_26",
+                "x": 4132,
+                "y": 223.3697017652983,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_27",
+                "x": 4132,
+                "y": 198.3697017652983,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_28",
+                "x": 4452,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_29",
+                "x": 4854,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Gang Member",
+                "x": 932,
+                "y": 225.41633608539496,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 10,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Police Officer",
+                "x": 2212,
+                "y": 180.05679990262743,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Security Guard",
+                "x": 3172,
+                "y": 215.5194209007657,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 12,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_4",
+                "name": "Crime Boss Bodyguard",
+                "x": 3812,
+                "y": 180.40099342261198,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 20,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_5",
+                "name": "Gang Member",
+                "x": 4132,
+                "y": 193.3697017652983,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 10,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "Street King Mk.2",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Surreal Void — Final Stronghold",
+            "objective": "Scale the heights and defeat the stage boss!",
+            "blocks": [
+              {
+                "id": "b_3_g_1",
+                "x": 210,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_2",
+                "x": 612,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_3",
+                "x": 932,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_4",
+                "x": 1252,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_5",
+                "x": 1252,
+                "y": 217.1552727421818,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_6",
+                "x": 1252,
+                "y": 192.1552727421818,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_7",
+                "x": 1572,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_8",
+                "x": 1572,
+                "y": 223.14648927248166,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_9",
+                "x": 1572,
+                "y": 198.14648927248166,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_10",
+                "x": 1892,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_11",
+                "x": 1892,
+                "y": 238.0321629982606,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_12",
+                "x": 1892,
+                "y": 213.0321629982606,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_13",
+                "x": 2212,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_14",
+                "x": 2212,
+                "y": 265.6721218412911,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_15",
+                "x": 2212,
+                "y": 240.67212184129107,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_16",
+                "x": 2532,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_17",
+                "x": 2532,
+                "y": 242.95163413111848,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_18",
+                "x": 2532,
+                "y": 217.95163413111848,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_19",
+                "x": 2852,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_20",
+                "x": 2852,
+                "y": 226.47016430462983,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_21",
+                "x": 2852,
+                "y": 201.47016430462983,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_22",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_23",
+                "x": 3172,
+                "y": 207.47069564402176,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_24",
+                "x": 3172,
+                "y": 182.47069564402176,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_25",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_26",
+                "x": 3812,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_27",
+                "x": 4132,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_g_28",
+                "x": 4452,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_f_29",
+                "x": 4452,
+                "y": 212.32706287550116,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_30",
+                "x": 4452,
+                "y": 187.32706287550116,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_31",
+                "x": 4854,
+                "y": 420,
+                "width": 420,
+                "height": 30,
+                "type": "ground"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_3_1",
+                "name": "Gang Member",
+                "x": 1892,
+                "y": 208.0321629982606,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 10,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_3",
+              "name": "Street King Mk.3",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
+        ],
+        "winCondition": "Complete all missions in Surreal Void and defeat Street King Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Dream Explorer",
+        "world": "City in Surreal Void",
+        "enemies": [
+          "Gang Member",
+          "Police Officer",
+          "Security Guard",
+          "Crime Boss Bodyguard"
+        ],
+        "boss": "Street King Mk.3",
+        "objective": "Scale the heights and defeat the stage boss!",
+        "powerups": [
+          "Dash",
+          "Double Jump",
+          "Throw"
+        ],
+        "mood": "Adventure",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#0a0b10",
+          "accent": "#8b5cf6",
+          "secondary": "#06b6d4",
           "hazard": "#f43f5e",
           "player": "#22c55e",
           "text": "#ffffff"
         },
         "physics": {
-          "gravity": 150,
+          "gravity": 300,
           "speed": 220,
-          "jump": -200,
+          "jump": -350,
           "bounce": 0.1
         },
         "stories": {
-          "intro": "An anomaly in the dreaming dimension has collapsed two realities. You stand as the fused Cyborg Explorer / Jungle Explorer Hybrid.",
-          "mission": "Survive the combined forces of Sentry Drone and Bouncing Slime and defeat the fused boss!",
-          "ending": "With a final surge of power, AI Overlord Prime crumbles to dust. The dreamscape begins to shatter into particles of pure light. You open your eyes, returning to the waking world, carrying the high score of a champion."
+          "intro": "You deploy as Dream Explorer. The battle begins in Surreal Void.",
+          "mission": "Mission: Scale the heights and defeat the stage boss! Defeat the fearsome Street King Mk.3!",
+          "ending": "Street King Mk.3 falls. Dream Explorer has conquered Surreal Void!"
+        },
+        "assets": {
+          "hero": "/uploads/1781159854057_hero.svg",
+          "enemy": "/uploads/1781159854057_enemy.svg",
+          "boss": "/uploads/1781159854057_boss.svg",
+          "background": "/uploads/1781159854057_background.svg",
+          "collectible": "/uploads/1781159854057_collectible.svg"
         }
-      },
-      "isFused": true,
-      "parentDreams": [
-        "1781066356568",
-        "1781067193342"
-      ]
+      }
     }
   ],
-  "scores": []
+  "scores": [
+    {
+      "id": "1781171122900",
+      "date": "2026-06-11T09:45:22.900Z",
+      "userId": "1781066281863",
+      "username": "sridhargolla",
+      "dreamTitle": "want tobuy  procshe",
+      "score": 90,
+      "completionTime": 81.65,
+      "difficulty": "Medium"
+    }
+  ]
 }

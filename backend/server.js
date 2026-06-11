@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
 const path = require('path');
 const { analyzeDream, fuseDreams } = require('./utils/analyzer');
 const { generateAndSaveAssets } = require('./utils/imageGenerator');
@@ -17,6 +18,21 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dream2play_secret_key_12345';
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// --- HEALTH / ROOT ROUTE ---
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Dream2Play AI backend is running',
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    frontend: 'http://localhost:5176/',
+    api: {
+      auth: ['/api/auth/register', '/api/auth/login', '/api/auth/me'],
+      dreams: ['/api/dreams', '/api/dreams/generate', '/api/dreams/fuse', '/api/dreams/:id'],
+      scores: ['/api/scores'],
+    },
+  });
+});
 
 // --- JWT AUTHENTICATION MIDDLEWARE ---
 const authenticateToken = (req, res, next) => {
@@ -212,10 +228,26 @@ app.post('/api/dreams/fuse', authenticateToken, async (req, res) => {
 // Delete a dream
 app.delete('/api/dreams/:id', authenticateToken, (req, res) => {
   try {
+    const dream = localDb.getDreamById(req.params.id);
+    if (dream && dream.userId !== req.user.id) {
+      return res.status(403).json({ message: 'Unauthorized to delete this dream' });
+    }
+
     const success = localDb.deleteDream(req.params.id, req.user.id);
     if (!success) {
       return res.status(404).json({ message: 'Dream not found or unauthorized' });
     }
+
+    // Remove generated asset files for this dream
+    const uploadsDir = path.join(__dirname, 'uploads');
+    const assetTypes = ['hero', 'enemy', 'boss', 'background', 'collectible'];
+    assetTypes.forEach((type) => {
+      const filePath = path.join(uploadsDir, `${req.params.id}_${type}.svg`);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    });
+
     res.json({ message: 'Dream deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete dream', error: err.message });
@@ -259,6 +291,15 @@ app.post('/api/scores', authenticateToken, (req, res) => {
 });
 
 // --- SERVER INITIALIZATION ---
+if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
+  console.error('FATAL: JWT_SECRET must be set in production.');
+  process.exit(1);
+}
+
+if (!process.env.JWT_SECRET) {
+  console.warn('WARNING: Using default JWT secret. Set JWT_SECRET in .env for production.');
+}
+
 app.listen(PORT, () => {
   console.log(`Dream2Play AI backend running on http://localhost:${PORT}`);
 });

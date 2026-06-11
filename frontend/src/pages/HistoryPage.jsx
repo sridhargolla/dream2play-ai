@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Play, Trash2, GitMerge, Sparkles, BookOpen, AlertCircle } from 'lucide-react';
 
-export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuseDreams }) {
+export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuseDreams, isFusing = false }) {
   const [selectedForFusion, setSelectedForFusion] = useState([]);
-  const [isFusing, setIsFusing] = useState(false);
   const [fusionError, setFusionError] = useState('');
 
   const handleCheckboxChange = (dreamId) => {
@@ -20,16 +19,13 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
   };
 
   const handleFuse = async () => {
-    if (selectedForFusion.length !== 2) return;
-    setIsFusing(true);
+    if (selectedForFusion.length !== 2 || isFusing) return;
     setFusionError('');
     try {
       await onFuseDreams(selectedForFusion[0], selectedForFusion[1]);
       setSelectedForFusion([]);
     } catch (err) {
       setFusionError(err.message || 'Dream fusion failed');
-    } finally {
-      setIsFusing(false);
     }
   };
 

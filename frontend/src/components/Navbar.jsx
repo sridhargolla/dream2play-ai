@@ -1,9 +1,22 @@
 import React from 'react';
-import { Gamepad2, Compass, LayoutDashboard, History, User2, LogOut, Moon, Sun } from 'lucide-react';
+import { Gamepad2, Compass, LayoutDashboard, History, User2, LogOut, Settings } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { languages } from '../i18n';
 
 export default function Navbar({ activePage, setActivePage, user, onLogout, theme, toggleMute, isMuted }) {
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (event) => i18n.changeLanguage(event.target.value);
+
+  const navItems = [
+    ['dashboard', t('navHome'), LayoutDashboard],
+    ['generator', t('navGenerator'), Compass],
+    ['history', t('navHistory'), History],
+    ['profile', t('navProfile'), User2],
+    ['settings', t('navSettings'), Settings],
+  ];
+
   return (
-    <nav className="glass-panel border-b border-white/10 sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+    <nav className="glass-panel border-b border-white/10 sticky top-0 z-50 px-4 md:px-6 py-4 flex flex-wrap items-center justify-between gap-4">
       {/* Brand Logo */}
       <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setActivePage('landing')}>
         <Gamepad2 className="w-8 h-8 text-[var(--accent-color)] animate-float" />
@@ -14,59 +27,42 @@ export default function Navbar({ activePage, setActivePage, user, onLogout, them
 
       {/* Navigation Links */}
       {user && (
-        <div className="hidden md:flex items-center gap-1 font-semibold text-sm">
-          <button
-            onClick={() => setActivePage('dashboard')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-              activePage === 'dashboard'
-                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            Dashboard
-          </button>
-
-          <button
-            onClick={() => setActivePage('generator')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-              activePage === 'generator'
-                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <Compass className="w-4 h-4" />
-            Dream Engine
-          </button>
-
-          <button
-            onClick={() => setActivePage('history')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-              activePage === 'history'
-                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <History className="w-4 h-4" />
-            Dream Logs
-          </button>
-
-          <button
-            onClick={() => setActivePage('profile')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-              activePage === 'profile'
-                ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <User2 className="w-4 h-4" />
-            Leaderboard
-          </button>
+        <div className="order-3 w-full md:order-none md:w-auto flex flex-wrap items-center gap-1 font-semibold text-sm">
+          {navItems.map(([page, label, Icon]) => (
+            <button
+              key={page}
+              onClick={() => setActivePage(page)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 ${
+                activePage === page
+                  ? 'bg-[var(--accent-color)]/25 text-white border border-[var(--accent-color)]/50'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {label}
+            </button>
+          ))}
         </div>
       )}
 
       {/* Control Buttons */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
+        <label className="sr-only" htmlFor="language-select">
+          {t('language')}
+        </label>
+        <select
+          id="language-select"
+          value={i18n.language}
+          onChange={changeLanguage}
+          className="max-w-[132px] rounded-lg border border-white/10 bg-black/40 px-2 py-2 text-xs font-bold text-white outline-none focus:border-[var(--accent-color)]"
+          title={t('language')}
+        >
+          {languages.map(([code, name]) => (
+            <option key={code} value={code} className="bg-slate-950 text-white">
+              {name}
+            </option>
+          ))}
+        </select>
         {user ? (
           <div className="flex items-center gap-3">
             {/* Audio Toggle */}
@@ -74,12 +70,14 @@ export default function Navbar({ activePage, setActivePage, user, onLogout, them
               onClick={toggleMute}
               className="px-3 py-1.5 rounded-md text-xs font-bold border border-white/10 hover:border-[var(--accent-color)] text-gray-400 hover:text-white transition-all bg-white/5"
             >
-              {isMuted ? 'UNMUTE SOUND' : 'MUTE SOUND'}
+              {isMuted ? t('soundOff') : t('soundOn')}
             </button>
 
             {/* Profile Dropdown / Logout */}
             <div className="hidden lg:flex flex-col items-end text-xs">
-              <span className="font-bold text-gray-300">Welcome, {user.username}</span>
+              <span className="font-bold text-gray-300">
+                {t('welcome')}, {user.username}
+              </span>
               <span className="text-[var(--accent-color)] font-semibold uppercase tracking-wider text-[9px]">
                 {theme || 'Default'} Mode
               </span>
@@ -88,7 +86,7 @@ export default function Navbar({ activePage, setActivePage, user, onLogout, them
             <button
               onClick={onLogout}
               className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/30"
-              title="Logout"
+              title={t('logout')}
             >
               <LogOut className="w-5 h-5" />
             </button>
@@ -98,7 +96,7 @@ export default function Navbar({ activePage, setActivePage, user, onLogout, them
             onClick={() => setActivePage('landing')}
             className="px-5 py-2 text-sm font-semibold rounded-lg bg-[var(--accent-color)] text-white hover:opacity-95 shadow-md hover:shadow-[var(--accent-color)]/30 border border-[var(--accent-color)]/20 transition-all"
           >
-            Sign In / Register
+            {t('login')} / {t('register')}
           </button>
         )}
       </div>

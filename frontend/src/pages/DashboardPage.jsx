@@ -1,7 +1,7 @@
 import React from 'react';
 import { Compass, Sparkles, Gamepad2, Award, History, Activity, Zap, Play } from 'lucide-react';
 
-export default function DashboardPage({ user, dreams, scores, setActivePage, setSelectedDream }) {
+export default function DashboardPage({ user, dreams, scores, setActivePage, setSelectedDream, onOpenPreview }) {
   // Compute user statistics
   const totalGames = dreams.length;
   const userScores = scores.filter((s) => s.userId === user.id);
@@ -120,10 +120,7 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
                   </div>
 
                   <button
-                    onClick={() => {
-                      setSelectedDream(dream);
-                      setActivePage('game');
-                    }}
+                    onClick={() => (onOpenPreview ? onOpenPreview(dream) : (setSelectedDream(dream), setActivePage('preview')))}
                     className="p-2.5 rounded-lg bg-[var(--accent-color)] hover:opacity-95 text-white transition-all shadow-md cursor-pointer"
                     title="Play Game"
                   >

@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
 import HistoryPage from './pages/HistoryPage';
 import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
 import GamePage from './pages/GamePage';
+import BlueprintPreviewPage from './pages/BlueprintPreviewPage';
 import DreamForm from './components/DreamForm';
 import AudioSynth from './game/AudioSynth';
 
 export default function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [activePage, setActivePage] = useState('landing');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user_details')) || null);
   const [token, setToken] = useState(localStorage.getItem('auth_token') || null);
@@ -18,12 +23,27 @@ export default function App() {
   const [selectedDream, setSelectedDream] = useState(null);
 
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isFusing, setIsFusing] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [toast, setToast] = useState(null);
 
   // Initialize sound settings
   useEffect(() => {
     AudioSynth.setMute(isMuted);
   }, [isMuted]);
+
+  useEffect(() => {
+    const pathPage = location.pathname.replace('/', '') || 'landing';
+    const allowed = ['landing', 'dashboard', 'generator', 'preview', 'history', 'profile', 'settings', 'game'];
+    if (allowed.includes(pathPage) && pathPage !== activePage) {
+      setActivePage(pathPage);
+    }
+  }, [location.pathname]);
+
+  const goToPage = (page) => {
+    setActivePage(page);
+    navigate(page === 'landing' ? '/' : `/${page}`);
+  };
 
   // Sync token & user data to localStorage
   const handleLoginSuccess = (newToken, newUser) => {
@@ -31,7 +51,7 @@ export default function App() {
     setUser(newUser);
     localStorage.setItem('auth_token', newToken);
     localStorage.setItem('user_details', JSON.stringify(newUser));
-    setActivePage('dashboard');
+    goToPage('dashboard');
   };
 
   const handleLogout = () => {
@@ -41,10 +61,18 @@ export default function App() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_details');
     AudioSynth.stopBGM();
-    setActivePage('landing');
+    goToPage('landing');
   };
 
-  // Fetch Dreams and Leaderboard Scores
+  const showToast = (message, type = 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4500);
+  };
+
+  const openDreamPreview = (dream) => {
+    setSelectedDream(dream);
+    goToPage('preview');
+  };
   const fetchDreams = async () => {
     if (!token) return;
     try {
@@ -76,9 +104,9 @@ export default function App() {
     if (token) {
       fetchDreams();
       fetchScores();
-      setActivePage('dashboard');
+      goToPage('dashboard');
     } else {
-      setActivePage('landing');
+      goToPage('landing');
     }
   }, [token]);
 
@@ -87,8 +115,8 @@ export default function App() {
     if (!token) return;
     setIsGenerating(true);
 
-    // Minimum compilation animation duration (8.5 seconds) to present the terminal sequence
-    const minAnimPromise = new Promise((resolve) => setTimeout(resolve, 8500));
+    // Minimum compilation animation duration
+    const minAnimPromise = new Promise((resolve) => setTimeout(resolve, 3500));
 
     try {
       const apiPromise = fetch('/api/dreams/generate', {
@@ -112,9 +140,9 @@ export default function App() {
       setDreams((prev) => [...prev, data]);
       setSelectedDream(data);
       setIsGenerating(false);
-      setActivePage('game');
+      goToPage('preview');
     } catch (err) {
-      alert(err.message);
+      showToast(err.message);
       setIsGenerating(false);
     }
   };
@@ -122,6 +150,7 @@ export default function App() {
   // Fuse two dreams
   const handleFuseDreams = async (dreamId1, dreamId2) => {
     if (!token) return;
+    setIsFusing(true);
     try {
       const openaiKey = localStorage.getItem('user_openai_key') || '';
       const res = await fetch('/api/dreams/fuse', {
@@ -141,9 +170,11 @@ export default function App() {
 
       setDreams((prev) => [...prev, data]);
       setSelectedDream(data);
-      setActivePage('game');
+      goToPage('preview');
     } catch (err) {
       throw err;
+    } finally {
+      setIsFusing(false);
     }
   };
 
@@ -161,7 +192,7 @@ export default function App() {
         setDreams((prev) => prev.filter((d) => d.id !== id));
       } else {
         const data = await res.json();
-        alert(data.message);
+        showToast(data.message);
       }
     } catch (err) {
       console.error('Failed to delete dream:', err);
@@ -181,10 +212,10 @@ export default function App() {
         body: JSON.stringify(scorePayload),
       });
       if (res.ok) {
-        fetchScores(); // Refresh leaderboard
+        fetchScores();
       } else {
         const data = await res.json();
-        alert(data.message);
+        showToast(data.message);
       }
     } catch (err) {
       console.error('Failed to save score:', err);
@@ -206,33 +237,42 @@ export default function App() {
             user={user}
             dreams={dreams}
             scores={scores}
-            setActivePage={setActivePage}
+            setActivePage={goToPage}
             setSelectedDream={setSelectedDream}
+            onOpenPreview={openDreamPreview}
           />
         );
       case 'generator':
         return <DreamForm onSubmit={handleGenerateGame} isGenerating={isGenerating} />;
+      case 'preview':
+        return (
+          <BlueprintPreviewPage
+            dream={selectedDream}
+            onPlay={() => goToPage('game')}
+            onBack={() => goToPage('dashboard')}
+          />
+        );
       case 'history':
         return (
           <HistoryPage
             dreams={dreams}
             onDeleteDream={handleDeleteDream}
-            onPlayDream={(dream) => {
-              setSelectedDream(dream);
-              setActivePage('game');
-            }}
+            onPlayDream={openDreamPreview}
             onFuseDreams={handleFuseDreams}
+            isFusing={isFusing}
           />
         );
       case 'profile':
         return <ProfilePage user={user} scores={scores} />;
+      case 'settings':
+        return <SettingsPage />;
       case 'game':
         return (
           <GamePage
             dream={selectedDream}
             onBack={() => {
               AudioSynth.stopBGM();
-              setActivePage('dashboard');
+              goToPage('preview');
             }}
             onSaveScore={handleSaveScore}
           />
@@ -251,7 +291,7 @@ export default function App() {
       {/* Navigation Header */}
       <Navbar
         activePage={activePage}
-        setActivePage={setActivePage}
+        setActivePage={goToPage}
         user={user}
         onLogout={handleLogout}
         theme={selectedDream?.blueprint?.mood}
@@ -261,6 +301,18 @@ export default function App() {
 
       {/* Main Page Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto py-8">{renderPage()}</main>
+
+      {toast && (
+        <div
+          className={`fixed bottom-6 right-6 z-[100] px-5 py-3 rounded-xl text-sm font-semibold shadow-xl border ${
+            toast.type === 'error'
+              ? 'bg-red-500/15 border-red-500/30 text-red-200'
+              : 'bg-green-500/15 border-green-500/30 text-green-200'
+          }`}
+        >
+          {toast.message}
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-6 border-t border-white/5 bg-black/40 text-center text-[10px] text-gray-500 font-mono tracking-wider">

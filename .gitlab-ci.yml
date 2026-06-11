@@ -1,0 +1,40 @@
+stages:
+  - lint
+  - typecheck
+  - audit
+  - test
+  - secret-scan
+
+default:
+  image: node:20
+  before_script:
+    - npm ci
+
+lint_job:
+  stage: lint
+  script:
+    - npm run lint
+
+typecheck_job:
+  stage: typecheck
+  script:
+    - npm run typecheck
+
+audit_job:
+  stage: audit
+  script:
+    - npm audit --audit-level=high
+
+test_job:
+  stage: test
+  script:
+    - npm run test
+
+gitleaks_job:
+  stage: secret-scan
+  image: 
+    name: zricethezav/gitleaks:latest
+    entrypoint: [""]
+  before_script: []
+  script:
+    - gitleaks detect --verbose --redact --no-git

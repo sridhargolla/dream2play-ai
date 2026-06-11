@@ -1,313 +1,97 @@
 # Dream2play AI 🎮✨
 
-## Transform Dreams into Playable Games Using AI
+Transform dream descriptions into playable browser games using AI and Phaser 3.
 
-Dream2play AI is an innovative AI-powered platform that converts a user's dream description into a playable 2D browser game. By combining Artificial Intelligence, procedural content generation, and game development, DreamForge AI creates unique gaming experiences directly from human imagination.
+## Quick Start
 
----
+### 1. Install dependencies (from project root)
 
-## 🚀 Problem Statement
-
-People often experience vivid dreams filled with unique stories, characters, worlds, and adventures. However, these dreams are usually forgotten and cannot be easily visualized or experienced again.
-
-Dream2play AI solves this problem by transforming dream descriptions into interactive games that users can play and share.
-
----
-
-## 💡 Solution
-
-Users simply describe their dream in natural language.
-
-Example:
-
-> "I was flying over a cyberpunk city while giant dragons chased me."
-
-Dream2play AI analyzes the dream and automatically generates:
-
-* Main Character
-* Game World
-* Enemies
-* Boss Character
-* Storyline
-* Objectives
-* Difficulty Level
-* Playable 2D Game
-
----
-
-## 🎯 Key Features
-
-### Dream Analysis
-
-* AI-powered dream interpretation
-* Character extraction
-* Environment detection
-* Enemy generation
-* Objective creation
-
-### Game Blueprint Generation
-
-Converts dream descriptions into structured game data.
-
-Example:
-
-```json
-{
-  "hero": "Sky Knight",
-  "world": "Floating Cyberpunk City",
-  "enemy": "Dragons",
-  "boss": "Dragon King",
-  "objective": "Protect the City",
-  "difficulty": "Medium"
-}
+```bash
+npm install
 ```
 
-### Dynamic Game Generation
+### 2. Configure environment
 
-* Procedural level generation
-* Dynamic enemy spawning
-* Boss battles
-* Score system
-* Health system
+Copy `.env.example` to `backend/.env` and set your keys:
 
-### AI Asset Generation
-
-* Character concepts
-* Enemy concepts
-* Background generation
-* Game posters
-
-### Voice-to-Dream Input
-
-* Speech recognition
-* Voice-to-text dream capture
-
-### Dream History
-
-* Save previous dreams
-* Replay generated games
-* Compare dream evolution
-
----
-
-## 🏗️ System Architecture
-
-```text
-User Dream Input
-        │
-        ▼
-React Frontend
-        │
-        ▼
-Node.js Backend
-        │
-        ▼
-OpenAI API
-        │
-        ▼
-Dream Analysis Engine
-        │
-        ▼
-Game Blueprint Generator
-        │
-        ▼
-Phaser Game Engine
-        │
-        ▼
-Playable Browser Game
+```env
+PORT=5000
+JWT_SECRET=your_secure_secret_here
+OPENAI_API_KEY=sk-...   # optional — local fallback works without it
 ```
 
----
+### 3. Run the app
 
-## 🛠️ Technology Stack
+**Terminal 1 — Backend:**
 
-### Frontend
+```bash
+cd backend
+npm run dev
+```
 
-* React.js
-* Vite
-* Tailwind CSS
-* Axios
+**Terminal 2 — Frontend:**
 
-### Backend
+```bash
+cd frontend
+npm run dev
+```
 
-* Node.js
-* Express.js
-* CORS
-* Dotenv
+Open **http://localhost:5173**
 
-### AI
-
-* OpenAI API
-
-### Game Engine
-
-* Phaser 3
-
-### Database (Future Scope)
-
-* MongoDB
-
----
-
-## 📂 Project Structure
+## Project Structure
 
 ```text
 dream2play-ai/
-│
-├── client/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── game/
-│   │   ├── services/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│
-├── server/
-│   ├── controllers/
-│   ├── routes/
-│   ├── services/
-│   ├── server.js
-│   └── .env
-│
-├── shared/
-│   └── schemas/
-│
+├── frontend/          React + Vite + Phaser 3 game client
+├── backend/           Express API + AI blueprint engine
+├── spec/              Vitest specification tests
+├── AGENTS.md          AI agent architecture notes
 └── README.md
 ```
 
----
+## Features
 
-## 🔄 Workflow
+- **Dream analysis** — AI extracts hero, world, enemies, boss, objectives
+- **Blueprint preview** — Review genre, stages, and assets before playing
+- **Multi-genre gameplay** — Platformer, racing, runner, shooter, survival, battle royale, puzzle
+- **Dream fusion** — Merge two dreams into a hybrid game
+- **Voice input** — Web Speech API dream capture (Chrome/Edge)
+- **Leaderboard** — Score tracking and badges
+- **Procedural audio** — In-browser synth BGM and SFX
 
-### Step 1
+## Supported Game Genres
 
-User enters dream description.
+| Genre | Description |
+|-------|-------------|
+| `platformer` | Jump, shoot, defeat boss |
+| `driving` / `racing` / `bike_racing` | Lane-based vehicle gameplay |
+| `endless_runner` | 3-lane runner with coins |
+| `shooter` / `survival` / `battle_royale` | Combat-focused modes |
+| `puzzle` | Collect all puzzle pieces across platforms |
 
-### Step 2
+## Workflow
 
-AI analyzes dream content.
+1. Register / sign in
+2. Describe your dream (text or voice)
+3. **Preview blueprint** — hero, stages, boss, genre
+4. **Launch game** — play in Phaser canvas
+5. Defeat bosses to clear stages; submit score on victory
 
-### Step 3
-
-System generates structured blueprint.
-
-### Step 4
-
-Game engine creates world, enemies, and objectives.
-
-### Step 5
-
-User plays generated game.
-
----
-
-## 🎮 Example Workflow
-
-### Dream Input
-
-```text
-I was a wizard fighting robots on Mars.
-```
-
-### AI Blueprint
-
-```json
-{
-  "hero": "Wizard",
-  "world": "Mars",
-  "enemy": "Robots",
-  "boss": "AI Emperor",
-  "objective": "Save the Colony"
-}
-```
-
-### Generated Gameplay
-
-* Wizard character
-* Mars-themed world
-* Robot enemies
-* Final boss battle
-* Victory screen
-
----
-
-## 📦 Installation
-
-### Clone Repository
+## Scripts
 
 ```bash
-git clone https://github.com/yourusername/dream2play-ai.git
-cd dream2play-ai
+npm run lint          # ESLint
+npm run test          # Vitest specs
+npm run dev:backend   # API only
+npm run dev:frontend  # UI only
 ```
 
-### Frontend Setup
+## Tech Stack
 
-```bash
-cd client
-npm install
-npm run dev
-```
+- **Frontend:** React 18, Vite, Tailwind CSS 4, Phaser 3
+- **Backend:** Node.js, Express, JWT auth, JSON file DB
+- **AI:** OpenAI GPT-3.5 (blueprint) + DALL-E 3 (assets, optional)
 
-### Backend Setup
+## License
 
-```bash
-cd server
-npm install
-npm run dev
-```
-
-### Environment Variables
-
-Create `.env`
-
-```env
-OPENAI_API_KEY=your_openai_api_key
-PORT=5000
-```
-
----
-
-## 🎯 Future Enhancements
-
-* Multiplayer Dream Worlds
-* AI NPC Dialogue
-* Dream Fusion Engine
-* Procedural Infinite Worlds
-* VR Dream Exploration
-* Mobile Application
-* Community Dream Marketplace
-* Dream-Based Character Progression
-
----
-
-## 🏆 Hackathon Value
-
-Dream2play AI combines:
-
-* Artificial Intelligence
-* Procedural Game Generation
-* Storytelling
-* Human Creativity
-* Interactive Entertainment
-
-The project demonstrates innovation by transforming abstract human dreams into playable digital experiences in real time.
-
----
-
-## 👨‍💻 Team
-
-Project Name: Dream2play AI
-
-Category:
-Artificial Intelligence + Gaming + Creative Technology
-
-Developed for Hackathon Participation.
-
----
-
-## 📜 License
-
-MIT License
-
-Copyright (c) 2026 Dream2play AI Team
+MIT License — Copyright (c) 2026 Dream2play AI Team

@@ -42,8 +42,8 @@ export default class PlayScene extends Phaser.Scene {
     // Game states
     this.score = 0;
     this.health = 100;
-    this.bossHealth = 200;
-    this.bossMaxHealth = 200;
+    this.bossHealth = 100;
+    this.bossMaxHealth = 100;
     this.bossSpawned = false;
     this.bossActive = false;
     this.bossLastHurt = 0; // invincibility frame timer
@@ -65,75 +65,6 @@ export default class PlayScene extends Phaser.Scene {
     // React callbacks
     this.onWin = source.onWin || (() => {});
     this.onLose = source.onLose || (() => {});
-    this.onBossDefeated = source.onBossDefeated || (() => {});
-    this.onStageComplete = source.onStageComplete || (() => {});
-    this.labels = {
-      victory: 'Victory',
-      levelCompleted: 'Level Completed',
-      bossDefeated: 'Boss Defeated',
-      finalScore: 'Final Score',
-      playAgain: 'Play Again',
-      bossAppeared: 'Boss Appeared',
-      boss: 'Boss',
-      enemies: 'Enemies',
-      health: 'Health',
-      score: 'Score',
-      goal: 'Goal',
-      loading: 'Loading',
-      ...source.labels,
-    };
-
-    this.ensureStagesFromBlueprint();
-    this.puzzlePiecesTotal = 0;
-    this.puzzlePiecesCollected = 0;
-    this.bossDamageLockUntil = 0;
-  }
-
-  ensureStagesFromBlueprint() {
-    if (Array.isArray(this.blueprint.stages) && this.blueprint.stages.length > 0) {
-      this.stages = this.blueprint.stages;
-      return;
-    }
-
-    this.stages = [
-      {
-        stageNumber: 1,
-        environment: this.blueprint.world || 'Dream Realm',
-        objective: this.blueprint.objective || 'Complete the dream mission.',
-        blocks: [
-          { id: 'b_fallback_1', x: 400, y: 420, width: 256, height: 30, type: 'ground' },
-          { id: 'b_fallback_2', x: 900, y: 380, width: 180, height: 30, type: 'solid' },
-          { id: 'b_fallback_3', x: 1400, y: 340, width: 180, height: 30, type: 'solid' },
-          { id: 'c_fallback_1', x: 700, y: 350, width: 24, height: 24, type: 'collectible' },
-          { id: 'c_fallback_2', x: 1200, y: 310, width: 24, height: 24, type: 'collectible' },
-        ],
-        enemies: (this.blueprint.enemies || ['Shadow']).slice(0, 3).map((name, idx) => ({
-          id: `e_fallback_${idx + 1}`,
-          name: typeof name === 'string' ? name : 'Shadow',
-          x: 800 + idx * 450,
-          y: 390,
-          hp: 100,
-          maxHp: 100,
-          damage: 10,
-          type: 'patrol',
-          alive: true,
-          defeated: false,
-        })),
-        boss: {
-          id: 'boss_fallback',
-          name: this.blueprint.boss || 'Nightmare Core',
-          x: 2600,
-          y: 200,
-          hp: 200,
-          maxHp: 200,
-          phases: ['Phase 1', 'Phase 2', 'Phase 3'],
-          alive: true,
-          defeated: false,
-        },
-        completionCondition: 'Defeat the boss.',
-      },
-    ];
-    this.blueprint.stages = this.stages;
   }
 
   getCurrentStage() {
@@ -245,6 +176,7 @@ export default class PlayScene extends Phaser.Scene {
     this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    this.keyBackspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE);
     this.lastFired = 0;
     this.lastDash = 0;
     this.lastShield = 0;
@@ -265,11 +197,6 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     this.createUI(width);
-
-    if (this.genre === 'puzzle') {
-      this.objectiveText.setText(`PUZZLE: Collect all ${this.puzzlePiecesTotal || '?'} pieces`);
-      this.showFloatingBanner('PUZZLE MODE — Collect every glowing piece!', '#a78bfa', 1800);
-    }
   }
 
   update(time) {
@@ -387,9 +314,14 @@ export default class PlayScene extends Phaser.Scene {
       this.doTripleShot(time);
     }
 
+    // Debug/Cheat: Press Backspace to instantly defeat the boss
+    if (Phaser.Input.Keyboard.JustDown(this.keyBackspace) && this.boss && this.boss.active) {
+      this.defeatBoss(this.boss);
+    }
+
     // Spawn Boss based on blueprint coordinates trigger
     const stage = this.getCurrentStage();
-    if (stage.boss && !stage.boss.defeated && !this.bossSpawned && this.genre !== 'puzzle') {
+    if (stage.boss && !stage.boss.defeated && !this.bossSpawned) {
       const triggerX = (stage.boss.x || 2500) - 500;
       if (this.player.x >= triggerX) {
         this.spawnBoss();
@@ -398,20 +330,10 @@ export default class PlayScene extends Phaser.Scene {
 
     // Boss loop
     if (this.bossActive && this.boss) {
-      const phase = this.bossHealth <= 69 ? 3 : this.bossHealth <= 139 ? 2 : 1;
-      const waveSpeed = phase === 3 ? 220 : phase === 2 ? 300 : 400;
-      const waveHeight = phase === 3 ? 140 : phase === 2 ? 120 : 90;
-      const chaseDistance = phase === 3 ? 320 : phase === 2 ? 390 : 450;
-      const fireChance = phase === 3 ? 0.045 : phase === 2 ? 0.032 : 0.018;
+      this.boss.y = 200 + Math.sin(time / 400) * 100;
+      this.boss.x = this.player.x + 450;
 
-      this.boss.y = 200 + Math.sin(time / waveSpeed) * waveHeight;
-      const cam = this.cameras.main;
-      const minBossX = cam.scrollX + 120;
-      const maxBossX = cam.scrollX + cam.width - 120;
-      const desiredBossX = this.player.x + chaseDistance;
-      this.boss.x = Phaser.Math.Clamp(desiredBossX, minBossX, maxBossX);
-
-      if (Math.random() < fireChance) {
+      if (Math.random() < 0.02) {
         this.fireBossLaser();
       }
     }
@@ -856,7 +778,6 @@ export default class PlayScene extends Phaser.Scene {
   generateLevel(width, height) {
     const stage = this.getCurrentStage();
     const isRoad = this.genre.includes('driving') || this.genre.includes('racing');
-    this.puzzlePiecesTotal = 0;
 
     if (Array.isArray(stage.blocks)) {
       stage.blocks.forEach((block) => {
@@ -873,10 +794,9 @@ export default class PlayScene extends Phaser.Scene {
             spike.setDisplaySize(block.width, block.height);
           }
           spike.refreshBody();
-        } else if (block.type === 'collectible' || block.type === 'puzzle_piece') {
+        } else if (block.type === 'collectible') {
           const shard = this.collectibles.create(block.x, block.y, 'collect_tex');
           shard.setDisplaySize(block.width || 24, block.height || 24);
-          shard.setData('collectType', block.type === 'puzzle_piece' ? 'puzzle_piece' : 'standard');
 
           if (this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner')) {
             shard.body.setAllowGravity(false);
@@ -884,10 +804,6 @@ export default class PlayScene extends Phaser.Scene {
             shard.setGravityY(100);
             shard.setBounceY(0.3);
             this.physics.add.collider(shard, this.platforms);
-          }
-
-          if (block.type === 'puzzle_piece') {
-            this.puzzlePiecesTotal += 1;
           }
         }
       });
@@ -990,16 +906,16 @@ export default class PlayScene extends Phaser.Scene {
     this.stageText = this.add.text(
       0,
       25,
-      `${this.labels.levelCompleted} ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`,
+      `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`,
       labelStyle
     );
     this.uiContainer.add(this.stageText);
 
-    this.objectiveText = this.add.text(0, 42, `${this.labels.goal}: ${this.getCurrentObjective()}`, labelStyle);
+    this.objectiveText = this.add.text(0, 42, `MISSION: ${this.getCurrentObjective()}`, labelStyle);
     this.uiContainer.add(this.objectiveText);
 
     // Dynamic stage checklist panel
-    this.objectiveTitleText = this.add.text(0, 65, `${this.labels.levelCompleted}:`, {
+    this.objectiveTitleText = this.add.text(0, 65, `STAGE OBJECTIVES:`, {
       font: 'bold 11px Outfit, sans-serif',
       fill: '#fbbf24',
     });
@@ -1023,7 +939,7 @@ export default class PlayScene extends Phaser.Scene {
     this.uiContainer.add(this.healthBar);
     this.updateHealthBar();
 
-    this.healthText = this.add.text(width - 220, 20, `${this.labels.health}: 100%`, {
+    this.healthText = this.add.text(width - 220, 20, `HEALTH: 100%`, {
       font: 'bold 12px Outfit, sans-serif',
       fill: '#ffffff',
     });
@@ -1031,7 +947,7 @@ export default class PlayScene extends Phaser.Scene {
 
     this.bossUI = this.add.container(0, 0).setScrollFactor(0).setDepth(20).setVisible(false);
 
-    this.bossLabel = this.add.text(width / 2 - 100, 10, `${this.labels.boss || 'Boss'}: ${this.getCurrentBossName().toUpperCase()}`, {
+    this.bossLabel = this.add.text(width / 2 - 100, 10, `BOSS: ${this.getCurrentBossName().toUpperCase()}`, {
       font: 'bold 14px Outfit, sans-serif',
       fill: '#ff3333',
     });
@@ -1044,12 +960,6 @@ export default class PlayScene extends Phaser.Scene {
 
     this.bossHealthBar = this.add.graphics();
     this.bossUI.add(this.bossHealthBar);
-
-    this.bossHpText = this.add.text(width / 2, 46, '', {
-      font: 'bold 11px Outfit, sans-serif',
-      fill: '#fca5a5',
-    });
-    this.bossUI.add(this.bossHpText);
 
     this.updateObjectivesHUD();
 
@@ -1127,11 +1037,7 @@ export default class PlayScene extends Phaser.Scene {
   updateBossHealthBar() {
     this.bossHealthBar.clear();
     this.bossHealthBar.fillStyle(0xdc2626, 1);
-    const pct = this.bossMaxHealth > 0 ? this.bossHealth / this.bossMaxHealth : 0;
-    this.bossHealthBar.fillRect(this.scale.width / 2 - 150, 30, Math.max(4, pct * 300), 12);
-    if (this.bossHpText) {
-      this.bossHpText.setText(`${Math.ceil(this.bossHealth)} / ${this.bossMaxHealth} HP`);
-    }
+    this.bossHealthBar.fillRect(this.scale.width / 2 - 150, 30, (this.bossHealth / this.bossMaxHealth) * 300, 12);
   }
 
   updateObjectivesHUD() {
@@ -1162,22 +1068,9 @@ export default class PlayScene extends Phaser.Scene {
       this.enemiesStatusText.setVisible(false);
     }
 
-    if (this.genre === 'puzzle' && this.puzzlePiecesTotal > 0) {
-      const puzzleOk = this.puzzlePiecesCollected >= this.puzzlePiecesTotal;
-      this.bossStatusText.setText(
-        `• Puzzle Pieces: ${this.puzzlePiecesCollected} / ${this.puzzlePiecesTotal} ${puzzleOk ? '✔' : '⏳'}`
-      );
-      this.bossStatusText.setFill(puzzleOk ? '#86efac' : '#94a3b8');
-      this.bossStatusText.setVisible(true);
-    } else if (stage.boss) {
+    if (stage.boss) {
       const bossDefeated = stage.boss.defeated;
-      const hpLabel =
-        this.bossActive && this.bossMaxHealth > 0
-          ? ` (${Math.ceil(this.bossHealth)}/${this.bossMaxHealth} HP)`
-          : '';
-      this.bossStatusText.setText(
-        `• Boss [${stage.boss.name}]: ${bossDefeated ? 'Defeated ✔' : `Hostile ⏳${hpLabel}`}`
-      );
+      this.bossStatusText.setText(`• Boss [${stage.boss.name}]: ${bossDefeated ? 'Defeated ✔' : 'Hostile ⏳'}`);
       this.bossStatusText.setFill(bossDefeated ? '#86efac' : '#fca5a5');
       this.bossStatusText.setVisible(true);
     } else {
@@ -1187,14 +1080,8 @@ export default class PlayScene extends Phaser.Scene {
 
   // --- INTERACTIONS & STATE UPDATE ---
   collectItem(player, item) {
-    const collectType = item.getData('collectType') || 'standard';
     item.destroy();
-    this.score += collectType === 'puzzle_piece' ? 25 : 10;
-
-    if (collectType === 'puzzle_piece') {
-      this.puzzlePiecesCollected += 1;
-      this.showFloatingBanner('PUZZLE PIECE FOUND!', '#a78bfa', 900);
-    }
+    this.score += 10;
 
     this.scoreText.setText(`${this._scoreLabel}: ${this.score}`);
 
@@ -1434,7 +1321,7 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     this.health = Math.max(0, this.health - amount);
-    this.healthText.setText(`${this.labels.health}: ${Math.floor(this.health)}%`);
+    this.healthText.setText(`HEALTH: ${Math.floor(this.health)}%`);
     this.updateHealthBar();
 
     AudioSynth.playSFX('hurt');
@@ -1459,40 +1346,33 @@ export default class PlayScene extends Phaser.Scene {
     this.bossSpawned = true;
     this.bossActive = true;
     this.bossLastHurt = 0;
-    this.bossDamageLockUntil = 0;
-    this._bossDefeating = false;
 
-    this.bossMaxHealth = 200;
+    // Enforce minimum HP so boss always requires multiple hits (never 1-shot)
+    const rawHp = Number(stageBoss.hp);
+    const minHp = 300; // always at least 300 HP → ~6 hits
+    this.bossMaxHealth = Math.max(rawHp > 0 ? rawHp : 500, minHp);
+    // Sync the stateObject hp to match the enforced value so bossState.hp stays consistent
     stageBoss.hp = this.bossMaxHealth;
     stageBoss.maxHp = this.bossMaxHealth;
-    stageBoss.phases = ['Phase 1: HP 200-140', 'Phase 2: HP 139-70', 'Phase 3: HP 69-0'];
     this.bossHealth = this.bossMaxHealth;
 
-    const cam = this.cameras.main;
-    const fallbackBossX = this.player.x + 220;
-    const bx = Number.isFinite(stageBoss.x) ? stageBoss.x : fallbackBossX;
+    const bx = Number.isFinite(stageBoss.x) ? stageBoss.x : this.player.x + 450;
     const by = Number.isFinite(stageBoss.y) ? stageBoss.y : 200;
-    const clampedBossX = Phaser.Math.Clamp(bx, cam.scrollX + 120, cam.scrollX + cam.width - 120);
 
-    this.boss = this.physics.add.sprite(clampedBossX, by, 'boss_tex');
+    this.boss = this.physics.add.sprite(bx, by, 'boss_tex');
     this.boss.setDisplaySize(80, 80);
     this.boss.body.setAllowGravity(false);
     this.boss.setImmovable(true);
-    
-    // Explicitly initialize health on the boss sprite
-    this.boss.maxHealth = 200;
-    this.boss.health = 200;
 
     this.boss.setData('stateObject', stageBoss);
 
-    this.bossLabel.setText(`${this.labels.boss || 'Boss'}: ${stageBoss.name.toUpperCase()}`);
+    this.bossLabel.setText(`BOSS: ${stageBoss.name.toUpperCase()}`);
     this.bossUI.setVisible(true);
     this.updateBossHealthBar();
 
     this.physics.add.overlap(this.projectiles, this.boss, this.hitBoss, null, this);
 
-    this.objectiveText.setText(`${this.labels.goal}: ${this.labels.bossDefeated} - ${stageBoss.name.toUpperCase()}`);
-    this.showFloatingBanner(`${this.labels.bossAppeared}: ${stageBoss.name.toUpperCase()}`, '#f87171', 1400);
+    this.objectiveText.setText(`DEFEAT THE BOSS: ${stageBoss.name.toUpperCase()}`);
     this.cameras.main.shake(300, 0.01);
   }
 
@@ -1505,10 +1385,7 @@ export default class PlayScene extends Phaser.Scene {
     laser.body.setAllowGravity(false);
 
     const angle = Phaser.Math.Angle.Between(this.boss.x, this.boss.y, this.player.x, this.player.y);
-    
-    // Combat Phases and Aggressiveness Scaling
-    const phase = this.bossHealth <= 69 ? 3 : this.bossHealth <= 139 ? 2 : 1;
-    const speed = phase === 3 ? 320 : phase === 2 ? 240 : 180;
+    const speed = 180;
 
     laser.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
 
@@ -1517,237 +1394,105 @@ export default class PlayScene extends Phaser.Scene {
     });
   }
 
-  hitBoss(param1, param2) {
-    if (!param1 || !param2) return;
+  hitBoss(projectile, bossSprite) {
+    if (!bossSprite || !bossSprite.active) return;
+    if (!projectile || !projectile.active) return;
 
-    let boss = null;
-    let bullet = null;
-
-    // Safely extract boss and bullet objects to prevent any argument order swapping issues
-    if (param1.texture && param1.texture.key === 'boss_tex') {
-      boss = param1;
-      bullet = param2;
-    } else if (param2.texture && param2.texture.key === 'boss_tex') {
-      boss = param2;
-      bullet = param1;
-    } else {
-      // Fallback identification based on spent status
-      if (param1.getData && param1.getData('spent') !== undefined) {
-        bullet = param1;
-        boss = param2;
-      } else {
-        bullet = param2;
-        boss = param1;
-      }
-    }
-
-    if (!boss || !bullet || !boss.active || !bullet.active) return;
-    if (this._bossDefeating || !this.bossActive) return;
-    if (bullet.getData('spent')) return;
-
+    // Invincibility frames: ignore rapid overlaps within 150ms
     const now = this.time.now;
-    if (this.bossDamageLockUntil && now < this.bossDamageLockUntil) {
+    if (this.bossLastHurt && now - this.bossLastHurt < 150) {
+      if (projectile.body) projectile.body.enable = false;
+      if (typeof projectile.destroy === 'function') projectile.destroy();
       return;
     }
-
-    // Set bullet spent and destroy it immediately to prevent multiple damage events
-    bullet.setData('spent', true);
-    if (bullet.body) bullet.body.enable = false;
-    bullet.destroy();
-
-    // Verify boss health variables are properly initialized and never become undefined, NaN, or null
-    if (boss.health === undefined || Number.isNaN(boss.health) || boss.health === null) {
-      boss.health = 200;
-    }
-    if (boss.maxHealth === undefined || Number.isNaN(boss.maxHealth) || boss.maxHealth === null) {
-      boss.maxHealth = 200;
-    }
-
-    // Every bullet hit reduces HP by exactly 10
-    boss.health -= 10;
-    this.bossHealth = boss.health;
-
-    const bossState = boss.getData('stateObject');
-    if (bossState) {
-      bossState.hp = boss.health;
-    }
-
     this.bossLastHurt = now;
-    this.bossDamageLockUntil = now + 280;
-    this.updateBossHealthBar();
-    this.updateObjectivesHUD();
 
-    // Debugging logs on every hit
-    console.log("Boss HP:", boss.health, "/", boss.maxHealth);
+    if (projectile.body) projectile.body.enable = false;
+    if (typeof projectile.destroy === 'function') projectile.destroy();
+
+    const bossState = bossSprite.getData('stateObject');
+    if (!bossState) return;
+
+    const damage = Math.max(25, this.bossMaxHealth / 6);
+    bossState.hp = Math.max(0, bossState.hp - damage);
+    this.bossHealth = bossState.hp;
+    this.updateBossHealthBar();
 
     AudioSynth.playSFX('hurt');
-    this.createSpark(boss.x, boss.y, '#ffffff');
+    this.createSpark(bossSprite.x, bossSprite.y, '#ffffff');
 
-    boss.setTint(0xff0000);
-    this.time.delayedCall(120, () => {
-      if (boss.active) boss.clearTint();
+    bossSprite.setTint(0xff0000);
+    this.time.delayedCall(100, () => {
+      if (bossSprite && bossSprite.active) bossSprite.clearTint();
     });
 
-    // Boss should only be defeated when health is <= 0
-    if (boss.health <= 0) {
-      this.defeatBoss(boss);
+    if (bossState.hp <= 0) {
+      this.defeatBoss(bossSprite);
     }
-  }
-
-  showFloatingBanner(message, color = '#fde68a', duration = 1600) {
-    const width = this.scale.width;
-    const height = this.scale.height;
-    const banner = this.add
-      .text(width / 2, height * 0.28, message, {
-        font: 'bold 22px Outfit, sans-serif',
-        fill: color,
-        stroke: '#000000',
-        strokeThickness: 4,
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(220)
-      .setAlpha(0);
-
-    this.tweens.add({
-      targets: banner,
-      alpha: 1,
-      y: height * 0.24,
-      duration: 250,
-      ease: 'Back.easeOut',
-      onComplete: () => {
-        this.time.delayedCall(duration, () => {
-          this.tweens.add({
-            targets: banner,
-            alpha: 0,
-            duration: 350,
-            onComplete: () => {
-              if (banner.active) banner.destroy();
-            },
-          });
-        });
-      },
-    });
   }
 
   defeatBoss(bossSprite) {
-    if (this._bossDefeating) return;
+    if (this._bossDefeating) return; // prevent double-trigger
     this._bossDefeating = true;
 
-    // Step 1: Stop boss movement
-    this.bossActive = false;
-    if (bossSprite && bossSprite.body) {
-      bossSprite.body.setVelocity(0, 0);
-      bossSprite.setImmovable(true);
-    }
+    // Capture position BEFORE destroying sprite
+    const bx = bossSprite && bossSprite.active ? bossSprite.x : this.scale.width / 2;
+    const by = bossSprite && bossSprite.active ? bossSprite.y : this.scale.height / 2;
 
-    // Step 2: Disable attacks
-    // (Attacks are disabled because this.bossActive is set to false)
-
-    const bx = bossSprite?.active ? bossSprite.x : this.scale.width / 2;
-    const by = bossSprite?.active ? bossSprite.y : this.scale.height / 2;
-    const bossState = bossSprite?.getData('stateObject') || null;
-    const bossName = bossState?.name || this.getCurrentBossName();
-
+    // Mark boss state as defeated
+    const bossState = bossSprite ? bossSprite.getData('stateObject') : null;
     if (bossState) {
       bossState.hp = 0;
       bossState.alive = false;
       bossState.defeated = true;
     }
-    this.bossHealth = 0;
-    if (bossSprite) {
-      bossSprite.health = 0;
-    }
-    this.updateBossHealthBar();
-    this.updateObjectivesHUD();
 
-    if (this.onBossDefeated) {
-      this.onBossDefeated({
-        bossName,
-        stageIndex: this.currentStageIndex,
-        stageNumber: this.currentStageIndex + 1,
-        totalStages: this.stages.length,
+    // Cleanup boss sprite
+    this.bossActive = false;
+    this.bossSpawned = false;
+    if (bossSprite && bossSprite.active) bossSprite.destroy();
+    this.boss = null;
+    if (this.bossUI) this.bossUI.setVisible(false);
+
+    // Explosion sparks at captured position
+    for (let i = 0; i < 3; i++) {
+      this.time.delayedCall(i * 120, () => {
+        this.createSpark(bx + (Math.random() - 0.5) * 60, by + (Math.random() - 0.5) * 60, '#ffff00');
+        this.createSpark(bx + (Math.random() - 0.5) * 60, by + (Math.random() - 0.5) * 60, '#ff8800');
       });
     }
+    this.cameras.main.shake(400, 0.015);
 
-    // Step 3: Play explosion animation
-    const explosionDuration = 1200; // ms
-    this.cameras.main.shake(explosionDuration, 0.02);
-
-    // Expanding visual circle
-    const explCircle = this.add.circle(bx, by, 10, 0xffaa00, 0.9);
-    explCircle.setDepth(100);
-    this.tweens.add({
-      targets: explCircle,
-      radius: 120,
-      alpha: 0,
-      duration: explosionDuration,
-      ease: 'Cubic.easeOut',
-      onComplete: () => {
-        explCircle.destroy();
-      }
-    });
-
-    // Spawn multiple explosion spark particles over the duration
-    const sparkCount = 20;
-    for (let i = 0; i < sparkCount; i++) {
-      this.time.delayedCall(i * 50, () => {
-        if (!this.sys.isActive()) return;
-        const color = i % 3 === 0 ? '#ff0000' : (i % 3 === 1 ? '#ffaa00' : '#ffffff');
-        this.createSpark(bx + (Math.random() - 0.5) * 60, by + (Math.random() - 0.5) * 60, color);
-        AudioSynth.playSFX('explosion');
-      });
-    }
-
-    // Step 4: Wait until explosion animation finishes
-    this.time.delayedCall(explosionDuration, () => {
-      // Step 5: Destroy boss
-      if (bossSprite && bossSprite.active) {
-        bossSprite.destroy();
-      }
-      this.bossSpawned = false;
-      this.boss = null;
-      if (this.bossUI) this.bossUI.setVisible(false);
-
-      const stage = this.getCurrentStage();
-      if (stage && stage.boss) {
-        stage.boss.defeated = true;
-      }
-
-      // Step 6, 7 & 8: Show Victory Screen, Show "Level Completed", and Pause game
-      this.winGame();
-    });
-  }
-
-  showBossDefeatedBanner(bossName) {
+    // --- BOSS DEFEATED BANNER ---
     const width = this.scale.width;
     const height = this.scale.height;
 
     const bannerBg = this.add
-      .rectangle(width / 2, height / 2, 460, 96, 0x1e1b4b, 0.95)
+      .rectangle(width / 2, height / 2, 420, 80, 0x1e1b4b, 0.93)
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(210)
+      .setDepth(90)
       .setStrokeStyle(3, 0xff4444);
 
     const bannerText = this.add
-      .text(width / 2, height / 2 - 16, this.labels.bossDefeated, {
-        font: 'bold 34px Outfit, sans-serif',
+      .text(width / 2, height / 2 - 12, 'BOSS DEFEATED!', {
+        font: 'bold 32px Outfit, sans-serif',
         fill: '#ff6666',
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(211);
+      .setDepth(91);
 
     const subText = this.add
-      .text(width / 2, height / 2 + 20, `${bossName} eliminated — Stage ${this.currentStageIndex + 1} clearing...`, {
-        font: '15px Outfit, sans-serif',
+      .text(width / 2, height / 2 + 22, 'Stage Clear — Advancing...', {
+        font: '16px Outfit, sans-serif',
         fill: '#fde68a',
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(211);
+      .setDepth(91);
 
+    // Pop-in animation
     bannerBg.setScale(0.1);
     bannerText.setScale(0.1);
     subText.setAlpha(0);
@@ -1762,11 +1507,12 @@ export default class PlayScene extends Phaser.Scene {
     this.tweens.add({
       targets: subText,
       alpha: 1,
-      delay: 250,
+      delay: 300,
       duration: 300,
     });
 
-    this.time.delayedCall(2400, () => {
+    // Fade out after 2 seconds, then trigger stage completion
+    this.time.delayedCall(2200, () => {
       this.tweens.add({
         targets: [bannerBg, bannerText, subText],
         alpha: 0,
@@ -1785,25 +1531,20 @@ export default class PlayScene extends Phaser.Scene {
 
   // --- STAGE GATE COMPLETE ---
   checkStageCompletion() {
-    if (this.gameOverTriggered || this.stageCompleteTriggered || this._bossDefeating) return;
+    if (this.gameOverTriggered || this.stageCompleteTriggered) return;
 
     const stage = this.getCurrentStage();
-    if (!stage) return;
-
     const hasBoss = !!stage.boss;
     const bossDefeated = !hasBoss || stage.boss.defeated;
     const objectiveFinished = this.score >= this.getStageRequiredScore();
     const enemiesDefeated = Array.isArray(stage.enemies) ? stage.enemies.every((e) => e.defeated) : true;
-    const puzzleFinished =
-      this.genre !== 'puzzle' || this.puzzlePiecesTotal === 0 || this.puzzlePiecesCollected >= this.puzzlePiecesTotal;
 
     let stageCompleted = false;
-    if (this.genre === 'puzzle') {
-      stageCompleted = puzzleFinished;
-    } else if (hasBoss) {
-      stageCompleted = bossDefeated && puzzleFinished;
+    if (hasBoss) {
+      // If there is a boss, defeating the boss is sufficient to complete the stage
+      stageCompleted = bossDefeated;
     } else {
-      stageCompleted = objectiveFinished && enemiesDefeated && puzzleFinished;
+      stageCompleted = objectiveFinished && enemiesDefeated;
     }
 
     if (stageCompleted) {
@@ -1817,78 +1558,57 @@ export default class PlayScene extends Phaser.Scene {
 
     AudioSynth.playSFX('win');
 
-    const stageNumber = this.currentStageIndex + 1;
-    const isFinalStage = this.currentStageIndex >= this.stages.length - 1;
-
-    if (this.onStageComplete) {
-      this.onStageComplete({
-        stageIndex: this.currentStageIndex,
-        stageNumber,
-        totalStages: this.stages.length,
-        environment: this.getCurrentStage()?.environment,
-        isFinalStage,
-      });
-    }
-
     const width = this.scale.width;
     const height = this.scale.height;
 
+    // Create a gorgeous visual overlay panel
     this.completeOverlay = this.add
-      .rectangle(width / 2, height / 2, width, height, 0x000000, 0.78)
+      .rectangle(width / 2, height / 2, width, height, 0x000000, 0.75)
       .setScrollFactor(0)
-      .setDepth(230);
+      .setDepth(100);
 
+    // Panel background
     this.completePanel = this.add
-      .rectangle(width / 2, height / 2, 440, 200, 0x0f172a, 0.96)
+      .rectangle(width / 2, height / 2, 400, 180, 0x0f172a, 0.9)
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(231)
+      .setDepth(101)
       .setStrokeStyle(3, 0xfde68a);
 
     this.completeText = this.add
-      .text(width / 2, height / 2 - 42, `${this.labels.levelCompleted} ${stageNumber}`, {
-        font: 'bold 38px Outfit, sans-serif',
+      .text(width / 2, height / 2 - 30, 'STAGE COMPLETE!', {
+        font: 'bold 36px Outfit, sans-serif',
         fill: '#fde68a',
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(232);
+      .setDepth(102);
 
-    const subTextMsg = isFinalStage
-      ? 'All dream stages cleared — preparing victory...'
-      : `Stage ${stageNumber} cleared! Loading Stage ${stageNumber + 1}...`;
+    const nextStageNum = this.currentStageIndex + 2;
+    const subTextMsg =
+      this.currentStageIndex >= this.stages.length - 1
+        ? 'Entering final dream victory...'
+        : `Preparing Stage ${nextStageNum}...`;
 
     this.completeSubText = this.add
-      .text(width / 2, height / 2 + 8, subTextMsg, {
+      .text(width / 2, height / 2 + 25, subTextMsg, {
         font: 'bold 16px Outfit, sans-serif',
         fill: '#cbd5e1',
-        align: 'center',
-        wordWrap: { width: 380 },
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(232);
-
-    this.completeDetailText = this.add
-      .text(width / 2, height / 2 + 52, this.getCurrentStage()?.environment || '', {
-        font: '13px Outfit, sans-serif',
-        fill: '#94a3b8',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(232);
+      .setDepth(102);
 
     // Entrance animation
     this.completePanel.setScale(0, 0);
     this.completeText.setScale(0, 0);
     this.completeSubText.setScale(0, 0);
-    this.completeDetailText.setScale(0, 0);
 
     this.tweens.add({
-      targets: [this.completePanel, this.completeText, this.completeSubText, this.completeDetailText],
+      targets: [this.completePanel, this.completeText, this.completeSubText],
       scaleX: 1,
       scaleY: 1,
-      duration: 450,
+      duration: 400,
       ease: 'Back.easeOut',
     });
 
@@ -1902,12 +1622,9 @@ export default class PlayScene extends Phaser.Scene {
     if (this.completePanel) this.completePanel.destroy();
     if (this.completeText) this.completeText.destroy();
     if (this.completeSubText) this.completeSubText.destroy();
-    if (this.completeDetailText) this.completeDetailText.destroy();
     this.stageCompleteTriggered = false;
     this._fallingKillScheduled = false;
     this._bossDefeating = false;
-    this.puzzlePiecesCollected = 0;
-    this.puzzlePiecesTotal = 0;
 
     if (this.currentStageIndex >= this.stages.length - 1) {
       this.winGame();
@@ -1919,7 +1636,7 @@ export default class PlayScene extends Phaser.Scene {
     this.health = Math.min(100, this.health + 25);
 
     this.scoreText.setText(`${this._scoreLabel}: 0`);
-    this.healthText.setText(`${this.labels.health}: ${this.health}%`);
+    this.healthText.setText(`HEALTH: ${this.health}%`);
     this.updateHealthBar();
 
     if (this.bossUI) this.bossUI.setVisible(false);
@@ -1950,9 +1667,9 @@ export default class PlayScene extends Phaser.Scene {
     this.generateLevel(this.scale.width, this.scale.height);
 
     this.stageText.setText(
-      `${this.labels.levelCompleted} ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`
+      `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`
     );
-    this.objectiveText.setText(`${this.labels.goal}: ${this.getCurrentObjective()}`);
+    this.objectiveText.setText(`GOAL: ${this.getCurrentObjective()}`);
 
     this.updateObjectivesHUD();
 
@@ -2000,111 +1717,45 @@ export default class PlayScene extends Phaser.Scene {
 
     this.completionTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
 
-    const width = this.scale.width;
-    const height = this.scale.height;
-
-    // Victory screen background overlay
     const overlay = this.add
-      .rectangle(width / 2, height / 2, width, height, 0x000000, 0.82)
+      .rectangle(this.scale.width / 2, this.scale.height / 2, this.scale.width, this.scale.height, 0x000000, 0.6)
       .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(240);
-
-    // Premium Victory panel with cyan border
+      .setDepth(80);
     const panel = this.add
-      .rectangle(width / 2, height / 2, 450, 320, 0x0f172a, 0.98)
+      .rectangle(this.scale.width / 2, this.scale.height / 2, 420, 260, 0x0f172a, 0.95)
       .setOrigin(0.5)
-      .setStrokeStyle(3, 0x22d3ee)
-      .setScrollFactor(0)
-      .setDepth(241);
-
-    // Title: Victory!
+      .setStrokeStyle(2, 0x22d3ee)
+      .setDepth(81);
     const title = this.add
-      .text(width / 2, height / 2 - 110, "VICTORY!", {
-        font: 'black 36px Outfit, sans-serif',
-        fill: '#ffd700',
+      .text(this.scale.width / 2, this.scale.height / 2 - 50, 'DREAM COMPLETE', {
+        font: 'bold 32px Outfit, sans-serif',
+        fill: '#f8fafc',
       })
       .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(242);
-
-    // Level Completed
-    const levelCompletedText = this.add
-      .text(width / 2, height / 2 - 65, "Level Completed", {
-        font: 'bold 22px Outfit, sans-serif',
-        fill: '#86efac',
-      })
+      .setDepth(82);
+    const sub = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2 - 4,
+        this.blueprint.winCondition || 'All stages cleared and the final boss is defeated.',
+        { font: '16px Outfit, sans-serif', fill: '#cbd5e1', wordWrap: { width: 340 } }
+      )
       .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(242);
-
-    // Boss Defeated
-    const stage = this.getCurrentStage();
-    const bossName = stage?.boss?.name || this.blueprint.boss || 'Overlord';
-    const bossDefeatedText = this.add
-      .text(width / 2, height / 2 - 30, `Boss Defeated - ${bossName}`, {
-        font: 'bold 16px Outfit, sans-serif',
-        fill: '#fca5a5',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(242);
-
-    // Final Score
+      .setDepth(82);
     const scoreText = this.add
-      .text(width / 2, height / 2 + 10, `${this.labels.finalScore}: ${this.score}`, {
+      .text(this.scale.width / 2, this.scale.height / 2 + 40, `Score: ${this.score}`, {
         font: 'bold 20px Outfit, sans-serif',
         fill: '#fde68a',
       })
       .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(242);
-
-    // Time
+      .setDepth(82);
     const timeText = this.add
-      .text(width / 2, height / 2 + 42, `Time: ${this.completionTime}s`, {
-        font: 'bold 16px Outfit, sans-serif',
-        fill: '#cbd5e1',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(242);
-
-    // Interactive "Play Again" Button
-    const playAgainBtnBg = this.add
-      .rectangle(width / 2, height / 2 + 95, 180, 38, 0x1e293b, 0.9)
-      .setOrigin(0.5)
-      .setStrokeStyle(2, 0x22c55e)
-      .setScrollFactor(0)
-      .setDepth(242)
-      .setInteractive({ useHandCursor: true });
-
-    const playAgainBtnText = this.add
-      .text(width / 2, height / 2 + 95, this.labels.playAgain, {
-        font: 'bold 15px Outfit, sans-serif',
+      .text(this.scale.width / 2, this.scale.height / 2 + 72, `Time: ${this.completionTime}s`, {
+        font: 'bold 18px Outfit, sans-serif',
         fill: '#86efac',
       })
       .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(243);
-
-    playAgainBtnBg.on('pointerover', () => {
-      playAgainBtnBg.setFillStyle(0x334155, 1);
-      playAgainBtnBg.setStrokeStyle(2.5, 0x4ade80);
-    });
-
-    playAgainBtnBg.on('pointerout', () => {
-      playAgainBtnBg.setFillStyle(0x1e293b, 0.9);
-      playAgainBtnBg.setStrokeStyle(2, 0x22c55e);
-    });
-
-    playAgainBtnBg.on('pointerdown', () => {
-      if (window.__dream2play_restart) {
-        window.__dream2play_restart();
-      } else {
-        this.scene.restart();
-      }
-    });
+      .setDepth(82);
 
     this.tweens.add({
       targets: panel,
@@ -2117,23 +1768,19 @@ export default class PlayScene extends Phaser.Scene {
     });
     this.tweens.add({ targets: title, scale: 1.05, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
-    for (let i = 0; i < 30; i++) {
-      this.time.delayedCall(i * 80, () => {
-        if (!this.sys.isActive()) return;
-        this.createSpark(
-          width / 2 + (Math.random() - 0.5) * 350,
-          height / 2 - 120 + Math.random() * 200,
-          '#fde68a'
-        );
-      });
+    for (let i = 0; i < 24; i++) {
+      this.createSpark(
+        this.scale.width / 2 + (Math.random() - 0.5) * 240,
+        this.scale.height / 2 - 90 + Math.random() * 120,
+        '#fde68a'
+      );
     }
 
-    this.time.delayedCall(1200, () => {
+    this.time.delayedCall(900, () => {
       this.onWin({
         score: this.score,
         completionTime: this.completionTime,
       });
-      this.scene.pause();
     });
   }
 

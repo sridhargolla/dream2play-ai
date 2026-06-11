@@ -3,11 +3,19 @@ import PlayScene from './PlayScene';
 
 /**
  * Generates the Phaser Game config object dynamically.
- * We store blueprint/callbacks on the global window so PlayScene.init() can pick them up.
+ * Callbacks are stored on window so PlayScene.init() can pick them up.
  */
-export const createGameConfig = (parentDiv, blueprint, onWin, onLose) => {
-  // Store data globally so PlayScene can access it via init data from autoStart
-  window.__dream2play_data = { blueprint, onWin, onLose };
+export const createGameConfig = (parentDiv, blueprint, callbacks = {}) => {
+  const { labels = {}, onWin, onLose, onBossDefeated, onStageComplete } = callbacks;
+
+  window.__dream2play_data = {
+    blueprint,
+    labels,
+    onWin: onWin || (() => {}),
+    onLose: onLose || (() => {}),
+    onBossDefeated: onBossDefeated || (() => {}),
+    onStageComplete: onStageComplete || (() => {}),
+  };
 
   return {
     type: Phaser.AUTO,

@@ -6,12 +6,10 @@ You are a senior game architect. Analyze the user's prompt and generate a comple
 Determine the main character, character type, vehicles, weapons, location, and the game genre.
 Do not force everything into a platformer! Choose the genre that matches the user's request.
 
-SUPPORTED GENRES:
-- Racing, Bike Racing, Driving: road layouts, steering lanes, traffic cars, police chasers.
-- Endless Runner: 3 lane tracks, jumping hurdles, sliding barriers, collecting coins.
-- Shooter, FPS, TPS, Zombie Survival, Battle Royale: weapon loot crates, shrinking storm walls, hostiles.
-- Open World, RPG, Adventure, Platformer: adventure blocks, NPC quests, portals, boss arenas.
-- Puzzle, Sports, Simulation: custom mini-game blocks and items.
+SUPPORTED GENRES (use ONLY these exact values):
+- platformer, driving, bike_racing, racing, endless_runner, shooter, battle_royale, survival, puzzle
+
+Do NOT output open_world, rpg, adventure, sports, or simulation — map those concepts into the closest supported genre above.
 
 Return ONLY valid JSON matching the schema precisely. Do not wrap in markdown or include code blocks.
 `.trim();
@@ -21,7 +19,7 @@ Generate a JSON object matching this exact schema:
 {
   "title": "A unique game title",
   "theme": "Details about the location and style",
-  "genre": "One of the supported genres: racing, bike_racing, driving, endless_runner, shooter, battle_royale, survival, open_world, rpg, adventure, platformer, puzzle, sports, simulation",
+  "genre": "One of: platformer, driving, bike_racing, racing, endless_runner, shooter, battle_royale, survival, puzzle",
   "intent": {
     "character": "Main character name/description",
     "characterType": "human | vehicle | robot | animal | monster | custom",
@@ -60,7 +58,7 @@ Generate a JSON object matching this exact schema:
           "y": 420,
           "width": 256,
           "height": 30,
-          "type": "ground | solid | hazard | collectible"
+          "type": "ground | solid | hazard | collectible | puzzle_piece"
         }
       ],
       "enemies": [
@@ -82,8 +80,8 @@ Generate a JSON object matching this exact schema:
         "name": "Boss name",
         "x": 2600,
         "y": 200,
-        "hp": 500,
-        "maxHp": 500,
+        "hp": 200,
+        "maxHp": 200,
         "phases": ["Phase 1 mechanic"],
         "alive": true,
         "defeated": false
@@ -166,7 +164,8 @@ const GENRE_KEYWORDS = {
   open_world: ['open world', 'swing', 'spider-man', 'new york', 'city', 'sandbox', 'explore', 'npc', 'missions'],
   rpg: ['rpg', 'quest', 'level up', 'character', 'inventory', 'stats'],
   adventure: ['adventure', 'explore', 'treasure', 'island', 'cavern', 'pirate', 'map', 'chest'],
-  platformer: ['platformer', 'jump', 'blocks', 'ninja', 'naruto', 'shinobi', 'leaf village'],
+  platformer: ['platformer', 'jump', 'blocks', 'ninja', 'naruto', 'shinobi', 'leaf village', 'adventure', 'rpg', 'open world', 'explore', 'quest'],
+  puzzle: ['puzzle', 'riddle', 'maze', 'logic', 'solve', 'clue', 'brain', 'cryptic', ' labyrinth'],
 };
 
 function classifyGenre(text) {
@@ -197,8 +196,11 @@ function classifyGenre(text) {
   if (t.includes('zombie') || t.includes('apocalypse')) {
     bestGenre = 'survival';
   }
+  if (t.includes('puzzle') || t.includes('riddle') || t.includes('maze') || t.includes('logic')) {
+    bestGenre = 'puzzle';
+  }
 
-  return bestGenre;
+  return normalizeGenre(bestGenre);
 }
 
 function extractLocation(text) {
@@ -789,17 +791,12 @@ function resolveBoss(theme, genre, location, stageNumber) {
   if (genre === 'survival') registry = BOSS_REGISTRY.zombie;
 
   const suffix = stageNumber > 1 ? ` Mk.${stageNumber}` : '';
-  const baseHp = 150 + (stageNumber - 1) * 100;
-
   return {
     name: `${registry.baseName}${suffix}`,
     specialMove: registry.specialMove,
-    phases:
-      stageNumber === 3
-        ? ['Phase 1: Standard assault', `Phase 2: ${registry.specialMove}`, 'Phase 3: Final Rage Mode']
-        : [`Phase 1: ${registry.abilities[0]}`, `Phase 2: ${registry.specialMove}`],
-    hp: baseHp,
-    maxHp: baseHp,
+    phases: ['Phase 1: HP 200-140', 'Phase 2: HP 139-70', 'Phase 3: HP 69-0'],
+    hp: 200,
+    maxHp: 200,
     alive: true,
     defeated: false,
   };
@@ -1056,6 +1053,7 @@ function analyzeDreamLocally(title = '', description = '') {
       battle_royale: `Eliminate all ${stageNumber + 2} rivals and stay inside the zone.`,
       survival: `Survive the zombie horde and clear ${stageNumber * 4} walkers.`,
       shooter: `Neutralise all hostiles and secure the area.`,
+      puzzle: `Collect all ${4 + stageNumber * 2} puzzle pieces scattered across platforms!`,
     };
     const objectiveName = objectiveNames[genre] || `Scale the heights and defeat the stage boss!`;
     const compCond = `All enemies defeated and boss destroyed.`;
@@ -1218,6 +1216,47 @@ function analyzeDreamLocally(title = '', description = '') {
         });
       }
 
+      // ── PUZZLE ───────────────────────────────────────────────────────────
+    } else if (genre === 'puzzle') {
+      const platforms = [
+        { x: 300, y: 420 },
+        { x: 700, y: 380 },
+        { x: 1100, y: 340 },
+        { x: 1500, y: 300 },
+        { x: 1900, y: 360 },
+        { x: 2300, y: 320 },
+        { x: 2700, y: 380 },
+        { x: 3100, y: 340 },
+      ];
+
+      platforms.forEach((plat, idx) => {
+        blocks.push({
+          id: `b_${stageNumber}_p_${blockIndex++}`,
+          x: plat.x,
+          y: plat.y,
+          width: 180,
+          height: 24,
+          type: 'solid',
+        });
+        blocks.push({
+          id: `b_${stageNumber}_piece_${blockIndex++}`,
+          x: plat.x + (idx % 2 === 0 ? 40 : -30),
+          y: plat.y - 35,
+          width: 22,
+          height: 22,
+          type: 'puzzle_piece',
+        });
+      });
+
+      blocks.push({
+        id: `b_${stageNumber}_ground_${blockIndex++}`,
+        x: 400,
+        y: 420,
+        width: 320,
+        height: 30,
+        type: 'ground',
+      });
+
       // ── PLATFORMER / ADVENTURE / RPG ─────────────────────────────────────
     } else {
       let currentX = 0;
@@ -1292,12 +1331,15 @@ function analyzeDreamLocally(title = '', description = '') {
 
     // ── BOSS (unique per theme+stage) ─────────────────────────────────────
     const bossData = resolveBoss(theme, genre, location, stageNumber);
-    const boss = {
-      id: `boss_${stageNumber}`,
-      x: 4500,
-      y: genre === 'driving' || genre === 'endless_runner' ? 360 : 200,
-      ...bossData,
-    };
+    const boss =
+      genre === 'puzzle'
+        ? null
+        : {
+            id: `boss_${stageNumber}`,
+            x: 4500,
+            y: genre === 'driving' || genre === 'endless_runner' ? 360 : 200,
+            ...bossData,
+          };
 
     return {
       stageNumber,
@@ -1346,7 +1388,10 @@ function analyzeDreamLocally(title = '', description = '') {
       abilities: hero.abilities,
     },
     stages,
-    winCondition: `Complete all missions in ${location} and defeat ${finalStage.boss.name}!`,
+    winCondition:
+      genre === 'puzzle'
+        ? `Collect all puzzle pieces and clear every stage in ${location}!`
+        : `Complete all missions in ${location} and defeat ${finalStage.boss?.name || 'the final boss'}!`,
     loseCondition: `Fail to survive — health reaches zero.`,
   };
 
@@ -1412,6 +1457,26 @@ function checkThematicValidation(blueprint, promptText) {
 // NORMALIZE BLUEPRINT
 // ============================================================
 
+function normalizeGenre(genre) {
+  const playable = [
+    'platformer',
+    'driving',
+    'bike_racing',
+    'racing',
+    'endless_runner',
+    'shooter',
+    'battle_royale',
+    'survival',
+    'puzzle',
+  ];
+  const g = String(genre || 'platformer')
+    .toLowerCase()
+    .replace(/\s+/g, '_');
+  if (playable.includes(g)) return g;
+  if (['open_world', 'rpg', 'adventure', 'simulation', 'sports'].includes(g)) return 'platformer';
+  return 'platformer';
+}
+
 function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
   if (!rawBlueprint || typeof rawBlueprint !== 'object') {
     throw new Error('Blueprint must be a JSON object.');
@@ -1419,7 +1484,7 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
 
   const title = rawBlueprint.title || 'Untitled Dream Game';
   const theme = rawBlueprint.theme || 'Dream Realm';
-  const genre = rawBlueprint.genre || 'platformer';
+  const genre = normalizeGenre(rawBlueprint.genre || 'platformer');
 
   const intent = rawBlueprint.intent || {
     character: 'Hero Explorer',
@@ -1490,23 +1555,25 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
       defeated: e.defeated !== undefined ? e.defeated : false,
     }));
 
-    const rawBoss = stage.boss || {};
-    const boss = {
-      id: rawBoss.id || `boss_${stageNumber}`,
-      name: rawBoss.name || 'Stage Overlord',
-      x: Number.isFinite(rawBoss.x) ? rawBoss.x : 2650,
-      y: Number.isFinite(rawBoss.y) ? rawBoss.y : 200,
-      hp: Number.isFinite(rawBoss.hp) ? rawBoss.hp : 800,
-      maxHp: Number.isFinite(rawBoss.maxHp) ? rawBoss.maxHp : 800,
-      phases: Array.isArray(rawBoss.phases) ? rawBoss.phases : ['Standard combat'],
-      alive: rawBoss.alive !== undefined ? rawBoss.alive : true,
-      defeated: rawBoss.defeated !== undefined ? rawBoss.defeated : false,
-    };
+    const rawBoss = stage.boss || null;
+    const boss = rawBoss
+      ? {
+          id: rawBoss.id || `boss_${stageNumber}`,
+          name: rawBoss.name || 'Stage Overlord',
+          x: Number.isFinite(rawBoss.x) ? rawBoss.x : 2650,
+          y: Number.isFinite(rawBoss.y) ? rawBoss.y : 200,
+          hp: 200,
+          maxHp: 200,
+          phases: ['Phase 1: HP 200-140', 'Phase 2: HP 139-70', 'Phase 3: HP 69-0'],
+          alive: rawBoss.alive !== undefined ? rawBoss.alive : true,
+          defeated: rawBoss.defeated !== undefined ? rawBoss.defeated : false,
+        }
+      : null;
 
     return {
       stageNumber,
       environment: stage.environment || `${intent.location} Stage ${stageNumber}`,
-      objective: stage.objective || `Survive and defeat ${boss.name}.`,
+      objective: stage.objective || (boss ? `Survive and defeat ${boss.name}.` : 'Complete the stage objective.'),
       blocks,
       enemies,
       boss,
@@ -1519,8 +1586,14 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
   const scoreLabel = intent.scoreLabel || resolveScoreLabel(resolveTheme(title + ' ' + theme), genre);
 
   const intro = `You deploy as ${normalizedPlayer.name}. The battle begins in ${intent.location}.`;
-  const mission = `Mission: ${finalStage.objective} Defeat the fearsome ${finalStage.boss.name}!`;
-  const ending = `${finalStage.boss.name} falls. ${normalizedPlayer.name} has conquered ${intent.location}!`;
+  const mission =
+    genre === 'puzzle'
+      ? `Mission: ${finalStage.objective}`
+      : `Mission: ${finalStage.objective} Defeat the fearsome ${finalStage.boss?.name || 'stage boss'}!`;
+  const ending =
+    genre === 'puzzle'
+      ? `${normalizedPlayer.name} solved every puzzle in ${intent.location}!`
+      : `${finalStage.boss?.name || 'The boss'} falls. ${normalizedPlayer.name} has conquered ${intent.location}!`;
 
   return {
     title,
@@ -1530,14 +1603,17 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
     player: normalizedPlayer,
     stages: normalizedStages,
     winCondition:
-      rawBlueprint.winCondition || `Defeat ${finalStage.boss.name} and clear all ${normalizedStages.length} stages.`,
+      rawBlueprint.winCondition ||
+      (genre === 'puzzle'
+        ? `Clear all ${normalizedStages.length} puzzle stages.`
+        : `Defeat ${finalStage.boss?.name || 'the boss'} and clear all ${normalizedStages.length} stages.`),
     loseCondition: rawBlueprint.loseCondition || 'Player health reduces to 0.',
 
     // UI compatibility
     hero: normalizedPlayer.name,
     world: theme,
     enemies: [...new Set(allEnemyNames)].slice(0, 4),
-    boss: finalStage.boss.name,
+    boss: finalStage.boss?.name || (genre === 'puzzle' ? 'Puzzle Guardian' : 'Stage Overlord'),
     objective: finalStage.objective,
     powerups: normalizedPlayer.abilities.slice(0, 3),
     mood: themeData.mood || 'Adventure',
