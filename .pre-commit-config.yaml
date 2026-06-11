@@ -42,7 +42,7 @@ repos:
         files: \.(js|jsx|json|css|md)$
         pass_filenames: false
 
-      - id: tsc
+      - id: typescript
         name: typescript type-check
         entry: npx tsc --noEmit
         language: system
