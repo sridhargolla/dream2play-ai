@@ -148,4 +148,24 @@ describe('Phaser PlayScene Spec', () => {
     expect(scene.genre).toBe('platformer');
     expect(scene.stages.length).toBe(1);
   });
+
+  it('should initialize bossHealth and bossMaxHealth to 200 on init()', () => {
+    const scene = new PlayScene();
+    scene.init({
+      blueprint: {
+        hero: 'Explorer',
+        genre: 'platformer',
+        stages: [
+          {
+            stageNumber: 1,
+            enemies: [],
+            blocks: [],
+          },
+        ],
+      },
+    });
+
+    expect(scene.bossHealth).toBe(200);
+    expect(scene.bossMaxHealth).toBe(200);
+  });
 });
