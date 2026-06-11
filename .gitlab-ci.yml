@@ -1,8 +1,10 @@
 stages:
   - lint
-  - typecheck
-  - audit
+  - format
+  - type_check
   - test
+  - coverage
+  - audit
   - secret-scan
 
 default:
@@ -13,22 +15,32 @@ default:
 lint_job:
   stage: lint
   script:
-    - npm run lint
+    - npx eslint .
 
-typecheck_job:
-  stage: typecheck
+format_job:
+  stage: format
   script:
-    - npm run typecheck
+    - npx prettier --check .
+
+type_check_job:
+  stage: type_check
+  script:
+    - npx knip
+
+test_job:
+  stage: test
+  script:
+    - npx vitest run
+
+coverage_job:
+  stage: coverage
+  script:
+    - npx vitest run --coverage
 
 audit_job:
   stage: audit
   script:
     - npm audit --audit-level=high
-
-test_job:
-  stage: test
-  script:
-    - npm run test
 
 gitleaks_job:
   stage: secret-scan

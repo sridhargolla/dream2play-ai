@@ -20,19 +20,10 @@ This specification covers the implementation of Boss combat logic, including hea
                                                    Reduce Boss HP by 10
                                                             |
                                                    Check Health Phase
-                                                   - Phase 1 (200-140)
-                                                   - Phase 2 (139-70)
-                                                   - Phase 3 (69-0)
                                                             |
                                                   If HP <= 0 -> Defeat Sequence
-                                                            |
-                                                  [Victory React Overlay]
 ```
 
 ## 4. Implementation Details
 - `frontend/src/game/PlayScene.js`: Implements Phaser overlap triggers, hit handler, boss motion phases, and defeat sequence animations.
 - `frontend/src/components/GameCanvas.jsx`: Integrates Phaser game with React parent state and maps scores or completions.
-
-## 5. Verification Plan
-- **Automated Tests**: Run `npm run test` or `vitest run spec/play_scene.spec.js` to assert boss HP matches exactly 200 on load.
-- **Manual Checklist**: Confirm boss HP degrades by exactly 10 on each hit. Verify visual explosion on defeat.
