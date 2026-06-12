@@ -63,6 +63,17 @@
       "id": "1781175804086",
       "username": "testuser",
       "email": "test@example.com"
+    },
+    {
+      "id": "1781191817250",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781255024568",
+      "username": "player1",
+      "email": "player1@test.com",
+      "password": "$2a$10$tef2QGwaqec7SNO5zvMMaOGw.eaq0yL32ETcs8jhypHwz3oZ4NtBq"
     }
   ],
   "dreams": [
@@ -3996,51 +4007,1981 @@
       }
     },
     {
-      "id": "1781159854057",
-      "createdAt": "2026-06-11T06:37:36.708Z",
+      "id": "1781252988083",
+      "createdAt": "2026-06-12T08:29:52.406Z",
       "userId": "1781066281863",
-      "title": "want tobuy  procshe",
-      "description": "msnbjlfhgsbbvkfhdk",
+      "title": "Cyber Ninja: Tokyo Rebellion",
+      "description": "In futuristic Tokyo, a cyber-enhanced ninja fights against a corrupt megacorporation. Complete missions, upgrade cyber abilities, defeat robotic enemies, and uncover a conspiracy threatening humanity.",
       "blueprint": {
-        "title": "want tobuy  procshe",
-        "theme": "City in Surreal Void",
-        "genre": "platformer",
+        "title": "Cyber Ninja: Tokyo Rebellion",
+        "theme": "Ninja in Tokyo",
+        "genre": "bike_racing",
         "intent": {
-          "character": "Dream Explorer",
-          "characterType": "human",
-          "vehicle": null,
-          "location": "Surreal Void",
+          "character": "Moto Racer",
+          "characterType": "vehicle",
+          "vehicle": "Moto Racer",
+          "location": "Tokyo",
           "weapons": [],
           "actions": [
-            "Dash",
-            "Double Jump",
-            "Throw"
+            "Wheelie Thrust",
+            "Nitro Surge",
+            "Draft Dodge"
           ],
-          "scoreLabel": "CASH",
-          "subType": "human_male"
+          "scoreLabel": "SPEED",
+          "subType": "motorcycle"
         },
         "player": {
-          "name": "Dream Explorer",
-          "type": "human",
-          "subType": "human_male",
-          "appearance": "Traveler in casual adventure gear",
+          "name": "Moto Racer",
+          "type": "vehicle",
+          "subType": "motorcycle",
+          "appearance": "Racing motorcycle",
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 250,
+          "jumpForce": -350,
+          "gravity": 0,
+          "colors": {
+            "bg": "#030712",
+            "accent": "#ec4899",
+            "secondary": "#06b6d4",
+            "hazard": "#ef4444",
+            "player": "#10b981",
+            "text": "#f3f4f6"
+          },
+          "abilities": [
+            "Wheelie Thrust",
+            "Nitro Surge",
+            "Draft Dodge"
+          ]
+        },
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Tokyo — Opening Grounds",
+            "objective": "Dodge traffic and complete 1 lap circuits.",
+            "blocks": [
+              {
+                "id": "b_1_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Police Patrol Car",
+                "x": 1160,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Road Blocker Truck",
+                "x": 1620,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_4",
+                "name": "Speed Rival",
+                "x": 2080,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_5",
+                "name": "Traffic Sedan",
+                "x": 2540,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_6",
+                "name": "Police Patrol Car",
+                "x": 3000,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_7",
+                "name": "Road Blocker Truck",
+                "x": 3460,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_8",
+                "name": "Speed Rival",
+                "x": 3920,
+                "y": 360,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_9",
+                "name": "Traffic Sedan",
+                "x": 4380,
+                "y": 400,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "Apex Predator",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Tokyo — Midfield Assault",
+            "objective": "Dodge traffic and complete 2 lap circuits.",
+            "blocks": [
+              {
+                "id": "b_2_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Police Patrol Car",
+                "x": 1200,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Road Blocker Truck",
+                "x": 1700,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_4",
+                "name": "Speed Rival",
+                "x": 2200,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_5",
+                "name": "Traffic Sedan",
+                "x": 2700,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_6",
+                "name": "Police Patrol Car",
+                "x": 3200,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_7",
+                "name": "Road Blocker Truck",
+                "x": 3700,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_8",
+                "name": "Speed Rival",
+                "x": 4200,
+                "y": 360,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "Apex Predator Mk.2",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Tokyo — Final Stronghold",
+            "objective": "Dodge traffic and complete 3 lap circuits.",
+            "blocks": [
+              {
+                "id": "b_3_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_3_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_2",
+                "name": "Police Patrol Car",
+                "x": 1240,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_3",
+                "name": "Road Blocker Truck",
+                "x": 1780,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_4",
+                "name": "Speed Rival",
+                "x": 2320,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_5",
+                "name": "Traffic Sedan",
+                "x": 2860,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_6",
+                "name": "Police Patrol Car",
+                "x": 3400,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_7",
+                "name": "Road Blocker Truck",
+                "x": 3940,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_3",
+              "name": "Apex Predator Mk.3",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
+        ],
+        "winCondition": "Complete all missions in Tokyo and defeat Apex Predator Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Moto Racer",
+        "world": "Ninja in Tokyo",
+        "enemies": [
+          "Traffic Sedan",
+          "Police Patrol Car",
+          "Road Blocker Truck",
+          "Speed Rival"
+        ],
+        "boss": "Apex Predator Mk.3",
+        "objective": "Dodge traffic and complete 3 lap circuits.",
+        "powerups": [
+          "Wheelie Thrust",
+          "Nitro Surge",
+          "Draft Dodge"
+        ],
+        "mood": "Adventure",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#030712",
+          "accent": "#ec4899",
+          "secondary": "#06b6d4",
+          "hazard": "#ef4444",
+          "player": "#10b981",
+          "text": "#f3f4f6"
+        },
+        "physics": {
+          "gravity": 0,
+          "speed": 250,
+          "jump": -350,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "You deploy as Moto Racer. The battle begins in Tokyo.",
+          "mission": "Mission: Dodge traffic and complete 3 lap circuits. Defeat the fearsome Apex Predator Mk.3!",
+          "ending": "Apex Predator Mk.3 falls. Moto Racer has conquered Tokyo!"
+        },
+        "assets": {
+          "hero": "/uploads/1781252988083_hero.svg",
+          "enemy": "/uploads/1781252988083_enemy.svg",
+          "boss": "/uploads/1781252988083_boss.svg",
+          "background": "/uploads/1781252988083_background.svg",
+          "collectible": "/uploads/1781252988083_collectible.svg"
+        }
+      }
+    },
+    {
+      "id": "1781255085758",
+      "createdAt": "2026-06-12T09:04:46.842Z",
+      "userId": "1781255024568",
+      "title": "F1 Racing in Mumbai",
+      "description": "A racing game where you drive a red F1 car through Mumbai traffic dodging corporate speed vehicles.",
+      "blueprint": {
+        "title": "F1 Racing in Mumbai",
+        "theme": "City in Mumbai",
+        "genre": "driving",
+        "intent": {
+          "character": "Street Racer",
+          "characterType": "vehicle",
+          "vehicle": "Street Racer",
+          "location": "Mumbai",
+          "weapons": [],
+          "actions": [
+            "Nitro Boost",
+            "Handbrake Drift",
+            "Ram"
+          ],
+          "scoreLabel": "SPEED",
+          "subType": "car"
+        },
+        "player": {
+          "name": "Street Racer",
+          "type": "vehicle",
+          "subType": "car",
+          "appearance": "Sleek custom race car",
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 250,
+          "jumpForce": -350,
+          "gravity": 0,
+          "colors": {
+            "bg": "#172554",
+            "accent": "#f97316",
+            "secondary": "#facc15",
+            "hazard": "#dc2626",
+            "player": "#dc2626",
+            "text": "#ffffff"
+          },
+          "abilities": [
+            "Nitro Boost",
+            "Handbrake Drift",
+            "Ram"
+          ]
+        },
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Mumbai — Opening Grounds",
+            "objective": "Outrun 3 rivals and reach the checkpoint!",
+            "blocks": [
+              {
+                "id": "b_1_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Police Patrol Car",
+                "x": 1160,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Road Blocker Truck",
+                "x": 1620,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_4",
+                "name": "Speed Rival",
+                "x": 2080,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_5",
+                "name": "Traffic Sedan",
+                "x": 2540,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_6",
+                "name": "Police Patrol Car",
+                "x": 3000,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_7",
+                "name": "Road Blocker Truck",
+                "x": 3460,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_8",
+                "name": "Speed Rival",
+                "x": 3920,
+                "y": 360,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_9",
+                "name": "Traffic Sedan",
+                "x": 4380,
+                "y": 400,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "Apex Predator",
+              "x": 4500,
+              "y": 360,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Mumbai — Midfield Assault",
+            "objective": "Outrun 6 rivals and reach the checkpoint!",
+            "blocks": [
+              {
+                "id": "b_2_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Police Patrol Car",
+                "x": 1200,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Road Blocker Truck",
+                "x": 1700,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_4",
+                "name": "Speed Rival",
+                "x": 2200,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_5",
+                "name": "Traffic Sedan",
+                "x": 2700,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_6",
+                "name": "Police Patrol Car",
+                "x": 3200,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_7",
+                "name": "Road Blocker Truck",
+                "x": 3700,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_8",
+                "name": "Speed Rival",
+                "x": 4200,
+                "y": 360,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "Apex Predator Mk.2",
+              "x": 4500,
+              "y": 360,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Mumbai — Final Stronghold",
+            "objective": "Outrun 9 rivals and reach the checkpoint!",
+            "blocks": [
+              {
+                "id": "b_3_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_3_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_2",
+                "name": "Police Patrol Car",
+                "x": 1240,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_3",
+                "name": "Road Blocker Truck",
+                "x": 1780,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_4",
+                "name": "Speed Rival",
+                "x": 2320,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_5",
+                "name": "Traffic Sedan",
+                "x": 2860,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_6",
+                "name": "Police Patrol Car",
+                "x": 3400,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_7",
+                "name": "Road Blocker Truck",
+                "x": 3940,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_3",
+              "name": "Apex Predator Mk.3",
+              "x": 4500,
+              "y": 360,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
+        ],
+        "winCondition": "Complete all missions in Mumbai and defeat Apex Predator Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Street Racer",
+        "world": "City in Mumbai",
+        "enemies": [
+          "Traffic Sedan",
+          "Police Patrol Car",
+          "Road Blocker Truck",
+          "Speed Rival"
+        ],
+        "boss": "Apex Predator Mk.3",
+        "objective": "Outrun 9 rivals and reach the checkpoint!",
+        "powerups": [
+          "Nitro Boost",
+          "Handbrake Drift",
+          "Ram"
+        ],
+        "mood": "Adventure",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#172554",
+          "accent": "#f97316",
+          "secondary": "#facc15",
+          "hazard": "#dc2626",
+          "player": "#dc2626",
+          "text": "#ffffff"
+        },
+        "physics": {
+          "gravity": 0,
+          "speed": 250,
+          "jump": -350,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "You deploy as Street Racer. The battle begins in Mumbai.",
+          "mission": "Mission: Outrun 9 rivals and reach the checkpoint! Defeat the fearsome Apex Predator Mk.3!",
+          "ending": "Apex Predator Mk.3 falls. Street Racer has conquered Mumbai!"
+        },
+        "assets": {
+          "hero": "/uploads/1781255085758_hero.svg",
+          "enemy": "/uploads/1781255085758_enemy.svg",
+          "boss": "/uploads/1781255085758_boss.svg",
+          "background": "/uploads/1781255085758_background.svg",
+          "collectible": "/uploads/1781255085758_collectible.svg"
+        }
+      }
+    },
+    {
+      "id": "1781255639458",
+      "createdAt": "2026-06-12T09:14:03.074Z",
+      "userId": "1781255024568",
+      "title": "Snake & Ladder: Kingdom Quest",
+      "description": "Travel across a magical kingdom by rolling dice and moving across a 100-tile board. Instead of ordinary snakes and ladders, players encounter dragons, secret portals, magical stairways, treasure rooms, traps, and powerful bosses.",
+      "blueprint": {
+        "title": "Snake & Ladder: Kingdom Quest",
+        "theme": "Fantasy in Surreal Void",
+        "genre": "platformer",
+        "intent": {
+          "character": "Dragon Rider",
+          "characterType": "animal",
+          "vehicle": null,
+          "location": "Surreal Void",
+          "weapons": [
+            "Fire Breath"
+          ],
+          "actions": [
+            "Fire Breath",
+            "Wing Dash",
+            "Dragon Roar"
+          ],
+          "scoreLabel": "MANA",
+          "subType": "creature"
+        },
+        "player": {
+          "name": "Dragon Rider",
+          "type": "animal",
+          "subType": "creature",
+          "appearance": "Armored rider atop a massive fire-breathing dragon",
           "hp": 100,
           "maxHp": 100,
           "speed": 220,
           "jumpForce": -350,
           "gravity": 300,
           "colors": {
-            "bg": "#0a0b10",
-            "accent": "#8b5cf6",
-            "secondary": "#06b6d4",
+            "bg": "#1e1b4b",
+            "accent": "#c084fc",
+            "secondary": "#f0abfc",
             "hazard": "#f43f5e",
-            "player": "#22c55e",
-            "text": "#ffffff"
+            "player": "#a855f7",
+            "text": "#faf5ff"
           },
           "abilities": [
-            "Dash",
-            "Double Jump",
-            "Throw"
+            "Fire Breath",
+            "Wing Dash",
+            "Dragon Roar"
           ]
         },
         "stages": [
@@ -4068,7 +6009,7 @@
               {
                 "id": "b_1_f_3",
                 "x": 612,
-                "y": 224.10639728121657,
+                "y": 226.14091853738216,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
@@ -4076,7 +6017,7 @@
               {
                 "id": "b_1_coin_4",
                 "x": 612,
-                "y": 199.10639728121657,
+                "y": 188.14091853738216,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
@@ -4092,7 +6033,7 @@
               {
                 "id": "b_1_f_6",
                 "x": 932,
-                "y": 256.3524311158739,
+                "y": 248.80589410308428,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
@@ -4100,7 +6041,7 @@
               {
                 "id": "b_1_coin_7",
                 "x": 932,
-                "y": 231.3524311158739,
+                "y": 210.80589410308428,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
@@ -4114,31 +6055,15 @@
                 "type": "hazard"
               },
               {
-                "id": "b_1_g_9",
-                "x": 1380,
+                "id": "b_1_g_safe_9",
+                "x": 1364,
                 "y": 420,
                 "width": 256,
                 "height": 30,
                 "type": "ground"
               },
               {
-                "id": "b_1_f_10",
-                "x": 1380,
-                "y": 268.88980912172514,
-                "width": 128,
-                "height": 20,
-                "type": "solid"
-              },
-              {
-                "id": "b_1_coin_11",
-                "x": 1380,
-                "y": 243.88980912172514,
-                "width": 20,
-                "height": 20,
-                "type": "collectible"
-              },
-              {
-                "id": "b_1_g_12",
+                "id": "b_1_g_10",
                 "x": 1700,
                 "y": 420,
                 "width": 256,
@@ -4146,23 +6071,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_1_f_13",
+                "id": "b_1_f_11",
                 "x": 1700,
-                "y": 211.58730100913004,
+                "y": 261.9235326110598,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_1_coin_14",
+                "id": "b_1_coin_12",
                 "x": 1700,
-                "y": 186.58730100913004,
+                "y": 223.92353261105978,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_1_g_15",
+                "id": "b_1_g_13",
                 "x": 2020,
                 "y": 420,
                 "width": 256,
@@ -4170,24 +6095,40 @@
                 "type": "ground"
               },
               {
-                "id": "b_1_f_16",
+                "id": "b_1_f_14",
                 "x": 2020,
-                "y": 225.0515931370108,
+                "y": 225.21316401831098,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_1_coin_17",
+                "id": "b_1_coin_15",
                 "x": 2020,
-                "y": 200.0515931370108,
+                "y": 187.21316401831098,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
+              },
+              {
+                "id": "b_1_g_16",
+                "x": 2340,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_g_17",
+                "x": 2660,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
               },
               {
                 "id": "b_1_g_18",
-                "x": 2340,
+                "x": 2980,
                 "y": 420,
                 "width": 256,
                 "height": 30,
@@ -4195,151 +6136,103 @@
               },
               {
                 "id": "b_1_f_19",
-                "x": 2340,
-                "y": 208.10446623600842,
+                "x": 2980,
+                "y": 224.6452711236913,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
                 "id": "b_1_coin_20",
-                "x": 2340,
-                "y": 183.10446623600842,
+                "x": 2980,
+                "y": 186.6452711236913,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_1_spike_21",
-                "x": 2596,
-                "y": 435,
-                "width": 32,
-                "height": 32,
-                "type": "hazard"
-              },
-              {
-                "id": "b_1_spike_22",
-                "x": 2724,
-                "y": 435,
-                "width": 32,
-                "height": 32,
-                "type": "hazard"
-              },
-              {
-                "id": "b_1_g_23",
-                "x": 2916,
+                "id": "b_1_g_21",
+                "x": 3300,
                 "y": 420,
                 "width": 256,
                 "height": 30,
                 "type": "ground"
               },
               {
-                "id": "b_1_g_24",
-                "x": 3236,
+                "id": "b_1_g_22",
+                "x": 3620,
                 "y": 420,
                 "width": 256,
                 "height": 30,
                 "type": "ground"
               },
               {
-                "id": "b_1_f_25",
-                "x": 3236,
-                "y": 267.8188889958995,
+                "id": "b_1_f_23",
+                "x": 3620,
+                "y": 246.71232834618735,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_1_coin_26",
-                "x": 3236,
-                "y": 242.8188889958995,
+                "id": "b_1_coin_24",
+                "x": 3620,
+                "y": 208.71232834618735,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_1_g_27",
-                "x": 3556,
+                "id": "b_1_g_25",
+                "x": 3940,
                 "y": 420,
                 "width": 256,
                 "height": 30,
                 "type": "ground"
               },
               {
-                "id": "b_1_f_28",
-                "x": 3556,
-                "y": 205.72483959169048,
+                "id": "b_1_f_26",
+                "x": 3940,
+                "y": 226.721916358789,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_1_coin_29",
-                "x": 3556,
-                "y": 180.72483959169048,
+                "id": "b_1_coin_27",
+                "x": 3940,
+                "y": 188.721916358789,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_1_g_30",
-                "x": 3876,
+                "id": "b_1_g_28",
+                "x": 4260,
                 "y": 420,
                 "width": 256,
                 "height": 30,
                 "type": "ground"
               },
               {
-                "id": "b_1_f_31",
-                "x": 3876,
-                "y": 216.63192305577815,
+                "id": "b_1_f_29",
+                "x": 4260,
+                "y": 209.4978420373841,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_1_coin_32",
-                "x": 3876,
-                "y": 191.63192305577815,
+                "id": "b_1_coin_30",
+                "x": 4260,
+                "y": 171.4978420373841,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_1_g_33",
-                "x": 4196,
-                "y": 420,
-                "width": 256,
-                "height": 30,
-                "type": "ground"
-              },
-              {
-                "id": "b_1_f_34",
-                "x": 4196,
-                "y": 217.86469518088924,
-                "width": 128,
-                "height": 20,
-                "type": "solid"
-              },
-              {
-                "id": "b_1_coin_35",
-                "x": 4196,
-                "y": 192.86469518088924,
-                "width": 20,
-                "height": 20,
-                "type": "collectible"
-              },
-              {
-                "id": "b_1_g_36",
-                "x": 4516,
-                "y": 420,
-                "width": 256,
-                "height": 30,
-                "type": "ground"
-              },
-              {
-                "id": "b_1_g_37",
-                "x": 4918,
+                "id": "b_1_g_31",
+                "x": 4662,
                 "y": 420,
                 "width": 420,
                 "height": 30,
@@ -4349,23 +6242,23 @@
             "enemies": [
               {
                 "id": "e_1_1",
-                "name": "Gang Member",
-                "x": 612,
-                "y": 194.10639728121657,
+                "name": "Dark Elf",
+                "x": 2020,
+                "y": 199.21316401831098,
                 "hp": 80,
                 "maxHp": 80,
-                "damage": 10,
+                "damage": 12,
                 "type": "patrol",
                 "alive": true,
                 "defeated": false
               },
               {
                 "id": "e_1_2",
-                "name": "Police Officer",
-                "x": 2020,
-                "y": 195.0515931370108,
-                "hp": 100,
-                "maxHp": 100,
+                "name": "Wraith",
+                "x": 3620,
+                "y": 220.71232834618735,
+                "hp": 70,
+                "maxHp": 70,
                 "damage": 15,
                 "type": "chase",
                 "alive": true,
@@ -4373,36 +6266,12 @@
               },
               {
                 "id": "e_1_3",
-                "name": "Security Guard",
-                "x": 2340,
-                "y": 178.10446623600842,
-                "hp": 90,
-                "maxHp": 90,
-                "damage": 12,
-                "type": "patrol",
-                "alive": true,
-                "defeated": false
-              },
-              {
-                "id": "e_1_4",
-                "name": "Crime Boss Bodyguard",
-                "x": 3556,
-                "y": 175.72483959169048,
-                "hp": 150,
-                "maxHp": 150,
+                "name": "Stone Golem",
+                "x": 4260,
+                "y": 183.4978420373841,
+                "hp": 200,
+                "maxHp": 200,
                 "damage": 20,
-                "type": "chase",
-                "alive": true,
-                "defeated": false
-              },
-              {
-                "id": "e_1_5",
-                "name": "Gang Member",
-                "x": 4196,
-                "y": 187.86469518088924,
-                "hp": 80,
-                "maxHp": 80,
-                "damage": 10,
                 "type": "patrol",
                 "alive": true,
                 "defeated": false
@@ -4410,7 +6279,7 @@
             ],
             "boss": {
               "id": "boss_1",
-              "name": "Street King",
+              "name": "Lich King",
               "x": 4500,
               "y": 200,
               "hp": 200,
@@ -4447,7 +6316,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_g_3",
+                "id": "b_2_f_3",
+                "x": 612,
+                "y": 259.33859706658404,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_4",
+                "x": 612,
+                "y": 221.33859706658404,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_5",
                 "x": 932,
                 "y": 420,
                 "width": 256,
@@ -4455,23 +6340,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_f_4",
+                "id": "b_2_f_6",
                 "x": 932,
-                "y": 255.41633608539496,
+                "y": 208.31481047734476,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_2_coin_5",
+                "id": "b_2_coin_7",
                 "x": 932,
-                "y": 230.41633608539496,
+                "y": 170.31481047734476,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_2_g_6",
+                "id": "b_2_g_8",
                 "x": 1252,
                 "y": 420,
                 "width": 256,
@@ -4479,7 +6364,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_g_7",
+                "id": "b_2_f_9",
+                "x": 1252,
+                "y": 245.0048957836456,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_10",
+                "x": 1252,
+                "y": 207.0048957836456,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_11",
                 "x": 1572,
                 "y": 420,
                 "width": 256,
@@ -4487,7 +6388,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_g_8",
+                "id": "b_2_f_12",
+                "x": 1572,
+                "y": 235.50665549261612,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_13",
+                "x": 1572,
+                "y": 197.50665549261612,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_14",
                 "x": 1892,
                 "y": 420,
                 "width": 256,
@@ -4495,7 +6412,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_g_9",
+                "id": "b_2_f_15",
+                "x": 1892,
+                "y": 230.7796738614888,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_16",
+                "x": 1892,
+                "y": 192.7796738614888,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_17",
                 "x": 2212,
                 "y": 420,
                 "width": 256,
@@ -4503,23 +6436,7 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_f_10",
-                "x": 2212,
-                "y": 210.05679990262743,
-                "width": 128,
-                "height": 20,
-                "type": "solid"
-              },
-              {
-                "id": "b_2_coin_11",
-                "x": 2212,
-                "y": 185.05679990262743,
-                "width": 20,
-                "height": 20,
-                "type": "collectible"
-              },
-              {
-                "id": "b_2_g_12",
+                "id": "b_2_g_18",
                 "x": 2532,
                 "y": 420,
                 "width": 256,
@@ -4527,56 +6444,8 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_g_13",
-                "x": 2852,
-                "y": 420,
-                "width": 256,
-                "height": 30,
-                "type": "ground"
-              },
-              {
-                "id": "b_2_f_14",
-                "x": 2852,
-                "y": 245.67207780219172,
-                "width": 128,
-                "height": 20,
-                "type": "solid"
-              },
-              {
-                "id": "b_2_coin_15",
-                "x": 2852,
-                "y": 220.67207780219172,
-                "width": 20,
-                "height": 20,
-                "type": "collectible"
-              },
-              {
-                "id": "b_2_g_16",
-                "x": 3172,
-                "y": 420,
-                "width": 256,
-                "height": 30,
-                "type": "ground"
-              },
-              {
-                "id": "b_2_f_17",
-                "x": 3172,
-                "y": 245.5194209007657,
-                "width": 128,
-                "height": 20,
-                "type": "solid"
-              },
-              {
-                "id": "b_2_coin_18",
-                "x": 3172,
-                "y": 220.5194209007657,
-                "width": 20,
-                "height": 20,
-                "type": "collectible"
-              },
-              {
                 "id": "b_2_g_19",
-                "x": 3492,
+                "x": 2852,
                 "y": 420,
                 "width": 256,
                 "height": 30,
@@ -4584,22 +6453,54 @@
               },
               {
                 "id": "b_2_f_20",
-                "x": 3492,
-                "y": 202.85408730082213,
+                "x": 2852,
+                "y": 261.44435904813895,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
                 "id": "b_2_coin_21",
-                "x": 3492,
-                "y": 177.85408730082213,
+                "x": 2852,
+                "y": 223.44435904813895,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
                 "id": "b_2_g_22",
+                "x": 3172,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_g_23",
+                "x": 3492,
+                "y": 420,
+                "width": 256,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_f_24",
+                "x": 3492,
+                "y": 213.5025746899674,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_2_coin_25",
+                "x": 3492,
+                "y": 175.5025746899674,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_g_26",
                 "x": 3812,
                 "y": 420,
                 "width": 256,
@@ -4607,23 +6508,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_f_23",
+                "id": "b_2_f_27",
                 "x": 3812,
-                "y": 210.40099342261198,
+                "y": 216.25718760911303,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_2_coin_24",
+                "id": "b_2_coin_28",
                 "x": 3812,
-                "y": 185.40099342261198,
+                "y": 178.25718760911303,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_2_g_25",
+                "id": "b_2_g_29",
                 "x": 4132,
                 "y": 420,
                 "width": 256,
@@ -4631,23 +6532,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_f_26",
+                "id": "b_2_f_30",
                 "x": 4132,
-                "y": 223.3697017652983,
+                "y": 249.22611414000238,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_2_coin_27",
+                "id": "b_2_coin_31",
                 "x": 4132,
-                "y": 198.3697017652983,
+                "y": 211.22611414000238,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_2_g_28",
+                "id": "b_2_g_32",
                 "x": 4452,
                 "y": 420,
                 "width": 256,
@@ -4655,7 +6556,7 @@
                 "type": "ground"
               },
               {
-                "id": "b_2_g_29",
+                "id": "b_2_g_33",
                 "x": 4854,
                 "y": 420,
                 "width": 420,
@@ -4666,23 +6567,23 @@
             "enemies": [
               {
                 "id": "e_2_1",
-                "name": "Gang Member",
-                "x": 932,
-                "y": 225.41633608539496,
+                "name": "Dark Elf",
+                "x": 612,
+                "y": 233.33859706658404,
                 "hp": 80,
                 "maxHp": 80,
-                "damage": 10,
+                "damage": 12,
                 "type": "patrol",
                 "alive": true,
                 "defeated": false
               },
               {
                 "id": "e_2_2",
-                "name": "Police Officer",
-                "x": 2212,
-                "y": 180.05679990262743,
-                "hp": 100,
-                "maxHp": 100,
+                "name": "Wraith",
+                "x": 932,
+                "y": 182.31481047734476,
+                "hp": 70,
+                "maxHp": 70,
                 "damage": 15,
                 "type": "chase",
                 "alive": true,
@@ -4690,44 +6591,80 @@
               },
               {
                 "id": "e_2_3",
-                "name": "Security Guard",
-                "x": 3172,
-                "y": 215.5194209007657,
-                "hp": 90,
-                "maxHp": 90,
-                "damage": 12,
+                "name": "Stone Golem",
+                "x": 1252,
+                "y": 219.0048957836456,
+                "hp": 200,
+                "maxHp": 200,
+                "damage": 20,
                 "type": "patrol",
                 "alive": true,
                 "defeated": false
               },
               {
                 "id": "e_2_4",
-                "name": "Crime Boss Bodyguard",
-                "x": 3812,
-                "y": 180.40099342261198,
+                "name": "Shadow Knight",
+                "x": 1572,
+                "y": 209.50665549261612,
                 "hp": 150,
                 "maxHp": 150,
-                "damage": 20,
+                "damage": 25,
                 "type": "chase",
                 "alive": true,
                 "defeated": false
               },
               {
                 "id": "e_2_5",
-                "name": "Gang Member",
-                "x": 4132,
-                "y": 193.3697017652983,
+                "name": "Dark Elf",
+                "x": 1892,
+                "y": 204.7796738614888,
                 "hp": 80,
                 "maxHp": 80,
-                "damage": 10,
+                "damage": 12,
                 "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_6",
+                "name": "Wraith",
+                "x": 2852,
+                "y": 235.44435904813895,
+                "hp": 70,
+                "maxHp": 70,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_7",
+                "name": "Stone Golem",
+                "x": 3492,
+                "y": 187.5025746899674,
+                "hp": 200,
+                "maxHp": 200,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_8",
+                "name": "Shadow Knight",
+                "x": 3812,
+                "y": 190.25718760911303,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 25,
+                "type": "chase",
                 "alive": true,
                 "defeated": false
               }
             ],
             "boss": {
               "id": "boss_2",
-              "name": "Street King Mk.2",
+              "name": "Lich King Mk.2",
               "x": 4500,
               "y": 200,
               "hp": 200,
@@ -4772,7 +6709,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_3_g_4",
+                "id": "b_3_f_4",
+                "x": 932,
+                "y": 209.20574983556577,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_5",
+                "x": 932,
+                "y": 171.20574983556577,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_6",
                 "x": 1252,
                 "y": 420,
                 "width": 256,
@@ -4780,23 +6733,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_3_f_5",
+                "id": "b_3_f_7",
                 "x": 1252,
-                "y": 217.1552727421818,
+                "y": 238.6068361859808,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_3_coin_6",
+                "id": "b_3_coin_8",
                 "x": 1252,
-                "y": 192.1552727421818,
+                "y": 200.6068361859808,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_3_g_7",
+                "id": "b_3_g_9",
                 "x": 1572,
                 "y": 420,
                 "width": 256,
@@ -4804,23 +6757,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_3_f_8",
+                "id": "b_3_f_10",
                 "x": 1572,
-                "y": 223.14648927248166,
+                "y": 227.64412350635203,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_3_coin_9",
+                "id": "b_3_coin_11",
                 "x": 1572,
-                "y": 198.14648927248166,
+                "y": 189.64412350635203,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_3_g_10",
+                "id": "b_3_g_12",
                 "x": 1892,
                 "y": 420,
                 "width": 256,
@@ -4828,44 +6781,28 @@
                 "type": "ground"
               },
               {
-                "id": "b_3_f_11",
+                "id": "b_3_f_13",
                 "x": 1892,
-                "y": 238.0321629982606,
+                "y": 212.6843840215427,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_3_coin_12",
+                "id": "b_3_coin_14",
                 "x": 1892,
-                "y": 213.0321629982606,
+                "y": 174.6843840215427,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_3_g_13",
+                "id": "b_3_g_15",
                 "x": 2212,
                 "y": 420,
                 "width": 256,
                 "height": 30,
                 "type": "ground"
-              },
-              {
-                "id": "b_3_f_14",
-                "x": 2212,
-                "y": 265.6721218412911,
-                "width": 128,
-                "height": 20,
-                "type": "solid"
-              },
-              {
-                "id": "b_3_coin_15",
-                "x": 2212,
-                "y": 240.67212184129107,
-                "width": 20,
-                "height": 20,
-                "type": "collectible"
               },
               {
                 "id": "b_3_g_16",
@@ -4878,7 +6815,7 @@
               {
                 "id": "b_3_f_17",
                 "x": 2532,
-                "y": 242.95163413111848,
+                "y": 241.11239773462532,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
@@ -4886,7 +6823,7 @@
               {
                 "id": "b_3_coin_18",
                 "x": 2532,
-                "y": 217.95163413111848,
+                "y": 203.11239773462532,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
@@ -4902,7 +6839,7 @@
               {
                 "id": "b_3_f_20",
                 "x": 2852,
-                "y": 226.47016430462983,
+                "y": 244.01702446701412,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
@@ -4910,7 +6847,7 @@
               {
                 "id": "b_3_coin_21",
                 "x": 2852,
-                "y": 201.47016430462983,
+                "y": 206.01702446701412,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
@@ -4924,28 +6861,28 @@
                 "type": "ground"
               },
               {
-                "id": "b_3_f_23",
-                "x": 3172,
-                "y": 207.47069564402176,
-                "width": 128,
-                "height": 20,
-                "type": "solid"
-              },
-              {
-                "id": "b_3_coin_24",
-                "x": 3172,
-                "y": 182.47069564402176,
-                "width": 20,
-                "height": 20,
-                "type": "collectible"
-              },
-              {
-                "id": "b_3_g_25",
+                "id": "b_3_g_23",
                 "x": 3492,
                 "y": 420,
                 "width": 256,
                 "height": 30,
                 "type": "ground"
+              },
+              {
+                "id": "b_3_f_24",
+                "x": 3492,
+                "y": 217.79633290248796,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_25",
+                "x": 3492,
+                "y": 179.79633290248796,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
               },
               {
                 "id": "b_3_g_26",
@@ -4956,7 +6893,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_3_g_27",
+                "id": "b_3_f_27",
+                "x": 3812,
+                "y": 255.65942835346956,
+                "width": 128,
+                "height": 20,
+                "type": "solid"
+              },
+              {
+                "id": "b_3_coin_28",
+                "x": 3812,
+                "y": 217.65942835346956,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_g_29",
                 "x": 4132,
                 "y": 420,
                 "width": 256,
@@ -4964,7 +6917,7 @@
                 "type": "ground"
               },
               {
-                "id": "b_3_g_28",
+                "id": "b_3_g_30",
                 "x": 4452,
                 "y": 420,
                 "width": 256,
@@ -4972,23 +6925,23 @@
                 "type": "ground"
               },
               {
-                "id": "b_3_f_29",
+                "id": "b_3_f_31",
                 "x": 4452,
-                "y": 212.32706287550116,
+                "y": 221.73042810565948,
                 "width": 128,
                 "height": 20,
                 "type": "solid"
               },
               {
-                "id": "b_3_coin_30",
+                "id": "b_3_coin_32",
                 "x": 4452,
-                "y": 187.32706287550116,
+                "y": 183.73042810565948,
                 "width": 20,
                 "height": 20,
                 "type": "collectible"
               },
               {
-                "id": "b_3_g_31",
+                "id": "b_3_g_33",
                 "x": 4854,
                 "y": 420,
                 "width": 420,
@@ -4999,20 +6952,56 @@
             "enemies": [
               {
                 "id": "e_3_1",
-                "name": "Gang Member",
+                "name": "Dark Elf",
                 "x": 1892,
-                "y": 208.0321629982606,
+                "y": 186.6843840215427,
                 "hp": 80,
                 "maxHp": 80,
-                "damage": 10,
+                "damage": 12,
                 "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_2",
+                "name": "Wraith",
+                "x": 2532,
+                "y": 215.11239773462532,
+                "hp": 70,
+                "maxHp": 70,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_3",
+                "name": "Stone Golem",
+                "x": 2852,
+                "y": 218.01702446701412,
+                "hp": 200,
+                "maxHp": 200,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_4",
+                "name": "Shadow Knight",
+                "x": 3812,
+                "y": 229.65942835346956,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 25,
+                "type": "chase",
                 "alive": true,
                 "defeated": false
               }
             ],
             "boss": {
               "id": "boss_3",
-              "name": "Street King Mk.3",
+              "name": "Lich King Mk.3",
               "x": 4500,
               "y": 200,
               "hp": 200,
@@ -5028,32 +7017,32 @@
             "completionCondition": "All enemies defeated and boss destroyed."
           }
         ],
-        "winCondition": "Complete all missions in Surreal Void and defeat Street King Mk.3!",
+        "winCondition": "Complete all missions in Surreal Void and defeat Lich King Mk.3!",
         "loseCondition": "Fail to survive — health reaches zero.",
-        "hero": "Dream Explorer",
-        "world": "City in Surreal Void",
+        "hero": "Dragon Rider",
+        "world": "Fantasy in Surreal Void",
         "enemies": [
-          "Gang Member",
-          "Police Officer",
-          "Security Guard",
-          "Crime Boss Bodyguard"
+          "Dark Elf",
+          "Wraith",
+          "Stone Golem",
+          "Shadow Knight"
         ],
-        "boss": "Street King Mk.3",
+        "boss": "Lich King Mk.3",
         "objective": "Scale the heights and defeat the stage boss!",
         "powerups": [
-          "Dash",
-          "Double Jump",
-          "Throw"
+          "Fire Breath",
+          "Wing Dash",
+          "Dragon Roar"
         ],
         "mood": "Adventure",
         "difficulty": "Medium",
         "colors": {
-          "bg": "#0a0b10",
-          "accent": "#8b5cf6",
-          "secondary": "#06b6d4",
+          "bg": "#1e1b4b",
+          "accent": "#c084fc",
+          "secondary": "#f0abfc",
           "hazard": "#f43f5e",
-          "player": "#22c55e",
-          "text": "#ffffff"
+          "player": "#a855f7",
+          "text": "#faf5ff"
         },
         "physics": {
           "gravity": 300,
@@ -5062,16 +7051,1860 @@
           "bounce": 0.1
         },
         "stories": {
-          "intro": "You deploy as Dream Explorer. The battle begins in Surreal Void.",
-          "mission": "Mission: Scale the heights and defeat the stage boss! Defeat the fearsome Street King Mk.3!",
-          "ending": "Street King Mk.3 falls. Dream Explorer has conquered Surreal Void!"
+          "intro": "You deploy as Dragon Rider. The battle begins in Surreal Void.",
+          "mission": "Mission: Scale the heights and defeat the stage boss! Defeat the fearsome Lich King Mk.3!",
+          "ending": "Lich King Mk.3 falls. Dragon Rider has conquered Surreal Void!"
         },
         "assets": {
-          "hero": "/uploads/1781159854057_hero.svg",
-          "enemy": "/uploads/1781159854057_enemy.svg",
-          "boss": "/uploads/1781159854057_boss.svg",
-          "background": "/uploads/1781159854057_background.svg",
-          "collectible": "/uploads/1781159854057_collectible.svg"
+          "hero": "/uploads/1781255639458_hero.svg",
+          "enemy": "/uploads/1781255639458_enemy.svg",
+          "boss": "/uploads/1781255639458_boss.svg",
+          "background": "/uploads/1781255639458_background.svg",
+          "collectible": "/uploads/1781255639458_collectible.svg"
+        }
+      }
+    },
+    {
+      "id": "1781262897592",
+      "createdAt": "2026-06-12T11:15:06.585Z",
+      "userId": "1781255024568",
+      "title": "Shadow Run: Hyderabad Escape",
+      "description": "A young hacker steals secret data from a powerful AI syndicate and must escape through the streets of Hyderabad. Run across metro rooftops, dodge traffic, avoid drones, collect data chips, and survive relentless pursuit.",
+      "blueprint": {
+        "title": "Shadow Run: Hyderabad Escape",
+        "theme": "City in Hyderabad",
+        "genre": "driving",
+        "intent": {
+          "character": "Street Racer",
+          "characterType": "vehicle",
+          "vehicle": "Street Racer",
+          "location": "Hyderabad",
+          "weapons": [],
+          "actions": [
+            "Nitro Boost",
+            "Handbrake Drift",
+            "Ram"
+          ],
+          "scoreLabel": "SPEED",
+          "subType": "car"
+        },
+        "player": {
+          "name": "Street Racer",
+          "type": "vehicle",
+          "subType": "car",
+          "appearance": "Sleek custom race car",
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 250,
+          "jumpForce": -350,
+          "gravity": 0,
+          "colors": {
+            "bg": "#0f172a",
+            "accent": "#a855f7",
+            "secondary": "#06b6d4",
+            "hazard": "#ef4444",
+            "player": "#3b82f6",
+            "text": "#ffffff"
+          },
+          "abilities": [
+            "Nitro Boost",
+            "Handbrake Drift",
+            "Ram"
+          ]
+        },
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Hyderabad — Opening Grounds",
+            "objective": "Outrun 3 rivals and reach the checkpoint!",
+            "blocks": [
+              {
+                "id": "b_1_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Police Patrol Car",
+                "x": 1160,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Road Blocker Truck",
+                "x": 1620,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_4",
+                "name": "Speed Rival",
+                "x": 2080,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_5",
+                "name": "Traffic Sedan",
+                "x": 2540,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_6",
+                "name": "Police Patrol Car",
+                "x": 3000,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_7",
+                "name": "Road Blocker Truck",
+                "x": 3460,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_8",
+                "name": "Speed Rival",
+                "x": 3920,
+                "y": 360,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_9",
+                "name": "Traffic Sedan",
+                "x": 4380,
+                "y": 400,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "Apex Predator",
+              "x": 4500,
+              "y": 360,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Hyderabad — Midfield Assault",
+            "objective": "Outrun 6 rivals and reach the checkpoint!",
+            "blocks": [
+              {
+                "id": "b_2_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Police Patrol Car",
+                "x": 1200,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Road Blocker Truck",
+                "x": 1700,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_4",
+                "name": "Speed Rival",
+                "x": 2200,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_5",
+                "name": "Traffic Sedan",
+                "x": 2700,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_6",
+                "name": "Police Patrol Car",
+                "x": 3200,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_7",
+                "name": "Road Blocker Truck",
+                "x": 3700,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_8",
+                "name": "Speed Rival",
+                "x": 4200,
+                "y": 360,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "Apex Predator Mk.2",
+              "x": 4500,
+              "y": 360,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Hyderabad — Final Stronghold",
+            "objective": "Outrun 9 rivals and reach the checkpoint!",
+            "blocks": [
+              {
+                "id": "b_3_road_1",
+                "x": 200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_2",
+                "x": 600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_3",
+                "x": 1000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_4",
+                "x": 1400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_5",
+                "x": 1800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_6",
+                "x": 2200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_7",
+                "x": 2600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_8",
+                "x": 3000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_9",
+                "x": 3400,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_10",
+                "x": 3800,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_11",
+                "x": 4200,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_12",
+                "x": 4600,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_road_13",
+                "x": 5000,
+                "y": 370,
+                "width": 400,
+                "height": 90,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_fuel_14",
+                "x": 500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_15",
+                "x": 1000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_16",
+                "x": 1500,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_17",
+                "x": 2000,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_18",
+                "x": 2500,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_19",
+                "x": 3000,
+                "y": 400,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_20",
+                "x": 3500,
+                "y": 320,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_fuel_21",
+                "x": 4000,
+                "y": 360,
+                "width": 20,
+                "height": 20,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_3_1",
+                "name": "Traffic Sedan",
+                "x": 700,
+                "y": 320,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_2",
+                "name": "Police Patrol Car",
+                "x": 1240,
+                "y": 360,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_3",
+                "name": "Road Blocker Truck",
+                "x": 1780,
+                "y": 400,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_4",
+                "name": "Speed Rival",
+                "x": 2320,
+                "y": 320,
+                "hp": 90,
+                "maxHp": 90,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_5",
+                "name": "Traffic Sedan",
+                "x": 2860,
+                "y": 360,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 25,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_6",
+                "name": "Police Patrol Car",
+                "x": 3400,
+                "y": 400,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 30,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_7",
+                "name": "Road Blocker Truck",
+                "x": 3940,
+                "y": 320,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 35,
+                "type": "traffic",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_3",
+              "name": "Apex Predator Mk.3",
+              "x": 4500,
+              "y": 360,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
+        ],
+        "winCondition": "Complete all missions in Hyderabad and defeat Apex Predator Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Street Racer",
+        "world": "City in Hyderabad",
+        "enemies": [
+          "Traffic Sedan",
+          "Police Patrol Car",
+          "Road Blocker Truck",
+          "Speed Rival"
+        ],
+        "boss": "Apex Predator Mk.3",
+        "objective": "Outrun 9 rivals and reach the checkpoint!",
+        "powerups": [
+          "Nitro Boost",
+          "Handbrake Drift",
+          "Ram"
+        ],
+        "mood": "Adventure",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#0f172a",
+          "accent": "#a855f7",
+          "secondary": "#06b6d4",
+          "hazard": "#ef4444",
+          "player": "#3b82f6",
+          "text": "#ffffff"
+        },
+        "physics": {
+          "gravity": 0,
+          "speed": 250,
+          "jump": -350,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "You deploy as Street Racer. The battle begins in Hyderabad.",
+          "mission": "Mission: Outrun 9 rivals and reach the checkpoint! Defeat the fearsome Apex Predator Mk.3!",
+          "ending": "Apex Predator Mk.3 falls. Street Racer has conquered Hyderabad!"
+        },
+        "assets": {
+          "hero": "/uploads/1781262897592_hero.svg",
+          "enemy": "/uploads/1781262897592_enemy.svg",
+          "boss": "/uploads/1781262897592_boss.svg",
+          "background": "/uploads/1781262897592_background.svg",
+          "collectible": "/uploads/1781262897592_collectible.svg"
+        }
+      }
+    },
+    {
+      "id": "1781263013457",
+      "createdAt": "2026-06-12T11:16:55.865Z",
+      "userId": "1781255024568",
+      "title": "Cyber Ninja: Tokyo Rebellion",
+      "description": "In a futuristic Tokyo ruled by megacorporations, a cyber-enhanced ninja rises against oppression. Explore neon districts, complete stealth missions, battle robotic enemies, and uncover a conspiracy threatening humanity.",
+      "blueprint": {
+        "title": "Cyber Ninja: Tokyo Rebellion",
+        "theme": "Ninja in Tokyo",
+        "genre": "battle_royale",
+        "intent": {
+          "character": "Shadow Ninja",
+          "characterType": "human",
+          "vehicle": null,
+          "location": "Tokyo",
+          "weapons": [],
+          "actions": [
+            "Wall Jump",
+            "Shuriken Throw",
+            "Shadow Dash"
+          ],
+          "scoreLabel": "CHI",
+          "subType": "ninja"
+        },
+        "player": {
+          "name": "Shadow Ninja",
+          "type": "human",
+          "subType": "ninja",
+          "appearance": "Dark hooded ninja with katana and mask",
+          "hp": 100,
+          "maxHp": 100,
+          "speed": 220,
+          "jumpForce": -350,
+          "gravity": 300,
+          "colors": {
+            "bg": "#030712",
+            "accent": "#ec4899",
+            "secondary": "#06b6d4",
+            "hazard": "#ef4444",
+            "player": "#10b981",
+            "text": "#f3f4f6"
+          },
+          "abilities": [
+            "Wall Jump",
+            "Shuriken Throw",
+            "Shadow Dash"
+          ]
+        },
+        "stages": [
+          {
+            "stageNumber": 1,
+            "environment": "Tokyo — Opening Grounds",
+            "objective": "Eliminate all 3 rivals and stay inside the zone.",
+            "blocks": [
+              {
+                "id": "b_1_ground_1",
+                "x": 200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_2",
+                "x": 600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_3",
+                "x": 1000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_4",
+                "x": 1400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_5",
+                "x": 1800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_6",
+                "x": 2200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_7",
+                "x": 2600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_8",
+                "x": 3000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_9",
+                "x": 3400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_10",
+                "x": 3800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_11",
+                "x": 4200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_12",
+                "x": 4600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_ground_13",
+                "x": 5000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_1_loot_14",
+                "x": 600,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_15",
+                "x": 1300,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_16",
+                "x": 2000,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_17",
+                "x": 2700,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_18",
+                "x": 3400,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_1_loot_19",
+                "x": 4100,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_1_1",
+                "name": "Rival Sniper",
+                "x": 800,
+                "y": 389,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_2",
+                "name": "Assault Trooper",
+                "x": 1380,
+                "y": 389,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_3",
+                "name": "Apex Hunter",
+                "x": 1960,
+                "y": 389,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_4",
+                "name": "Recon Agent",
+                "x": 2540,
+                "y": 389,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 12,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_5",
+                "name": "Rival Sniper",
+                "x": 3120,
+                "y": 389,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_6",
+                "name": "Assault Trooper",
+                "x": 3700,
+                "y": 389,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_1_7",
+                "name": "Apex Hunter",
+                "x": 4280,
+                "y": 389,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_1",
+              "name": "Warlord X",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 2,
+            "environment": "Tokyo — Midfield Assault",
+            "objective": "Eliminate all 4 rivals and stay inside the zone.",
+            "blocks": [
+              {
+                "id": "b_2_ground_1",
+                "x": 200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_2",
+                "x": 600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_3",
+                "x": 1000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_4",
+                "x": 1400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_5",
+                "x": 1800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_6",
+                "x": 2200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_7",
+                "x": 2600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_8",
+                "x": 3000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_9",
+                "x": 3400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_10",
+                "x": 3800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_11",
+                "x": 4200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_12",
+                "x": 4600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_ground_13",
+                "x": 5000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_2_loot_14",
+                "x": 600,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_15",
+                "x": 1300,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_16",
+                "x": 2000,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_17",
+                "x": 2700,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_18",
+                "x": 3400,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_2_loot_19",
+                "x": 4100,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_2_1",
+                "name": "Rival Sniper",
+                "x": 800,
+                "y": 389,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_2",
+                "name": "Assault Trooper",
+                "x": 1380,
+                "y": 389,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_3",
+                "name": "Apex Hunter",
+                "x": 1960,
+                "y": 389,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_4",
+                "name": "Recon Agent",
+                "x": 2540,
+                "y": 389,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 12,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_5",
+                "name": "Rival Sniper",
+                "x": 3120,
+                "y": 389,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_6",
+                "name": "Assault Trooper",
+                "x": 3700,
+                "y": 389,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_2_7",
+                "name": "Apex Hunter",
+                "x": 4280,
+                "y": 389,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_2",
+              "name": "Warlord X Mk.2",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          },
+          {
+            "stageNumber": 3,
+            "environment": "Tokyo — Final Stronghold",
+            "objective": "Eliminate all 5 rivals and stay inside the zone.",
+            "blocks": [
+              {
+                "id": "b_3_ground_1",
+                "x": 200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_2",
+                "x": 600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_3",
+                "x": 1000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_4",
+                "x": 1400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_5",
+                "x": 1800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_6",
+                "x": 2200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_7",
+                "x": 2600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_8",
+                "x": 3000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_9",
+                "x": 3400,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_10",
+                "x": 3800,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_11",
+                "x": 4200,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_12",
+                "x": 4600,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_ground_13",
+                "x": 5000,
+                "y": 420,
+                "width": 400,
+                "height": 30,
+                "type": "ground"
+              },
+              {
+                "id": "b_3_loot_14",
+                "x": 600,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_15",
+                "x": 1300,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_16",
+                "x": 2000,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_17",
+                "x": 2700,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_18",
+                "x": 3400,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              },
+              {
+                "id": "b_3_loot_19",
+                "x": 4100,
+                "y": 395,
+                "width": 30,
+                "height": 30,
+                "type": "collectible"
+              }
+            ],
+            "enemies": [
+              {
+                "id": "e_3_1",
+                "name": "Rival Sniper",
+                "x": 800,
+                "y": 389,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_2",
+                "name": "Assault Trooper",
+                "x": 1380,
+                "y": 389,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_3",
+                "name": "Apex Hunter",
+                "x": 1960,
+                "y": 389,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_4",
+                "name": "Recon Agent",
+                "x": 2540,
+                "y": 389,
+                "hp": 80,
+                "maxHp": 80,
+                "damage": 12,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_5",
+                "name": "Rival Sniper",
+                "x": 3120,
+                "y": 389,
+                "hp": 100,
+                "maxHp": 100,
+                "damage": 20,
+                "type": "patrol",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_6",
+                "name": "Assault Trooper",
+                "x": 3700,
+                "y": 389,
+                "hp": 120,
+                "maxHp": 120,
+                "damage": 15,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              },
+              {
+                "id": "e_3_7",
+                "name": "Apex Hunter",
+                "x": 4280,
+                "y": 389,
+                "hp": 150,
+                "maxHp": 150,
+                "damage": 18,
+                "type": "chase",
+                "alive": true,
+                "defeated": false
+              }
+            ],
+            "boss": {
+              "id": "boss_3",
+              "name": "Warlord X Mk.3",
+              "x": 4500,
+              "y": 200,
+              "hp": 200,
+              "maxHp": 200,
+              "phases": [
+                "Phase 1: HP 200-140",
+                "Phase 2: HP 139-70",
+                "Phase 3: HP 69-0"
+              ],
+              "alive": true,
+              "defeated": false
+            },
+            "completionCondition": "All enemies defeated and boss destroyed."
+          }
+        ],
+        "winCondition": "Complete all missions in Tokyo and defeat Warlord X Mk.3!",
+        "loseCondition": "Fail to survive — health reaches zero.",
+        "hero": "Shadow Ninja",
+        "world": "Ninja in Tokyo",
+        "enemies": [
+          "Rival Sniper",
+          "Assault Trooper",
+          "Apex Hunter",
+          "Recon Agent"
+        ],
+        "boss": "Warlord X Mk.3",
+        "objective": "Eliminate all 5 rivals and stay inside the zone.",
+        "powerups": [
+          "Wall Jump",
+          "Shuriken Throw",
+          "Shadow Dash"
+        ],
+        "mood": "Adventure",
+        "difficulty": "Medium",
+        "colors": {
+          "bg": "#030712",
+          "accent": "#ec4899",
+          "secondary": "#06b6d4",
+          "hazard": "#ef4444",
+          "player": "#10b981",
+          "text": "#f3f4f6"
+        },
+        "physics": {
+          "gravity": 300,
+          "speed": 220,
+          "jump": -350,
+          "bounce": 0.1
+        },
+        "stories": {
+          "intro": "You deploy as Shadow Ninja. The battle begins in Tokyo.",
+          "mission": "Mission: Eliminate all 5 rivals and stay inside the zone. Defeat the fearsome Warlord X Mk.3!",
+          "ending": "Warlord X Mk.3 falls. Shadow Ninja has conquered Tokyo!"
+        },
+        "assets": {
+          "hero": "/uploads/1781263013457_hero.svg",
+          "enemy": "/uploads/1781263013457_enemy.svg",
+          "boss": "/uploads/1781263013457_boss.svg",
+          "background": "/uploads/1781263013457_background.svg",
+          "collectible": "/uploads/1781263013457_collectible.svg"
         }
       }
     }

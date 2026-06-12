@@ -20,8 +20,8 @@ const testPrompts = [
   // Adventure
   {
     title: 'Pirate treasure adventure',
-    description: "Solve puzzles, find treasure maps, swing on vines, and reclaim gold chests in Dead Man's Cove.",
-    expectedGenre: 'adventure',
+    description: "Explore caverns, find treasure maps, swing on vines, and reclaim gold chests in Dead Man's Cove.",
+    expectedGenre: 'platformer',
     expectedLocation: 'Surreal Void',
   },
   // Survival
@@ -64,7 +64,7 @@ const testPrompts = [
   {
     title: 'Spider-Man in New York',
     description: 'Spider-Man swinging through New York doing missions and helping NPCs.',
-    expectedGenre: 'open_world',
+    expectedGenre: 'platformer',
     expectedLocation: 'New York',
   },
 ];

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Award, Trophy, Clock, Zap, User, Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function ProfilePage({ user, scores }) {
+  const { t } = useTranslation();
+
   // Take top 10 scores for global leaderboard
   const globalLeaderboard = scores.slice(0, 10);
 
@@ -16,11 +19,10 @@ export default function ProfilePage({ user, scores }) {
       <div className="flex flex-col gap-1.5">
         <h2 className="text-3xl font-black text-white font-[var(--title-font)] uppercase flex items-center gap-2">
           <Trophy className="w-7 h-7 text-yellow-400 animate-float" />
-          LEADERBOARD & ARCHIVE
+          {t('leaderboardTitle').toUpperCase()}
         </h2>
         <p className="text-xs text-gray-400 max-w-xl font-medium">
-          Check out the global rankings, top scores across all synthesized dimensions, and your active badge
-          progression.
+          {t('leaderboardDesc')}
         </p>
       </div>
 
@@ -28,7 +30,7 @@ export default function ProfilePage({ user, scores }) {
         {/* Left Column: Leaderboard Table */}
         <div className="lg:col-span-8 flex flex-col gap-5">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider font-[var(--title-font)] flex items-center gap-2">
-            Global Standings
+            {t('globalStandings')}
           </h3>
 
           <div className="glass-panel rounded-2xl overflow-hidden border border-white/5 bg-white/5">
@@ -36,12 +38,12 @@ export default function ProfilePage({ user, scores }) {
               <table className="w-full text-xs text-left border-collapse">
                 <thead>
                   <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-bold uppercase tracking-wider">
-                    <th className="px-6 py-4 text-center">Rank</th>
-                    <th className="px-6 py-4">Player</th>
-                    <th className="px-6 py-4">Dream Title</th>
-                    <th className="px-6 py-4 text-center">Difficulty</th>
-                    <th className="px-6 py-4 text-right">Score</th>
-                    <th className="px-6 py-4 text-right">Time</th>
+                    <th className="px-6 py-4 text-center">{t('tableRank')}</th>
+                    <th className="px-6 py-4">{t('tablePlayer')}</th>
+                    <th className="px-6 py-4">{t('tableDreamTitle')}</th>
+                    <th className="px-6 py-4 text-center">{t('tableDifficulty')}</th>
+                    <th className="px-6 py-4 text-right">{t('tableScore')}</th>
+                    <th className="px-6 py-4 text-right">{t('tableTime')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
@@ -67,7 +69,7 @@ export default function ProfilePage({ user, scores }) {
                           <td className="px-6 py-4 font-bold text-white">
                             {scoreItem.username}{' '}
                             {isSelf && (
-                              <span className="text-[10px] text-[var(--accent-color)] font-normal ml-1">(You)</span>
+                              <span className="text-[10px] text-[var(--accent-color)] font-normal ml-1">({t('youLabel')})</span>
                             )}
                           </td>
                           <td className="px-6 py-4 text-gray-300 max-w-[180px] truncate">{scoreItem.dreamTitle}</td>
@@ -92,7 +94,7 @@ export default function ProfilePage({ user, scores }) {
                   ) : (
                     <tr>
                       <td colSpan="6" className="px-6 py-8 text-center text-gray-500 font-medium">
-                        No high scores submitted yet. Become the first by completing a game!
+                        {t('noScoresYet')}
                       </td>
                     </tr>
                   )}
@@ -105,7 +107,7 @@ export default function ProfilePage({ user, scores }) {
         {/* Right Column: Mini profile stats */}
         <div className="lg:col-span-4 flex flex-col gap-6">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider font-[var(--title-font)] flex items-center gap-2">
-            My Terminal Profile
+            {t('terminalProfileTitle')}
           </h3>
 
           <div className="glass-panel p-6 rounded-2xl flex flex-col gap-5">
@@ -121,11 +123,11 @@ export default function ProfilePage({ user, scores }) {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/5 p-3 rounded-xl border border-white/5 text-center">
-                <span className="text-[9px] text-gray-400 uppercase font-bold">Games Cleared</span>
+                <span className="text-[9px] text-gray-400 uppercase font-bold">{t('gamesClearedLabel')}</span>
                 <h4 className="text-xl font-black text-white mt-1">{totalCompleted}</h4>
               </div>
               <div className="bg-white/5 p-3 rounded-xl border border-white/5 text-center">
-                <span className="text-[9px] text-gray-400 uppercase font-bold">Personal Best</span>
+                <span className="text-[9px] text-gray-400 uppercase font-bold">{t('personalBestLabel')}</span>
                 <h4 className="text-xl font-black text-white mt-1">{bestScore} pts</h4>
               </div>
             </div>
@@ -134,14 +136,14 @@ export default function ProfilePage({ user, scores }) {
               <div className="flex justify-between items-center text-xs">
                 <span className="text-gray-400 flex items-center gap-1">
                   <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                  Active Tier
+                  {t('activeTierLabel')}
                 </span>
                 <span className="font-bold text-[var(--accent-color)]">
                   {totalCompleted >= 5
-                    ? 'Master Architect'
+                    ? t('tier_master')
                     : totalCompleted >= 2
-                      ? 'Novice Weaver'
-                      : 'Synthesizer Trainee'}
+                      ? t('tier_novice')
+                      : t('tier_trainee')}
                 </span>
               </div>
             </div>

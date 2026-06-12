@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Play, Trash2, GitMerge, Sparkles, BookOpen, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuseDreams, isFusing = false }) {
+  const { t } = useTranslation();
   const [selectedForFusion, setSelectedForFusion] = useState([]);
   const [fusionError, setFusionError] = useState('');
 
@@ -25,7 +27,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
       await onFuseDreams(selectedForFusion[0], selectedForFusion[1]);
       setSelectedForFusion([]);
     } catch (err) {
-      setFusionError(err.message || 'Dream fusion failed');
+      setFusionError(err.message || t('generationError'));
     }
   };
 
@@ -35,10 +37,10 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
       <div className="flex flex-col gap-1.5">
         <h2 className="text-3xl font-black text-white font-[var(--title-font)] uppercase flex items-center gap-2">
           <BookOpen className="w-7 h-7 text-[var(--accent-color)]" />
-          COGNITIVE DREAM LOGS
+          {t('cognitiveLogsTitle').toUpperCase()}
         </h2>
         <p className="text-xs text-gray-400 max-w-xl font-medium">
-          A historical record of all your compiled dreams. Select two logs to synthesize a hybrid dimension.
+          {t('cognitiveLogsDesc')}
         </p>
       </div>
 
@@ -52,15 +54,14 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
           </div>
           <div className="flex flex-col gap-1 text-xs">
             <h4 className="font-extrabold text-sm text-white uppercase tracking-wider font-[var(--title-font)] flex items-center gap-1.5">
-              Dream Fusion Chamber
+              {t('fusionChamberTitle')}
             </h4>
             <p className="text-gray-400 max-w-lg leading-relaxed">
-              Toggle checkboxes on any two dreams below to merge their variables (physics, enemies, storylines) into a
-              hybrid game.
+              {t('fusionChamberDesc')}
             </p>
             {selectedForFusion.length > 0 && (
               <span className="text-[var(--accent-color)] font-bold uppercase tracking-wider mt-1">
-                Selected: {selectedForFusion.length} / 2 dreams
+                {t('selectedDreamsCount', { count: selectedForFusion.length })}
               </span>
             )}
             {fusionError && (
@@ -78,7 +79,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
           className="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-3 rounded-xl text-xs tracking-wider transition-all disabled:opacity-30 disabled:hover:bg-purple-600 shadow-md shadow-purple-950 border border-purple-500/30 flex items-center gap-2 cursor-pointer font-[var(--title-font)]"
         >
           <Sparkles className="w-4 h-4" />
-          {isFusing ? 'FUSING MATRIX...' : 'FUSE CHOSEN DREAMS'}
+          {isFusing ? t('fusingMatrix').toUpperCase() : t('fuseChosenDreams').toUpperCase()}
         </button>
       </div>
 
@@ -115,7 +116,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
                     </span>
                     {dream.isFused && (
                       <span className="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-400 border border-purple-500/20">
-                        Fused
+                        {t('fusedLabel')}
                       </span>
                     )}
                   </div>
@@ -135,7 +136,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
                     <button
                       onClick={() => onDeleteDream(dream.id)}
                       className="p-2.5 rounded-lg border border-transparent hover:border-red-500/30 hover:bg-red-500/10 text-gray-500 hover:text-red-400 transition-all cursor-pointer"
-                      title="Delete Dream"
+                      title={t('deleteDream')}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -145,7 +146,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
                       className="px-4 py-2.5 rounded-lg bg-[var(--accent-color)] hover:opacity-95 text-white text-xs font-bold tracking-wider flex items-center gap-1 cursor-pointer transition-all shadow-md"
                     >
                       <Play className="w-3.5 h-3.5 fill-white" />
-                      PLAY
+                      {t('launchGame').toUpperCase()}
                     </button>
                   </div>
                 </div>
@@ -155,7 +156,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
         </div>
       ) : (
         <div className="glass-panel p-16 rounded-2xl text-center border border-dashed border-white/10 text-gray-400 text-sm">
-          Your dream log is empty. Head to the generator, record your dreams, and they will be archived here.
+          {t('emptyLogDesc')}
         </div>
       )}
     </div>

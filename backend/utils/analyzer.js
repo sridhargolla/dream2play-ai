@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
+const { callAI } = require('./aiProvider');
 
 const CODEX_GAME_SYSTEM_PROMPT = `
 You are a senior game architect. Analyze the user's prompt and generate a complete, playable staged game blueprint in JSON.
@@ -1482,8 +1483,10 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
     throw new Error('Blueprint must be a JSON object.');
   }
 
-  const title = rawBlueprint.title || 'Untitled Dream Game';
-  const theme = rawBlueprint.theme || 'Dream Realm';
+  const lang = themeData.lang || 'en';
+
+  const title = localTranslate(rawBlueprint.title || 'Untitled Dream Game', lang);
+  const theme = localTranslate(rawBlueprint.theme || 'Dream Realm', lang);
   const genre = normalizeGenre(rawBlueprint.genre || 'platformer');
 
   const intent = rawBlueprint.intent || {
@@ -1497,12 +1500,16 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
     subType: 'human_male',
   };
 
+  intent.character = localTranslate(intent.character, lang);
+  intent.location = localTranslate(intent.location, lang);
+  if (intent.vehicle) intent.vehicle = localTranslate(intent.vehicle, lang);
+
   const player = rawBlueprint.player || {};
   const normalizedPlayer = {
-    name: player.name || intent.character || 'Explorer',
+    name: localTranslate(player.name || intent.character || 'Explorer', lang),
     type: player.type || intent.characterType || 'human',
     subType: player.subType || intent.subType || 'human_male',
-    appearance: player.appearance || 'Standard appearance',
+    appearance: localTranslate(player.appearance || 'Standard appearance', lang),
     hp: Number.isFinite(player.hp) ? player.hp : 100,
     maxHp: Number.isFinite(player.maxHp) ? player.maxHp : 100,
     speed: Number.isFinite(player.speed) ? player.speed : 220,
@@ -1544,7 +1551,7 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
 
     const enemies = (Array.isArray(stage.enemies) ? stage.enemies : []).map((e, eidx) => ({
       id: e.id || `e_${stageNumber}_${eidx}`,
-      name: e.name || 'Shadow Scout',
+      name: localTranslate(e.name || 'Shadow Scout', lang),
       x: Number.isFinite(e.x) ? e.x : 300 + eidx * 400,
       y: Number.isFinite(e.y) ? e.y : 390,
       hp: Number.isFinite(e.hp) ? e.hp : 100,
@@ -1559,7 +1566,7 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
     const boss = rawBoss
       ? {
           id: rawBoss.id || `boss_${stageNumber}`,
-          name: rawBoss.name || 'Stage Overlord',
+          name: localTranslate(rawBoss.name || 'Stage Overlord', lang),
           x: Number.isFinite(rawBoss.x) ? rawBoss.x : 2650,
           y: Number.isFinite(rawBoss.y) ? rawBoss.y : 200,
           hp: 200,
@@ -1572,12 +1579,12 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
 
     return {
       stageNumber,
-      environment: stage.environment || `${intent.location} Stage ${stageNumber}`,
-      objective: stage.objective || (boss ? `Survive and defeat ${boss.name}.` : 'Complete the stage objective.'),
+      environment: localTranslate(stage.environment || `${intent.location} Stage ${stageNumber}`, lang),
+      objective: localTranslate(stage.objective || (boss ? `Survive and defeat ${boss.name}.` : 'Complete the stage objective.'), lang),
       blocks,
       enemies,
       boss,
-      completionCondition: stage.completionCondition || 'Defeat the boss and exit.',
+      completionCondition: localTranslate(stage.completionCondition || 'Defeat the boss and exit.', lang),
     };
   });
 
@@ -1585,15 +1592,42 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
   const allEnemyNames = normalizedStages.flatMap((s) => s.enemies.map((e) => e.name));
   const scoreLabel = intent.scoreLabel || resolveScoreLabel(resolveTheme(title + ' ' + theme), genre);
 
-  const intro = `You deploy as ${normalizedPlayer.name}. The battle begins in ${intent.location}.`;
-  const mission =
+  const translatedPlayerName = normalizedPlayer.name;
+  const translatedLocation = intent.location;
+  const translatedObjective = finalStage.objective;
+  const translatedBossName = finalStage.boss?.name || (genre === 'puzzle' ? 'Puzzle Guardian' : 'Stage Overlord');
+
+  let intro = `You deploy as ${translatedPlayerName}. The battle begins in ${translatedLocation}.`;
+  let mission =
     genre === 'puzzle'
-      ? `Mission: ${finalStage.objective}`
-      : `Mission: ${finalStage.objective} Defeat the fearsome ${finalStage.boss?.name || 'stage boss'}!`;
-  const ending =
+      ? `Mission: ${translatedObjective}`
+      : `Mission: ${translatedObjective} Defeat the fearsome ${translatedBossName}!`;
+  let ending =
     genre === 'puzzle'
-      ? `${normalizedPlayer.name} solved every puzzle in ${intent.location}!`
-      : `${finalStage.boss?.name || 'The boss'} falls. ${normalizedPlayer.name} has conquered ${intent.location}!`;
+      ? `${translatedPlayerName} solved every puzzle in ${translatedLocation}!`
+      : `${translatedBossName} falls. ${translatedPlayerName} has conquered ${translatedLocation}!`;
+
+  if (lang === 'hi') {
+    intro = `आप ${translatedPlayerName} के रूप में तैनात होते हैं। लड़ाई ${translatedLocation} में शुरू होती है।`;
+    mission =
+      genre === 'puzzle'
+        ? `मिशन: ${translatedObjective}`
+        : `मिशन: ${translatedObjective} भयानक ${translatedBossName} को हराएं!`;
+    ending =
+      genre === 'puzzle'
+        ? `${translatedPlayerName} ने ${translatedLocation} में हर पहेली को हल कर दिया!`
+        : `${translatedBossName} हार गया। ${translatedPlayerName} ने ${translatedLocation} पर विजय प्राप्त कर ली है!`;
+  } else if (lang === 'te') {
+    intro = `మీరు ${translatedPlayerName}గా రంగంలోకి దిగారు. యుద్ధం ${translatedLocation}లో ప్రారంభమవుతుంది.`;
+    mission =
+      genre === 'puzzle'
+        ? `లక్ష్యం: ${translatedObjective}`
+        : `లక్ష్యం: ${translatedObjective} భయంకరమైన ${translatedBossName}ని ఓడించండి!`;
+    ending =
+      genre === 'puzzle'
+        ? `${translatedPlayerName} ${translatedLocation}లోని ప్రతి పజిల్‌ను పరిష్కరించారు!`
+        : `${translatedBossName} ఓడిపోయాడు. ${translatedPlayerName} ${translatedLocation}ను జయించారు!`;
+  }
 
   return {
     title,
@@ -1602,12 +1636,14 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
     intent: { ...intent, scoreLabel },
     player: normalizedPlayer,
     stages: normalizedStages,
-    winCondition:
+    winCondition: localTranslate(
       rawBlueprint.winCondition ||
       (genre === 'puzzle'
         ? `Clear all ${normalizedStages.length} puzzle stages.`
         : `Defeat ${finalStage.boss?.name || 'the boss'} and clear all ${normalizedStages.length} stages.`),
-    loseCondition: rawBlueprint.loseCondition || 'Player health reduces to 0.',
+      lang
+    ),
+    loseCondition: localTranslate(rawBlueprint.loseCondition || 'Player health reduces to 0.', lang),
 
     // UI compatibility
     hero: normalizedPlayer.name,
@@ -1633,14 +1669,30 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
 // MAIN ENTRY POINT
 // ============================================================
 
-async function analyzeDream(title, description, apiKey = process.env.OPENAI_API_KEY) {
+async function analyzeDream(title, description, aiConfig = {}, lang = 'en') {
+  // Backwards compat: if a bare string key was passed, wrap it
+  if (typeof aiConfig === 'string') {
+    aiConfig = { provider: 'openai', apiKey: aiConfig || process.env.OPENAI_API_KEY };
+  }
+  const { provider = 'openai', apiKey = process.env.OPENAI_API_KEY, model, endpoint } = aiConfig;
+
   const combinedText = `${title} ${description}`;
-  if (!apiKey) {
-    console.log('OpenAI API key missing. Using local dynamic dream analyzer.');
-    return analyzeDreamLocally(title, description);
+
+  // No key and not a keyless provider (ollama/local) → use local analyzer
+  const needsKey = provider === 'openai' || provider === 'anthropic' || provider === 'gemini';
+  if (needsKey && !apiKey) {
+    console.log(`[AI] No API key for provider '${provider}'. Using local analyzer.`);
+    return analyzeDreamLocally(title, description, lang);
   }
 
   try {
+    let systemPrompt = CODEX_GAME_SYSTEM_PROMPT;
+    if (lang === 'hi') {
+      systemPrompt += '\nIMPORTANT: Generate all user-facing strings (such as "title", "theme", "intent.character", "player.name", "player.appearance", "stages[].environment", "stages[].objective", "stages[].boss.name", "stages[].completionCondition", "winCondition", "loseCondition", and all storylines/descriptions) in Hindi (using Devanagari script). JSON keys and other structural fields must remain exactly in English as defined in the schema.';
+    } else if (lang === 'te') {
+      systemPrompt += '\nIMPORTANT: Generate all user-facing strings (such as "title", "theme", "intent.character", "player.name", "player.appearance", "stages[].environment", "stages[].objective", "stages[].boss.name", "stages[].completionCondition", "winCondition", "loseCondition", and all storylines/descriptions) in Telugu (using Telugu script). JSON keys and other structural fields must remain exactly in English as defined in the schema.';
+    }
+
     const prompt = `
       User Prompt:
       Dream Title: "${title}"
@@ -1649,31 +1701,20 @@ async function analyzeDream(title, description, apiKey = process.env.OPENAI_API_
       ${BLUEPRINT_SCHEMA_PROMPT}
     `;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: CODEX_GAME_SYSTEM_PROMPT },
-          { role: 'user', content: prompt },
-        ],
-        temperature: 0.85,
-      }),
-    });
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: prompt },
+    ];
 
-    if (!response.ok) throw new Error(`OpenAI API responded with status ${response.status}`);
+    console.log(`[AI] Calling provider: ${provider}, model: ${model || 'default'}`);
+    let rawContent = await callAI({ provider, apiKey, model, endpoint }, messages);
 
-    const data = await response.json();
-    let cleanJson = data.choices[0].message.content.trim();
-    if (cleanJson.startsWith('```json')) cleanJson = cleanJson.substring(7);
-    if (cleanJson.startsWith('```')) cleanJson = cleanJson.substring(3);
-    if (cleanJson.endsWith('```')) cleanJson = cleanJson.substring(0, cleanJson.length - 3);
+    // Strip markdown code fences if present
+    if (rawContent.startsWith('```json')) rawContent = rawContent.substring(7);
+    if (rawContent.startsWith('```')) rawContent = rawContent.substring(3);
+    if (rawContent.endsWith('```')) rawContent = rawContent.substring(0, rawContent.length - 3);
 
-    const parsed = JSON.parse(cleanJson.trim());
+    const parsed = JSON.parse(rawContent.trim());
     checkThematicValidation(parsed, combinedText);
 
     // Inject dynamic fields the LLM might miss
@@ -1692,11 +1733,11 @@ async function analyzeDream(title, description, apiKey = process.env.OPENAI_API_
       parsed.intent.subType = hero.subType;
     }
 
-    return validateAndNormalizeBlueprint(parsed, { colors: resolveColors(extractLocation(text), theme, genre) });
+    return validateAndNormalizeBlueprint(parsed, { colors: resolveColors(extractLocation(text), theme, genre), lang });
   } catch (err) {
-    console.error('Failed to generate dream using OpenAI API:', err.message);
-    console.log('Falling back to local dynamic dream analyzer.');
-    return analyzeDreamLocally(title, description);
+    console.error(`[AI] Failed to generate dream using provider '${provider}':`, err.message);
+    console.log('[AI] Falling back to local dynamic dream analyzer.');
+    return analyzeDreamLocally(title, description, lang);
   }
 }
 
@@ -1704,12 +1745,21 @@ async function analyzeDream(title, description, apiKey = process.env.OPENAI_API_
 // DREAM FUSION
 // ============================================================
 
-async function fuseDreams(dream1, dream2, apiKey = process.env.OPENAI_API_KEY) {
+async function fuseDreams(dream1, dream2, aiConfig = {}, lang = 'en') {
+  // Backwards compat
+  if (typeof aiConfig === 'string') {
+    aiConfig = { provider: 'openai', apiKey: aiConfig || process.env.OPENAI_API_KEY };
+  }
+  const { provider = 'openai', apiKey = process.env.OPENAI_API_KEY, model, endpoint } = aiConfig;
+
   const combinedText = `${dream1.title} ${dream1.description} fused with ${dream2.title} ${dream2.description}`;
-  if (!apiKey) {
+  const needsKey = provider === 'openai' || provider === 'anthropic' || provider === 'gemini';
+
+  if (needsKey && !apiKey) {
     const result = analyzeDreamLocally(
       `Fused: ${dream1.title.slice(0, 15)} + ${dream2.title.slice(0, 15)}`,
-      combinedText
+      combinedText,
+      lang
     );
     result.player.name = `${dream1.blueprint.hero} / ${dream2.blueprint.hero} Chimera`;
     result.hero = result.player.name;
@@ -1719,6 +1769,13 @@ async function fuseDreams(dream1, dream2, apiKey = process.env.OPENAI_API_KEY) {
   }
 
   try {
+    let systemPrompt = CODEX_GAME_SYSTEM_PROMPT;
+    if (lang === 'hi') {
+      systemPrompt += '\nIMPORTANT: Generate all user-facing strings in Hindi (using Devanagari script). JSON keys and structural fields must remain in English.';
+    } else if (lang === 'te') {
+      systemPrompt += '\nIMPORTANT: Generate all user-facing strings in Telugu (using Telugu script). JSON keys and structural fields must remain in English.';
+    }
+
     const prompt = `
       Combine the following two dream game blueprints into one single, coherent complete staged game blueprint.
       
@@ -1728,47 +1785,348 @@ async function fuseDreams(dream1, dream2, apiKey = process.env.OPENAI_API_KEY) {
       ${BLUEPRINT_SCHEMA_PROMPT}
     `;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: CODEX_GAME_SYSTEM_PROMPT },
-          { role: 'user', content: prompt },
-        ],
-        temperature: 0.85,
-      }),
-    });
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: prompt },
+    ];
 
-    if (!response.ok) throw new Error(`OpenAI API Fusion responded with status ${response.status}`);
+    console.log(`[AI] Fusing dreams via provider: ${provider}, model: ${model || 'default'}`);
+    let rawContent = await callAI({ provider, apiKey, model, endpoint }, messages);
 
-    const data = await response.json();
-    let cleanJson = data.choices[0].message.content.trim();
-    if (cleanJson.startsWith('```json')) cleanJson = cleanJson.substring(7);
-    if (cleanJson.startsWith('```')) cleanJson = cleanJson.substring(3);
-    if (cleanJson.endsWith('```')) cleanJson = cleanJson.substring(0, cleanJson.length - 3);
+    if (rawContent.startsWith('```json')) rawContent = rawContent.substring(7);
+    if (rawContent.startsWith('```')) rawContent = rawContent.substring(3);
+    if (rawContent.endsWith('```')) rawContent = rawContent.substring(0, rawContent.length - 3);
 
-    const parsed = JSON.parse(cleanJson.trim());
+    const parsed = JSON.parse(rawContent.trim());
     checkThematicValidation(parsed, combinedText);
 
     const text = combinedText.toLowerCase();
     const genre = classifyGenre(text);
     const theme = resolveTheme(text);
 
-    return validateAndNormalizeBlueprint(parsed, { colors: resolveColors(extractLocation(text), theme, genre) });
+    return validateAndNormalizeBlueprint(parsed, { colors: resolveColors(extractLocation(text), theme, genre), lang });
   } catch (err) {
-    console.error('Failed to fuse dreams using OpenAI API:', err.message);
-    const result = analyzeDreamLocally('Fused Dream', combinedText);
+    console.error(`[AI] Failed to fuse dreams using provider '${provider}':`, err.message);
+    const result = analyzeDreamLocally('Fused Dream', combinedText, lang);
     result.player.name = `${dream1.blueprint.hero} / ${dream2.blueprint.hero} Chimera`;
     result.hero = result.player.name;
     result.theme = `Fused: ${dream1.title} x ${dream2.title}`;
     result.world = result.theme;
     return result;
   }
+}
+
+// ============================================================
+// TRANSLATION DICTIONARY AND HELPER FOR LOCAL FALLBACK
+// ============================================================
+
+const LOCAL_TRANSLATIONS = {
+  hi: {
+    // hero names
+    "Survivor": "सरवाइवर",
+    "Cosmic Drifter": "कॉस्मिक ड्रिफ्टर",
+    "Shadow Ninja": "शैडो निंजा",
+    "Combat Soldier": "कॉम्बैट सोल्जर",
+    "Brave Knight": "बहादुर नाइट",
+    "Sea Corsair": "समुद्री डाकू",
+    "Apex Hero": "एपेक्स हीरो",
+    "Street Racer": "स्ट्रीट रेसर",
+    "Moto Racer": "मोटो रेसर",
+    "Dream Explorer": "स्वप्न खोजी",
+    // boss names
+    "Street King": "स्ट्रीट किंग",
+    "Mutant Titan": "म्यूटेंट टाइटन",
+    "Cosmic Overlord": "कॉस्मिक ओवरलॉर्ड",
+    "Shadow Master": "शैडो मास्टर",
+    "General Iron": "जनरल आयरन",
+    "Lich King": "लिच किंग",
+    "Davy's Wrath": "डेवी का क्रोध",
+    "Apex Predator": "एपेक्स प्रीडेटर",
+    "Warlord X": "वारलॉर्ड एक्स",
+    "Crimson Tyrant": "क्रिमसन अत्याचारी",
+    "The Undertaker": "द अंडरटेकर",
+    "Puzzle Guardian": "पहेली संरक्षक",
+    "Stage Overlord": "चरण अधिपति",
+    // enemy names
+    "Gang Member": "गिरोह सदस्य",
+    "Police Officer": "पुलिस अधिकारी",
+    "Security Guard": "सुरक्षा गार्ड",
+    "Crime Boss Bodyguard": "क्राइम बॉस बॉडीगार्ड",
+    "Walker": "वॉकर",
+    "Runner": "रनर",
+    "Mutant": "म्यूटेंट",
+    "Infected Beast": "संक्रमित जानवर",
+    "Alien Soldier": "एलियन सैनिक",
+    "Attack Drone": "हमलावर ड्रोन",
+    "Mech Robot": "मेक रोबोट",
+    "Space Hunter": "अंतरिक्ष शिकारी",
+    "Shadow Assassin": "शैडो हत्यारा",
+    "Ronin Guard": "रोनिन गार्ड",
+    "Shuriken Scout": "शूरिकेन स्काउट",
+    "Oni Warrior": "ओनी योद्धा",
+    "Foot Soldier": "पैदल सैनिक",
+    "Sniper": "स्नाइपर",
+    "Tank Trooper": "टैंक ट्रूपर",
+    "Assault Mech": "असॉल्ट मेक",
+    "Dark Elf": "डार्क एल्फ",
+    "Wraith": "रेथ",
+    "Stone Golem": "स्टोन गोलेम",
+    "Shadow Knight": "शैडो नाइट",
+    "Traffic Sedan": "ट्रैफिक सेडान",
+    "Police Patrol Car": "पुलिस गश्ती कार",
+    "Road Blocker Truck": "रोड ब्लॉकर ट्रक",
+    "Speed Rival": "स्पीड प्रतिद्वंद्वी",
+    "Rival Sniper": "प्रतिद्वंद्वी स्नाइपर",
+    "Assault Trooper": "असॉल्ट ट्रूपर",
+    "Apex Hunter": "एपेक्स शिकारी",
+    "Recon Agent": "रेकन एजेंट",
+    "Corsair Sailor": "कौसैर नाविक",
+    "Sea Serpent": "समुद्री नाग",
+    "Cannoneer": "तोपची",
+    "Ghost Sailor": "भूतिया नाविक",
+    "Henchman": "गुर्गा",
+    "Armored Villain": "बख्तरबंद खलनायक",
+    "Mercenary": "किराए का सैनिक",
+    "Cyborg Agent": "साइबोर्ग एजेंट",
+    "Outlaw Gunman": "डाकू बंदूकधारी",
+    "Bandit Rider": "डाकू घुड़सवार",
+    "Wanted Renegade": "वांछित बागी",
+    "Gang Enforcer": "गिरोह लागूकर्ता",
+    // environment elements
+    "Opening Grounds": "प्रारंभिक मैदान",
+    "Midfield Assault": "मिडफील्ड हमला",
+    "Final Stronghold": "अंतिम किला",
+    "Stage": "चरण",
+    // simple texts
+    "Complete the stage objective.": "चरण का उद्देश्य पूरा करें।",
+    "Defeat the boss and exit.": "बॉस को हराएं और बाहर निकलें।",
+    "Player health reduces to 0.": "खिलाड़ी का स्वास्थ्य 0 हो जाता है।",
+    // locations
+    "Mumbai": "मुंबई",
+    "Tokyo": "टोक्यो",
+    "Dubai": "दुबई",
+    "Hyderabad": "हैदराबाद",
+    "New York": "न्यूयॉर्क",
+    "London": "लंदन",
+    "Paris": "पेरिस",
+    "Bangkok": "बैंकॉक",
+    "Seoul": "सियोल",
+    "Delhi": "दिल्ली",
+    "Deep Space": "गहरा अंतरिक्ष",
+    "Ocean Realm": "महासागर क्षेत्र",
+    "Jungle Depths": "जंगल की गहराई",
+    "Desert Wasteland": "रेगिस्तानी बंजर भूमि",
+    "Metro City": "मेट्रो शहर",
+    "Surreal Void": "अवास्तविक शून्य",
+  },
+  te: {
+    // hero names
+    "Survivor": "సర్వైవర్",
+    "Cosmic Drifter": "కాస్మిక్ డ్రిఫ్టర్",
+    "Shadow Ninja": "షాడో నింజా",
+    "Combat Soldier": "కాంబ్యాట్ సోల్జర్",
+    "Brave Knight": "ధైర్యవంతుడైన నైట్",
+    "Sea Corsair": "సముద్రపు దొంగ",
+    "Apex Hero": "అపెక్స్ హీరో",
+    "Street Racer": "స్ట్రీట్ రేసర్",
+    "Moto Racer": "మోటో రేసర్",
+    "Dream Explorer": "కలల అన్వేషకుడు",
+    // boss names
+    "Street King": "స్ట్రీట్ కింగ్",
+    "Mutant Titan": "మ్యుటెంట్ టైటాన్",
+    "Cosmic Overlord": "కాస్మిక్ ఓవర్‌లార్డ్",
+    "Shadow Master": "షాడో మాస్టర్",
+    "General Iron": "జనరల్ ఐరన్",
+    "Lich King": "లిచ్ కింగ్",
+    "Davy's Wrath": "డేవిస్ రాత్",
+    "Apex Predator": "అపెక్స్ ప్రిడేటర్",
+    "Warlord X": "వార్లార్డ్ ఎక్స్",
+    "Crimson Tyrant": "క్రిమ్సన్ టైరెంట్",
+    "The Undertaker": "ది అండర్‌టేకర్",
+    "Puzzle Guardian": "పజిల్ గార్డియన్",
+    "Stage Overlord": "స్టేజ్ ఓవర్‌లార్డ్",
+    // enemy names
+    "Gang Member": "గ్యాంగ్ సభ్యుడు",
+    "Police Officer": "పోలీస్ అధికారి",
+    "Security Guard": "సెక్యూరిటీ గార్డ్",
+    "Crime Boss Bodyguard": "క్రైమ్ బాస్ బాడీగార్డ్",
+    "Walker": "వాకర్",
+    "Runner": "రన్నర్",
+    "Mutant": "మ్యుటెంట్",
+    "Infected Beast": "ఇన్ఫెక్టెడ్ బీస్ట్",
+    "Alien Soldier": "ఏలియన్ సైనికుడు",
+    "Attack Drone": "అటాక్ డ్రోన్",
+    "Mech Robot": "మెక్ రోబోట్",
+    "Space Hunter": "స్పేస్ హంటర్",
+    "Shadow Assassin": "షాడో హంతకుడు",
+    "Ronin Guard": "రోనిన్ గార్డ్",
+    "Shuriken Scout": "షురికెన్ స్కౌట్",
+    "Oni Warrior": "ఓని యోధుడు",
+    "Foot Soldier": "కాల్బల సైనికుడు",
+    "Sniper": "స్నిపర్",
+    "Tank Trooper": "ట్యాంక్ ట్రూపర్",
+    "Assault Mech": "అసాల్ట్ మెక్",
+    "Dark Elf": "డార్క్ ఎల్ఫ్",
+    "Wraith": "రైత్",
+    "Stone Golem": "స్టోన్ గోలెం",
+    "Shadow Knight": "షాడో నైట్",
+    "Traffic Sedan": "ట్రాఫిక్ సెడాన్",
+    "Police Patrol Car": "పోలీస్ పెట్రోలింగ్ కార్",
+    "Road Blocker Truck": "రోడ్ బ్లాకర్ ట్రక్",
+    "Speed Rival": "స్పీడ్ రైవల్",
+    "Rival Sniper": "రైవల్ స్నిపర్",
+    "Assault Trooper": "అసాల్ట్ ట్రూపర్",
+    "Apex Hunter": "అపెక్స్ హంటర్",
+    "Recon Agent": "రెకాన్ ఏజెంట్",
+    "Corsair Sailor": "కోర్సెయిర్ నావికుడు",
+    "Sea Serpent": "సీ సెర్పెంట్",
+    "Cannoneer": "కానోనియర్",
+    "Ghost Sailor": "ఘోస్ట్ నావికుడు",
+    "Henchman": "హెంచ్మన్",
+    "Armored Villain": "ఆర్మర్డ్ విలన్",
+    "Mercenary": "మెర్సెనరీ",
+    "Cyborg Agent": "సైబోర్గ్ ఏజెంట్",
+    "Outlaw Gunman": "అవుట్‌లా గన్‌మ్యాన్",
+    "Bandit Rider": "బాండిట్ రైడర్",
+    "Wanted Renegade": "వాంటెడ్ రెనెగేడ్",
+    "Gang Enforcer": "గ్యాంగ్ ఎన్‌ఫోర్సర్",
+    // environment elements
+    "Opening Grounds": "ప్రారంభ మైదానం",
+    "Midfield Assault": "మిడ్‌ఫీల్డ్ దాడి",
+    "Final Stronghold": "చివరి కోట",
+    "Stage": "స్టేజ్",
+    // simple texts
+    "Complete the stage objective.": "స్టేజ్ లక్ష్యాన్ని పూర్తి చేయండి.",
+    "Defeat the boss and exit.": "బాస్‌ను ఓడించి నిష్క్రమించండి.",
+    "Player health reduces to 0.": "ఆటగాడి ఆరోగ్యం 0 కి పడిపోతుంది.",
+    // locations
+    "Mumbai": "ముంబై",
+    "Tokyo": "టోక్యో",
+    "Dubai": "దుబాయ్",
+    "Hyderabad": "హైదరాబాద్",
+    "New York": "న్యూయార్క్",
+    "London": "లండన్",
+    "Paris": "పారిస్",
+    "Bangkok": "బ్యాంకాక్",
+    "Seoul": "సియోల్",
+    "Delhi": "ఢిల్లీ",
+    "Deep Space": "అంతరిక్షం",
+    "Ocean Realm": "సముద్ర సామ్రాజ్యం",
+    "Jungle Depths": "అడవి లోతులు",
+    "Desert Wasteland": "ఎడారి భూమి",
+    "Metro City": "మెట్రో నగరం",
+    "Surreal Void": "శూన్యం",
+  }
+};
+
+function localTranslate(text, lang) {
+  if (!text) return text;
+  if (!lang || lang === 'en') return text;
+  const dict = LOCAL_TRANSLATIONS[lang];
+  if (!dict) return text;
+  
+  if (dict[text]) return dict[text];
+
+  // Try parsing template-based strings like stage environments: "Mumbai — Opening Grounds"
+  if (text.includes(' — ')) {
+    const parts = text.split(' — ');
+    const translatedParts = parts.map(p => localTranslate(p.trim(), lang));
+    return translatedParts.join(' — ');
+  }
+  if (text.includes(' Stage ')) {
+    const parts = text.split(' Stage ');
+    const tLoc = localTranslate(parts[0].trim(), lang);
+    const tStage = dict["Stage"] || "Stage";
+    return `${tLoc} ${tStage} ${parts[1]}`;
+  }
+
+  // Try parsing objectives:
+  // "Outrun X rivals and reach the checkpoint!"
+  let match = text.match(/Outrun (\d+) rivals and reach the checkpoint!/i);
+  if (match) {
+    const count = match[1];
+    return lang === 'hi' 
+      ? `${count} प्रतिद्वंद्वियों से आगे निकलें और चेकपॉइंट पर पहुंचें!` 
+      : `${count} మంది ప్రత్యర్థులను దాటి చెక్‌పాయింట్‌ను చేరుకోండి!`;
+  }
+  // "Dodge traffic and complete X lap circuits."
+  match = text.match(/Dodge traffic and complete (\d+) lap circuits\./i);
+  if (match) {
+    const count = match[1];
+    return lang === 'hi'
+      ? `ट्रैफिक से बचें और ${count} लैप सर्किट पूरे करें।`
+      : `ట్రాఫిక్ నుండి తప్పించుకుని ${count} ల్యాప్ సర్క్యూట్‌లను పూర్తి చేయండి.`;
+  }
+  // "Win against X opponents on the circuit."
+  match = text.match(/Win against (\d+) opponents on the circuit\./i);
+  if (match) {
+    const count = match[1];
+    return lang === 'hi'
+      ? `सर्किट पर ${count} विरोधियों के खिलाफ जीतें।`
+      : `సర్క్యూట్‌లో ${count} మంది ప్రత్యర్థులపై విజయం సాధించండి.`;
+  }
+  // "Collect X coins while dodging hurdles!"
+  match = text.match(/Collect (\d+) coins while dodging hurdles!/i);
+  if (match) {
+    const count = match[1];
+    return lang === 'hi'
+      ? `बाधाओं से बचते हुए ${count} सिक्के एकत्र करें!`
+      : `అడ్డంకులను తప్పించుకుంటూ ${count} నాణేలను సేకరించండి!`;
+  }
+  // "Eliminate all X rivals and stay inside the zone."
+  match = text.match(/Eliminate all (\d+) rivals and stay inside the zone\./i);
+  if (match) {
+    const count = match[1];
+    return lang === 'hi'
+      ? `सभी ${count} प्रतिद्वंद्वियों को खत्म करें और ज़ोन के अंदर रहें।`
+      : `${count} మంది ప్రత్యర్థులందరినీ నిర్మూలించి జోన్ లోపల ఉండండి.`;
+  }
+  // "Survive the zombie horde and clear X walkers."
+  match = text.match(/Survive the zombie horde and clear (\d+) walkers\./i);
+  if (match) {
+    const count = match[1];
+    return lang === 'hi'
+      ? `ज़ोंबी झुंड से बचें और ${count} वॉकर साफ़ करें।`
+      : `జోంబీ గుంపు నుండి బ్రతికి బయటపడి ${count} వాకర్లను నిర్మూలించండి.`;
+  }
+  // "Collect all X puzzle pieces scattered across platforms!"
+  match = text.match(/Collect all (\d+) puzzle pieces scattered across platforms!/i);
+  if (match) {
+    const count = match[1];
+    return lang === 'hi'
+      ? `प्लेटफॉर्म पर बिखरे सभी ${count} पहेली टुकड़ों को इकट्ठा करें!`
+      : `ప్లాట్‌ఫారమ్‌లపై చెల్లాచెదురుగా ఉన్న అన్ని {{count}} పజిల్ ముక్కలను సేకరించండి!`;
+  }
+  
+  // "Survive and defeat X."
+  match = text.match(/Survive and defeat (.+)\./i);
+  if (match) {
+    const bossName = localTranslate(match[1].trim(), lang);
+    return lang === 'hi'
+      ? `बचें और ${bossName} को हराएं।`
+      : `అలాగే ${bossName} ని ఓడించండి.`;
+  }
+
+  // "Clear all X puzzle stages."
+  match = text.match(/Clear all (\d+) puzzle stages\./i);
+  if (match) {
+    const count = match[1];
+    return lang === 'hi'
+      ? `सभी ${count} पहेली चरणों को पूरा करें।`
+      : `అన్ని ${count} పజిల్ స్టేజ్‌లను పూర్తి చేయండి.`;
+  }
+
+  // "Defeat X and clear all Y stages."
+  match = text.match(/Defeat (.+) and clear all (\d+) stages\./i);
+  if (match) {
+    const bossName = localTranslate(match[1].trim(), lang);
+    const count = match[2];
+    return lang === 'hi'
+      ? `${bossName} को हराएं और सभी ${count} चरणों को पूरा करें।`
+      : `${bossName}ని ఓడించి అన్ని ${count} స్టేజ్‌లను పూర్తి చేయండి.`;
+  }
+
+  return text;
 }
 
 module.exports = { analyzeDream, fuseDreams };

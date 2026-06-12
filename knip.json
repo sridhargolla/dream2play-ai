@@ -1,15 +1,20 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "entry": [
-    "frontend/src/main.jsx",
+    "frontend/src/App.jsx",
     "backend/server.js"
   ],
   "project": [
-    "frontend/src/**/*.{js,jsx}",
-    "backend/**/*.js"
+    "frontend/src/**/*.js",
+    "frontend/src/**/*.jsx",
+    "backend/**/*.js",
+    "spec/**/*.js"
   ],
   "ignore": [
     "**/node_modules/**",
-    "frontend/dist/**"
+    "frontend/dist/**",
+    "coverage/**",
+    "backend/test_generator.js",
+    "spec/index.js"
   ]
 }

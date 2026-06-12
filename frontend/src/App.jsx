@@ -10,6 +10,8 @@ import GamePage from './pages/GamePage';
 import BlueprintPreviewPage from './pages/BlueprintPreviewPage';
 import DreamForm from './components/DreamForm';
 import AudioSynth from './game/AudioSynth';
+import i18n from './i18n';
+import { getAIHeaders } from './utils/aiSettings';
 
 export default function App() {
   const navigate = useNavigate();
@@ -124,7 +126,8 @@ export default function App() {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
-          'x-openai-key': openaiKey || '',
+          'x-lang': i18n.language || 'en',
+          ...getAIHeaders(),
         },
         body: JSON.stringify({ title, description }),
       });
@@ -152,13 +155,13 @@ export default function App() {
     if (!token) return;
     setIsFusing(true);
     try {
-      const openaiKey = localStorage.getItem('user_openai_key') || '';
       const res = await fetch('/api/dreams/fuse', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
-          'x-openai-key': openaiKey,
+          'x-lang': i18n.language || 'en',
+          ...getAIHeaders(),
         },
         body: JSON.stringify({ dreamId1, dreamId2 }),
       });
@@ -304,11 +307,10 @@ export default function App() {
 
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-[100] px-5 py-3 rounded-xl text-sm font-semibold shadow-xl border ${
-            toast.type === 'error'
-              ? 'bg-red-500/15 border-red-500/30 text-red-200'
-              : 'bg-green-500/15 border-green-500/30 text-green-200'
-          }`}
+          className={`fixed bottom-6 right-6 z-[100] px-5 py-3 rounded-xl text-sm font-semibold shadow-xl border ${toast.type === 'error'
+            ? 'bg-red-500/15 border-red-500/30 text-red-200'
+            : 'bg-green-500/15 border-green-500/30 text-green-200'
+            }`}
         >
           {toast.message}
         </div>
@@ -316,7 +318,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="py-6 border-t border-white/5 bg-black/40 text-center text-[10px] text-gray-500 font-mono tracking-wider">
-        DREAM2PLAY AI // INTERACTIVE COGNITIVE GAME GENERATION NODE // HACKATHON v1.0.0
+        DREAM2PLAY AI // INTERACTIVE COGNITIVE GAME GENERATION NODE // HACKATHON v1.0.0 //@ SRIDHAR GOLLA
       </footer>
     </div>
   );

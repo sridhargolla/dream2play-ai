@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AlertCircle, Mic, MicOff, Play, Sparkles, Terminal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { getAISettings } from '../utils/aiSettings';
 
 const speechLocales = {
   en: 'en-US',
@@ -20,7 +21,7 @@ export default function DreamForm({ onSubmit, isGenerating }) {
   const { t, i18n } = useTranslation();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [openaiKey, setOpenaiKey] = useState(localStorage.getItem('user_openai_key') || '');
+  const [aiSettings] = useState(getAISettings());
   const [isListening, setIsListening] = useState(false);
   const [logs, setLogs] = useState([]);
   const [logIndex, setLogIndex] = useState(0);
@@ -71,15 +72,12 @@ export default function DreamForm({ onSubmit, isGenerating }) {
     return () => clearTimeout(timer);
   }, [isGenerating, logIndex, i18n.language]);
 
-  const handleKeyChange = (e) => {
-    setOpenaiKey(e.target.value);
-    localStorage.setItem('user_openai_key', e.target.value);
-  };
+
 
   const toggleListening = (e) => {
     e.preventDefault();
     if (!recognitionRef.current) {
-      setFormError('Speech recognition is not supported in this browser.');
+      setFormError(t('speechNotSupported'));
       return;
     }
     if (isListening) {
@@ -99,7 +97,7 @@ export default function DreamForm({ onSubmit, isGenerating }) {
       return;
     }
     if (isListening) recognitionRef.current?.stop();
-    onSubmit({ title, description, openaiKey });
+    onSubmit({ title, description });
   };
 
   if (isGenerating) {
@@ -133,10 +131,16 @@ export default function DreamForm({ onSubmit, isGenerating }) {
       <form onSubmit={handleSubmit} className="glass-panel p-8 rounded-2xl flex flex-col gap-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[var(--accent-color)] to-transparent animate-pulse" />
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-extrabold text-white flex items-center gap-2 font-[var(--title-font)]">
-            <Sparkles className="w-6 h-6 text-[var(--accent-color)]" />
-            {t('navGenerator')}
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-extrabold text-white flex items-center gap-2 font-[var(--title-font)]">
+              <Sparkles className="w-6 h-6 text-[var(--accent-color)]" />
+              {t('navGenerator')}
+            </h2>
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider font-mono uppercase bg-white/5 border border-white/10 text-gray-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
+              {aiSettings.provider}: {aiSettings.model}
+            </div>
+          </div>
           <p className="text-xs text-gray-400">{t('heroCopy')}</p>
         </div>
 
@@ -171,7 +175,7 @@ export default function DreamForm({ onSubmit, isGenerating }) {
               }`}
             >
               {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
-              {isListening ? t('loading') : t('language')}
+              {isListening ? t('micListening') : t('micStart')}
             </button>
           </div>
           <textarea
@@ -184,16 +188,7 @@ export default function DreamForm({ onSubmit, isGenerating }) {
           />
         </div>
 
-        <div className="flex flex-col gap-1.5 border-t border-white/5 pt-4">
-          <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t('apiKey')}</label>
-          <input
-            type="password"
-            value={openaiKey}
-            onChange={handleKeyChange}
-            placeholder="sk-proj-..."
-            className="bg-white/5 border border-white/5 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[var(--accent-color)] text-white placeholder-gray-600 transition-all font-mono"
-          />
-        </div>
+
 
         <button
           type="submit"

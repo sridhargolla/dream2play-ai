@@ -13,29 +13,19 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const GENRE_LABELS = {
-  platformer: 'Platformer',
-  driving: 'Driving',
-  bike_racing: 'Bike Racing',
-  racing: 'Racing',
-  endless_runner: 'Endless Runner',
-  shooter: 'Shooter',
-  battle_royale: 'Battle Royale',
-  survival: 'Survival',
-  puzzle: 'Puzzle',
-};
-
-function getGenreLabel(genre) {
-  return GENRE_LABELS[(genre || 'platformer').toLowerCase()] || genre;
-}
-
 export default function BlueprintPreviewPage({ dream, onPlay, onBack }) {
   const { t } = useTranslation();
+
   if (!dream?.blueprint) return null;
 
   const bp = dream.blueprint;
   const stages = Array.isArray(bp.stages) ? bp.stages : [];
   const assets = bp.assets || {};
+
+  function getGenreLabel(genre) {
+    const key = `genre_${(genre || 'platformer').toLowerCase().replace(/[\s_]+/g, '_')}`;
+    return t(key, { defaultValue: genre });
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto py-8 px-4 flex flex-col gap-8">
@@ -77,7 +67,7 @@ export default function BlueprintPreviewPage({ dream, onPlay, onBack }) {
                 <p className="text-white font-bold mt-1">{bp.title || dream.title}</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                <span className="text-gray-500 uppercase font-bold text-[10px]">Genre</span>
+                <span className="text-gray-500 uppercase font-bold text-[10px]">{t('genreLabel')}</span>
                 <p className="text-[var(--accent-color)] font-bold mt-1">{getGenreLabel(bp.genre)}</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 border border-white/5">
@@ -161,8 +151,8 @@ export default function BlueprintPreviewPage({ dream, onPlay, onBack }) {
                 <div className="flex items-start gap-2">
                   <Puzzle className="w-4 h-4 text-purple-400 shrink-0" />
                   <div>
-                    <span className="text-gray-500 uppercase font-bold text-[10px]">Puzzle Mode</span>
-                    <p className="text-purple-200">Collect all puzzle pieces across platforms to clear each stage.</p>
+                    <span className="text-gray-500 uppercase font-bold text-[10px]">{t('puzzleModeLabel')}</span>
+                    <p className="text-purple-200">{t('puzzleModeDesc')}</p>
                   </div>
                 </div>
               )}
@@ -177,7 +167,7 @@ export default function BlueprintPreviewPage({ dream, onPlay, onBack }) {
 
           {Object.keys(assets).length > 0 && (
             <div className="glass-panel p-6 rounded-2xl border border-white/10">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Generated Assets</h3>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">{t('generatedAssets')}</h3>
               <div className="grid grid-cols-2 gap-3">
                 {Object.entries(assets).map(([key, url]) => (
                   <div key={key} className="flex flex-col gap-1">

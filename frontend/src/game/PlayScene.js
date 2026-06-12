@@ -35,6 +35,23 @@ export default class PlayScene extends Phaser.Scene {
     this.blueprint = JSON.parse(JSON.stringify(rawBlueprint));
 
     this.stages = Array.isArray(this.blueprint.stages) && this.blueprint.stages.length ? this.blueprint.stages : [];
+    if (!this.stages.length) {
+      console.warn('[DEBUG] Blueprint stages array is empty or invalid. Creating a fallback stage.');
+      this.stages = [
+        {
+          stageNumber: 1,
+          environment: 'Dream World',
+          objective: 'Explore and collect shards',
+          blocks: [
+            { id: 'fallback_ground_1', x: 200, y: 420, width: 400, height: 30, type: 'ground' },
+            { id: 'fallback_ground_2', x: 600, y: 420, width: 400, height: 30, type: 'ground' }
+          ],
+          enemies: [],
+          boss: null,
+          completionCondition: 'Collect shards'
+        }
+      ];
+    }
 
     this.currentStageIndex = 0;
     this.genre = (this.blueprint.genre || 'platformer').toLowerCase();
@@ -196,7 +213,17 @@ export default class PlayScene extends Phaser.Scene {
       this.physics.add.existing(this.stormWall, true);
     }
 
+    this.events.once('shutdown', this.shutdown, this);
+    this.events.once('destroy', this.shutdown, this);
+
     this.createUI(width);
+
+    // Reposition player precisely on top of the initial platform
+    this.snapPlayerToPlatform();
+
+    // Enable debug rendering for hitboxes (Task 1)
+    this.physics.world.drawDebug = true;
+    this.physics.world.createDebugGraphic();
   }
 
   update(time) {
@@ -417,13 +444,88 @@ export default class PlayScene extends Phaser.Scene {
       }
     });
 
-    // ── Player gap-fall kill ───────────────────────────────────────────────
-    if (this.player.y > this.scale.height + 20 && !this._fallingKillScheduled) {
-      this._fallingKillScheduled = true;
-      this.damagePlayer(100);
+    // ── Player gap / void fall → immediate Game Over ─────────────────────
+    if (this.player && this.player.active && this.player.y > this.scale.height + 50) {
+      if (this._bossDefeating) return;
+      console.log('[DEBUG] Player fell into void at y=', Math.round(this.player.y), '— triggering Game Over');
+      this.loseGame();
+      return;
     }
-    if (this.player.y <= this.scale.height) {
-      this._fallingKillScheduled = false;
+
+    // Call unstuck protection (Task 5)
+    this.checkUnstuckProtection(time);
+  }
+
+  snapPlayerToPlatform() {
+    if (!this.player || !this.player.active) return;
+    
+    const isNoGravityGenre =
+      this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
+
+    if (!isNoGravityGenre) {
+      let platformUnder = null;
+      let highestYUnder = 99999;
+      this.platforms.getChildren().forEach((p) => {
+        const pb = p.getBounds();
+        if (100 >= pb.left && 100 <= pb.right) {
+          if (pb.top < highestYUnder) {
+            highestYUnder = pb.top;
+            platformUnder = p;
+          }
+        }
+      });
+
+      if (platformUnder) {
+        this.player.y = highestYUnder - 16;
+        if (this.player.body) {
+          this.player.body.y = highestYUnder - 32;
+        }
+        console.log('[DEBUG] Snapped player to platform at Y:', this.player.y);
+      }
+    }
+  }
+
+  checkUnstuckProtection(time) {
+    if (!this.player || !this.player.active || !this.player.body) return;
+
+    const isNoGravity =
+      this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
+
+    // Check if any movement keys are pressed
+    const keysPressed =
+      this.cursors.left.isDown ||
+      this.cursors.right.isDown ||
+      this.cursors.up.isDown ||
+      this.cursors.down.isDown;
+
+    // Check if velocity is virtually 0
+    const isStuckSpeed =
+      Math.abs(this.player.body.velocity.x) < 5 &&
+      (isNoGravity ? true : Math.abs(this.player.body.velocity.y) < 5);
+
+    if (keysPressed && isStuckSpeed) {
+      if (!this.unstuckTimer) {
+        this.unstuckTimer = time;
+      } else if (time - this.unstuckTimer >= 2000) {
+        console.warn('[DEBUG] Unstuck protection triggered: Repositioning player safely.');
+        this.createSpark(this.player.x, this.player.y, '#f43f5e'); // show red spark at old position
+
+        // Safe repositioning: move up by 64px and forward by 64px
+        this.player.y -= 64;
+        this.player.x += 64;
+        this.player.setVelocity(0, 0);
+
+        if (this.player.body) {
+          this.player.body.y -= 64;
+          this.player.body.x += 64;
+          this.player.body.setVelocity(0, 0);
+        }
+
+        this.createSpark(this.player.x, this.player.y, '#22c55e'); // show green spark at new position
+        this.unstuckTimer = 0;
+      }
+    } else {
+      this.unstuckTimer = 0;
     }
   }
 
@@ -795,8 +897,200 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   // --- RENDER DYNAMIC LEVEL ---
+  // ── VALIDATION LAYER: called before any sprites are created ─────────────
+  validateAndRepairStage(stage, width, height) {
+    if (!stage) {
+      console.warn('[DEBUG] validateAndRepairStage: stage is null, skipping.');
+      return;
+    }
+
+    const isNoGravityGenre =
+      this.genre.includes('driving') || this.genre.includes('racing') || this.genre.includes('runner');
+    const groundY = height - 30;
+    // Max horizontal distance the player can cover in a full jump arc
+    // At speed=220 and jumpForce=-350, gravity=300: apex time ≈ 350/300 = 1.17s, total arc ≈ 2.33s
+    const maxJumpWidth = Math.round((this.blueprint.player?.speed || 220) * ((-2 * (this.blueprint.player?.jumpForce || -350)) / (this.blueprint.player?.gravity || 300)));
+
+    const playerStartY = this.genre.includes('runner')
+      ? 250
+      : this.genre.includes('driving') || this.genre.includes('racing')
+        ? 360
+        : height - 150;
+
+    // --- Validate blocks ---
+    if (Array.isArray(stage.blocks)) {
+      const before = stage.blocks.length;
+      stage.blocks = stage.blocks.filter((block) => {
+        if (!Number.isFinite(block.x) || !Number.isFinite(block.y)) {
+          console.warn('[DEBUG] Dropped block with invalid coords:', block.id || 'unknown');
+          return false;
+        }
+        if (!Number.isFinite(block.width) || block.width <= 0) block.width = 128;
+        if (!Number.isFinite(block.height) || block.height <= 0) block.height = 20;
+
+        // Prevent block from spawning inside player spawn column (x: 50-150)
+        const halfW = block.width / 2;
+        const halfH = block.height / 2;
+        const left = block.x - halfW;
+        const right = block.x + halfW;
+        
+        const overlapX = (left < 150 && right > 50);
+        if (overlapX) {
+          if ((block.type === 'ground' || block.type === 'solid') && block.y >= playerStartY + 16) {
+            return true; // allow floor block safely below player spawn point
+          }
+          console.warn('[DEBUG] Removed block in player spawn column:', block.id);
+          return false;
+        }
+        return true;
+      });
+      const dropped = before - stage.blocks.length;
+      if (dropped > 0) console.warn('[DEBUG] Dropped', dropped, 'blocks with bad coordinates or spawn overlap in stage', stage.stageNumber);
+
+      // Auto-repair impossible gaps in gravity-based genres
+      if (!isNoGravityGenre) {
+        const groundBlocks = stage.blocks
+          .filter((b) => (b.type === 'ground' || b.type === 'solid') && b.y > height * 0.5)
+          .sort((a, b) => a.x - b.x);
+
+        const repairs = [];
+        const targetDist = maxJumpWidth * 0.8; // safe jumping distance (80% of max jump width)
+        for (let i = 0; i < groundBlocks.length - 1; i++) {
+          const curr = groundBlocks[i];
+          const next = groundBlocks[i + 1];
+          const currRight = curr.x + (curr.width || 128) / 2;
+          const nextLeft  = next.x - (next.width || 128) / 2;
+          const gap = nextLeft - currRight;
+          if (gap > maxJumpWidth) {
+            let tempRight = currRight;
+            let bridgeCounter = 0;
+            while (nextLeft - tempRight > maxJumpWidth) {
+              const bridgeX = tempRight + targetDist;
+              if (bridgeX + 64 >= nextLeft) {
+                // The remaining gap is jumpable to nextLeft without another bridge
+                break;
+              }
+              repairs.push({
+                id: `bridge_repair_${stage.stageNumber}_${i}_${bridgeCounter++}`,
+                x: bridgeX,
+                y: groundY,
+                width: 128,
+                height: 20,
+                type: 'ground',
+              });
+              tempRight = bridgeX + 64; // right edge of the newly inserted bridge
+            }
+            if (bridgeCounter > 0) {
+              console.log('[DEBUG] Stage', stage.stageNumber, ': inserted', bridgeCounter, 'bridge(s) to close', Math.round(gap), 'px gap (max=', maxJumpWidth, 'px)');
+            }
+          }
+        }
+        stage.blocks.push(...repairs);
+      }
+    }
+
+    // --- Validate enemies ---
+    if (Array.isArray(stage.enemies)) {
+      const seenIds = new Set();
+      const before = stage.enemies.length;
+      stage.enemies = stage.enemies.filter((e) => {
+        // Remove enemies with invalid coordinates
+        if (!Number.isFinite(e.x) || !Number.isFinite(e.y)) {
+          console.warn('[DEBUG] Dropped enemy with bad coords:', e.name || e.id);
+          return false;
+        }
+        // Remove duplicate IDs
+        if (seenIds.has(e.id)) {
+          console.warn('[DEBUG] Dropped duplicate enemy ID:', e.id);
+          return false;
+        }
+        seenIds.add(e.id);
+
+        // Prevent enemy from spawning inside player spawn column (x: 50-150)
+        const overlapPlayerX = (e.x - 16 < 150 && e.x + 16 > 50);
+        if (overlapPlayerX) {
+          console.warn('[DEBUG] Removed enemy overlapping player spawn column:', e.id || e.name);
+          return false;
+        }
+
+        // Ensure entity does not spawn inside solid blocks/walls
+        let insideSolid = false;
+        stage.blocks.forEach((block) => {
+          if (block.type === 'solid') {
+            const halfW = block.width / 2;
+            const halfH = block.height / 2;
+            const left = block.x - halfW;
+            const right = block.x + halfW;
+            const top = block.y - halfH;
+            const bottom = block.y + halfH;
+            if (e.x > left && e.x < right && e.y > top && e.y < bottom) {
+              insideSolid = true;
+            }
+          }
+        });
+        if (insideSolid) {
+          console.warn('[DEBUG] Removed enemy inside solid terrain:', e.id || e.name);
+          return false;
+        }
+
+        // Align enemies to the platform underneath them to avoid floating/jitter
+        if (!isNoGravityGenre) {
+          let platformUnder = null;
+          let highestYUnder = 99999;
+          stage.blocks.forEach((block) => {
+            if (block.type === 'ground' || block.type === 'solid') {
+              const halfW = block.width / 2;
+              if (e.x >= block.x - halfW && e.x <= block.x + halfW) {
+                const platformTop = block.y - block.height / 2;
+                if (e.y <= platformTop + 5 && platformTop < highestYUnder) {
+                  highestYUnder = platformTop;
+                  platformUnder = block;
+                }
+              }
+            }
+          });
+
+          if (platformUnder) {
+            const platformTop = platformUnder.y - platformUnder.height / 2;
+            e.y = platformTop - 16; // Align enemy bottom exactly on platform top
+          } else {
+            if (e.y >= groundY - 5) {
+              e.y = groundY - 31; // Align to ground platform top
+            }
+          }
+        }
+        return true;
+      });
+      const dropped = before - stage.enemies.length;
+      if (dropped > 0) console.warn('[DEBUG] Dropped', dropped, 'invalid enemies in stage', stage.stageNumber);
+    }
+
+    // --- Validate boss ---
+    if (stage.boss) {
+      if (!Number.isFinite(stage.boss.x)) stage.boss.x = 2600;
+      if (!Number.isFinite(stage.boss.y)) stage.boss.y = 200;
+      if (typeof stage.boss.hp !== 'number' || stage.boss.hp <= 0) stage.boss.hp = 200;
+      if (typeof stage.boss.maxHp !== 'number' || stage.boss.maxHp <= 0) stage.boss.maxHp = 200;
+      console.log('[DEBUG] Boss validated:', stage.boss.name, '@ (', Math.round(stage.boss.x), ',', Math.round(stage.boss.y), ') HP:', stage.boss.hp);
+    }
+
+    console.log('[DEBUG] Stage', stage.stageNumber, 'validation complete —',
+      stage.blocks?.length || 0, 'blocks,',
+      stage.enemies?.length || 0, 'enemies,',
+      stage.boss ? ('boss: ' + stage.boss.name) : 'no boss'
+    );
+  }
+
   generateLevel(width, height) {
     const stage = this.getCurrentStage();
+    if (!stage) {
+      console.warn('[DEBUG] generateLevel: stage is null/undefined, skipping.');
+      return;
+    }
+
+    // Run validation and auto-repair BEFORE creating any physics objects
+    this.validateAndRepairStage(stage, width, height);
+
     const isRoad = this.genre.includes('driving') || this.genre.includes('racing');
 
     if (Array.isArray(stage.blocks)) {
@@ -814,7 +1108,7 @@ export default class PlayScene extends Phaser.Scene {
             spike.setDisplaySize(block.width, block.height);
           }
           spike.refreshBody();
-        } else if (block.type === 'collectible') {
+        } else if (block.type === 'collectible' || block.type === 'puzzle_piece') {
           const shard = this.collectibles.create(block.x, block.y, 'collect_tex');
           shard.setDisplaySize(block.width || 24, block.height || 24);
 
@@ -923,10 +1217,12 @@ export default class PlayScene extends Phaser.Scene {
     this.scoreText = this.add.text(0, 0, `${this._scoreLabel}: 0`, style);
     this.uiContainer.add(this.scoreText);
 
+    const curStage = this.getCurrentStage();
+    const stageEnvName = curStage ? (curStage.environment || `Stage ${this.currentStageIndex + 1}`) : 'Stage 1';
     this.stageText = this.add.text(
       0,
       25,
-      `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`,
+      `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${stageEnvName}`,
       labelStyle
     );
     this.uiContainer.add(this.stageText);
@@ -1075,6 +1371,12 @@ export default class PlayScene extends Phaser.Scene {
 
   updateObjectivesHUD() {
     const stage = this.getCurrentStage();
+    if (!stage) {
+      if (this.shardsStatusText) this.shardsStatusText.setText(`• Objective: Complete the level`);
+      if (this.enemiesStatusText) this.enemiesStatusText.setVisible(false);
+      if (this.bossStatusText) this.bossStatusText.setVisible(false);
+      return;
+    }
     const reqScore = this.getStageRequiredScore();
     const scoreLabel =
       this.genre.includes('driving') || this.genre.includes('racing')
@@ -1084,30 +1386,36 @@ export default class PlayScene extends Phaser.Scene {
           : 'Shards';
 
     const scoreOk = this.score >= reqScore;
-    this.shardsStatusText.setText(`• ${scoreLabel}: ${this.score} / ${reqScore} ${scoreOk ? '✔' : '⏳'}`);
-    this.shardsStatusText.setFill(scoreOk ? '#86efac' : '#94a3b8');
+    if (this.shardsStatusText) {
+      this.shardsStatusText.setText(`• ${scoreLabel}: ${this.score} / ${reqScore} ${scoreOk ? '✔' : '⏳'}`);
+      this.shardsStatusText.setFill(scoreOk ? '#86efac' : '#94a3b8');
+    }
 
     const totalEnemies = Array.isArray(stage.enemies) ? stage.enemies.length : 0;
     const remainingEnemies = Array.isArray(stage.enemies) ? stage.enemies.filter((e) => !e.defeated).length : 0;
     const enemiesOk = remainingEnemies === 0;
 
     if (totalEnemies > 0) {
-      this.enemiesStatusText.setText(
-        `• Hostiles: ${remainingEnemies} / ${totalEnemies} remaining ${enemiesOk ? '✔' : '⏳'}`
-      );
-      this.enemiesStatusText.setFill(enemiesOk ? '#86efac' : '#94a3b8');
-      this.enemiesStatusText.setVisible(true);
+      if (this.enemiesStatusText) {
+        this.enemiesStatusText.setText(
+          `• Hostiles: ${remainingEnemies} / ${totalEnemies} remaining ${enemiesOk ? '✔' : '⏳'}`
+        );
+        this.enemiesStatusText.setFill(enemiesOk ? '#86efac' : '#94a3b8');
+        this.enemiesStatusText.setVisible(true);
+      }
     } else {
-      this.enemiesStatusText.setVisible(false);
+      if (this.enemiesStatusText) this.enemiesStatusText.setVisible(false);
     }
 
     if (stage.boss) {
       const bossDefeated = stage.boss.defeated;
-      this.bossStatusText.setText(`• Boss [${stage.boss.name}]: ${bossDefeated ? 'Defeated ✔' : 'Hostile ⏳'}`);
-      this.bossStatusText.setFill(bossDefeated ? '#86efac' : '#fca5a5');
-      this.bossStatusText.setVisible(true);
+      if (this.bossStatusText) {
+        this.bossStatusText.setText(`• Boss [${stage.boss.name}]: ${bossDefeated ? 'Defeated ✔' : 'Hostile ⏳'}`);
+        this.bossStatusText.setFill(bossDefeated ? '#86efac' : '#fca5a5');
+        this.bossStatusText.setVisible(true);
+      }
     } else {
-      this.bossStatusText.setVisible(false);
+      if (this.bossStatusText) this.bossStatusText.setVisible(false);
     }
   }
 
@@ -1138,8 +1446,14 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   hitEnemy(player, enemySprite) {
+    // Guard: skip if either sprite is already gone
+    if (!enemySprite || !enemySprite.active) return;
     const enemyState = enemySprite.getData('stateObject');
-    if (!enemyState) return;
+    if (!enemyState || enemyState.defeated) return;
+
+    // Capture position BEFORE destroying the sprite to prevent use-after-destroy
+    const ex = enemySprite.x;
+    const ey = enemySprite.y;
 
     if (this.genre.includes('driving') || this.genre.includes('racing')) {
       enemyState.hp = 0;
@@ -1150,11 +1464,12 @@ export default class PlayScene extends Phaser.Scene {
       AudioSynth.playSFX('explosion');
       this.cameras.main.shake(200, 0.02);
       this.damagePlayer(30);
-      this.createSpark(enemySprite.x, enemySprite.y, '#dc2626');
+      this.createSpark(ex, ey, '#dc2626');
 
       this.updateObjectivesHUD();
       this.checkStageCompletion();
-    } else if (player.y < enemySprite.y - 15) {
+    } else if (player.y < ey - 15) {
+      // Stomp kill
       enemyState.hp = 0;
       enemyState.alive = false;
       enemyState.defeated = true;
@@ -1164,14 +1479,15 @@ export default class PlayScene extends Phaser.Scene {
       AudioSynth.playSFX('explosion');
       this.score += 20;
 
-      this.scoreText.setText(`${this._scoreLabel}: ${this.score}`);
-
-      this.createSpark(enemySprite.x, enemySprite.y, '#ff4444');
+      if (this.scoreText) this.scoreText.setText(`${this._scoreLabel}: ${this.score}`);
+      this.createSpark(ex, ey, '#ff4444');
+      console.log('[DEBUG] Enemy stomped at (', Math.round(ex), ',', Math.round(ey), ')');
 
       this.updateObjectivesHUD();
       this.checkStageCompletion();
     } else {
-      player.setVelocityX(player.x < enemySprite.x ? -150 : 150);
+      // Side-collision: player takes damage and gets knocked back
+      player.setVelocityX(player.x < ex ? -150 : 150);
       this.damagePlayer(20);
     }
   }
@@ -1297,6 +1613,9 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   shootEnemy(projectile, enemySprite) {
+    if (!projectile || !projectile.active) return;
+    if (!enemySprite || !enemySprite.active) return;
+
     if (projectile.body) projectile.body.enable = false;
     projectile.destroy();
 
@@ -1311,7 +1630,7 @@ export default class PlayScene extends Phaser.Scene {
 
     enemySprite.setTint(0xff0000);
     this.time.delayedCall(100, () => {
-      if (enemySprite.active) enemySprite.clearTint();
+      if (enemySprite && enemySprite.active) enemySprite.clearTint();
     });
 
     AudioSynth.playSFX('hurt');
@@ -1320,14 +1639,22 @@ export default class PlayScene extends Phaser.Scene {
       enemyState.alive = false;
       enemyState.defeated = true;
 
+      // Capture position BEFORE destroying to prevent use-after-destroy
+      const ex = enemySprite.x;
+      const ey = enemySprite.y;
       enemySprite.destroy();
+
       AudioSynth.playSFX('explosion');
       this.score += 20;
 
-      this.scoreText.setText(`${this._scoreLabel}: ${this.score}`);
+      if (this.scoreText) this.scoreText.setText(`${this._scoreLabel}: ${this.score}`);
 
       const color = this.blueprint.colors?.hazard || '#ef4444';
-      this.createSpark(enemySprite.x, enemySprite.y, color);
+      this.createSpark(ex, ey, color);
+
+      const stage = this.getCurrentStage();
+      const remaining = Array.isArray(stage?.enemies) ? stage.enemies.filter((e) => !e.defeated).length : '?';
+      console.log('[DEBUG] Enemy shot-killed. Remaining enemies in stage:', remaining);
 
       this.updateObjectivesHUD();
       this.checkStageCompletion();
@@ -1335,11 +1662,13 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   destroyProjectile(projectile, platform) {
-    projectile.destroy();
+    if (projectile && projectile.active) {
+      projectile.destroy();
+    }
   }
 
   damagePlayer(amount) {
-    if (this.gameOverTriggered || this.stageCompleteTriggered) return;
+    if (this.gameOverTriggered || this.stageCompleteTriggered || this._bossDefeating) return;
 
     // Shield blocks all incoming damage
     if (this.shieldActive) {
@@ -1354,18 +1683,21 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     this.health = Math.max(0, this.health - amount);
-    this.healthText.setText(`HEALTH: ${Math.floor(this.health)}%`);
+    if (this.healthText) this.healthText.setText(`HEALTH: ${Math.floor(this.health)}%`);
     this.updateHealthBar();
 
     AudioSynth.playSFX('hurt');
     this.cameras.main.shake(150, 0.015);
 
-    this.player.setTint(0xff0000);
-    this.time.delayedCall(150, () => {
-      if (this.player.active) this.player.clearTint();
-    });
+    if (this.player && this.player.active) {
+      this.player.setTint(0xff0000);
+      this.time.delayedCall(150, () => {
+        if (this.player && this.player.active) this.player.clearTint();
+      });
+    }
 
     if (this.health <= 0) {
+      console.log('[DEBUG] Player health reached 0 - losing game');
       this.loseGame();
     }
   }
@@ -1563,6 +1895,7 @@ export default class PlayScene extends Phaser.Scene {
 
     // Step 4: Wait until explosion animation finishes (2000 ms)
     this.time.delayedCall(2000, () => {
+      if (!this.sys || !this.sys.isActive()) return;
       // Step 5: Destroy boss
       if (bossSprite && bossSprite.active) {
         bossSprite.destroy();
@@ -1570,11 +1903,10 @@ export default class PlayScene extends Phaser.Scene {
       this.boss = null;
       if (this.bossUI) this.bossUI.setVisible(false);
 
-      // Step 6 & 7: Show Victory Screen / Level Completed
-      this.showBossVictoryScreen();
-
-      // Step 8: Pause game physics and updates
-      this.physics.pause();
+      // Step 6: Mark stage boss as defeated and advance stage via normal completion path
+      console.log('[DEBUG] Boss defeated! Calling checkStageCompletion() to advance stage.');
+      this.stageCompleteTriggered = false; // allow checkStageCompletion to run
+      this.checkStageCompletion();
     });
   }
 
@@ -1583,6 +1915,7 @@ export default class PlayScene extends Phaser.Scene {
     if (this.gameOverTriggered || this.stageCompleteTriggered) return;
 
     const stage = this.getCurrentStage();
+    if (!stage) return;
     const hasBoss = !!stage.boss;
     const bossDefeated = !hasBoss || stage.boss.defeated;
     const objectiveFinished = this.score >= this.getStageRequiredScore();
@@ -1593,7 +1926,12 @@ export default class PlayScene extends Phaser.Scene {
       // If there is a boss, defeating the boss is sufficient to complete the stage
       stageCompleted = bossDefeated;
     } else {
-      stageCompleted = objectiveFinished && enemiesDefeated;
+      // For hostiles-heavy genres, let stage complete if either all enemies are defeated or score objective is reached
+      if (this.genre === 'battle_royale' || this.genre === 'survival' || this.genre === 'shooter') {
+        stageCompleted = enemiesDefeated || objectiveFinished;
+      } else {
+        stageCompleted = objectiveFinished;
+      }
     }
 
     if (stageCompleted) {
@@ -1662,7 +2000,9 @@ export default class PlayScene extends Phaser.Scene {
     });
 
     this.time.delayedCall(2200, () => {
-      this.unlockNextStage();
+      if (this.sys && this.sys.isActive()) {
+        this.unlockNextStage();
+      }
     });
   }
 
@@ -1684,8 +2024,8 @@ export default class PlayScene extends Phaser.Scene {
     this.score = 0;
     this.health = Math.min(100, this.health + 25);
 
-    this.scoreText.setText(`${this._scoreLabel}: 0`);
-    this.healthText.setText(`HEALTH: ${this.health}%`);
+    if (this.scoreText) this.scoreText.setText(`${this._scoreLabel}: 0`);
+    if (this.healthText) this.healthText.setText(`HEALTH: ${this.health}%`);
     this.updateHealthBar();
 
     if (this.bossUI) this.bossUI.setVisible(false);
@@ -1703,8 +2043,10 @@ export default class PlayScene extends Phaser.Scene {
       : this.genre.includes('driving') || this.genre.includes('racing')
         ? 360
         : this.scale.height - 150;
-    this.player.setPosition(100, playerStartY);
-    this.player.setVelocity(0, 0);
+    if (this.player && this.player.active) {
+      this.player.setPosition(100, playerStartY);
+      this.player.setVelocity(0, 0);
+    }
     this.bossSpawned = false;
     this.bossActive = false;
     this.currentTrack = 1;
@@ -1714,11 +2056,17 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     this.generateLevel(this.scale.width, this.scale.height);
+    this.snapPlayerToPlatform();
 
-    this.stageText.setText(
-      `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${this.getCurrentStage().environment}`
-    );
-    this.objectiveText.setText(`GOAL: ${this.getCurrentObjective()}`);
+    const currentStage = this.getCurrentStage();
+    if (this.stageText && currentStage) {
+      this.stageText.setText(
+        `STAGE ${this.currentStageIndex + 1}/${this.stages.length}: ${currentStage.environment}`
+      );
+    }
+    if (this.objectiveText) {
+      this.objectiveText.setText(`GOAL: ${this.getCurrentObjective()}`);
+    }
 
     this.updateObjectivesHUD();
 
@@ -1742,7 +2090,9 @@ export default class PlayScene extends Phaser.Scene {
         alpha: 0,
         scale: 0.1,
         duration: 400,
-        onComplete: () => circ.destroy(),
+        onComplete: () => {
+          if (circ && circ.active) circ.destroy();
+        },
       });
     }
   }
@@ -1758,8 +2108,12 @@ export default class PlayScene extends Phaser.Scene {
       this.boss.destroy();
     }
 
-    this.player.setVelocity(0);
-    this.player.body.setAllowGravity(false);
+    if (this.player && this.player.active) {
+      this.player.setVelocity(0);
+      if (this.player.body) {
+        this.player.body.setAllowGravity(false);
+      }
+    }
 
     AudioSynth.stopBGM();
     AudioSynth.playSFX('win');
@@ -1826,30 +2180,116 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     this.time.delayedCall(900, () => {
-      this.onWin({
-        score: this.score,
-        completionTime: this.completionTime,
-      });
+      if (this.sys && this.sys.isActive()) {
+        this.onWin({
+          score: this.score,
+          completionTime: this.completionTime,
+        });
+      }
     });
   }
 
   loseGame() {
     if (this.gameOverTriggered) return;
     this.gameOverTriggered = true;
+    this.stageCompleteTriggered = true; // prevent update loop from re-entering
     this.bossActive = false;
 
-    this.player.setTint(0xff0000);
-    this.player.setVelocity(0);
-    this.player.body.setAllowGravity(false);
+    this.completionTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
+    console.log('[DEBUG] ===== GAME OVER ===== Score:', this.score, '| Time:', this.completionTime, 's');
+
+    // Stop the boss
+    if (this.boss && this.boss.active && this.boss.body) {
+      this.boss.body.setVelocity(0, 0);
+    }
+
+    // Stop all enemies — disable physics bodies so they freeze in place
+    this.enemies.getChildren().forEach((enemy) => {
+      if (enemy && enemy.active && enemy.body) {
+        enemy.body.setVelocity(0, 0);
+        enemy.body.enable = false;
+      }
+    });
+
+    // Destroy all in-flight projectiles immediately
+    if (this.projectiles) this.projectiles.clear(true, true);
+    if (this.bossProjectiles) this.bossProjectiles.clear(true, true);
+
+    // Freeze and tint player
+    if (this.player && this.player.active && this.player.body) {
+      this.player.setTint(0xff0000);
+      this.player.setVelocity(0, 0);
+      this.player.body.setAllowGravity(false);
+    }
+
+    // Pause the entire physics world — everything freezes in place
+    this.physics.pause();
 
     AudioSynth.stopBGM();
     AudioSynth.playSFX('gameover');
 
-    this.completionTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
+    // Show in-Phaser Game Over banner first
+    this.showGameOverScreen();
 
-    this.onLose({
-      score: this.score,
-      completionTime: this.completionTime,
+    // Notify React overlay after a brief delay (lets Phaser banner appear)
+    this.time.delayedCall(700, () => {
+      if (this.sys && this.sys.isActive()) {
+        this.onLose({
+          score: this.score,
+          completionTime: this.completionTime,
+        });
+      }
+    });
+  }
+
+  showGameOverScreen() {
+    const width = this.scale.width;
+    const height = this.scale.height;
+
+    // Dim overlay
+    this.add
+      .rectangle(width / 2, height / 2, width, height, 0x000000, 0.78)
+      .setScrollFactor(0)
+      .setDepth(200);
+
+    // "GAME OVER" title
+    const titleText = this.add
+      .text(width / 2, height / 2 - 50, 'GAME OVER', {
+        font: 'bold 54px Outfit, sans-serif',
+        fill: '#ef4444',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(201);
+
+    // Score + time
+    this.add
+      .text(width / 2, height / 2 + 20, `Score: ${this.score}  •  Time: ${this.completionTime}s`, {
+        font: 'bold 18px Outfit, sans-serif',
+        fill: '#94a3b8',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(201);
+
+    // Restart hint
+    this.add
+      .text(width / 2, height / 2 + 62, 'Use the REPLAY button to try again.', {
+        font: '14px Outfit, sans-serif',
+        fill: '#64748b',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(201);
+
+    // Pulse animation on title
+    this.tweens.add({
+      targets: titleText,
+      alpha: 0.6,
+      duration: 600,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
     });
   }
 
@@ -1969,5 +2409,19 @@ export default class PlayScene extends Phaser.Scene {
     if (this.victoryBossDefeatedText) this.victoryBossDefeatedText.destroy();
     if (this.victoryScoreText) this.victoryScoreText.destroy();
     if (this.playAgainBtn) this.playAgainBtn.destroy();
+  }
+
+  // --- SCENE LIFECYCLE: CLEANUP ---
+  shutdown() {
+    console.log('[DEBUG] PlayScene shutdown — cleaning up resources');
+    this.tweens.killAll();
+    this.time.removeAllEvents();
+    AudioSynth.stopBGM();
+
+    // Remove explicit physics colliders
+    if (this.bossOverlapCollider) {
+      this.physics.world.removeCollider(this.bossOverlapCollider);
+      this.bossOverlapCollider = null;
+    }
   }
 }

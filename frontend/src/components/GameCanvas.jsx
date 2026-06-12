@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import Phaser from 'phaser';
 import { createGameConfig } from '../game/GameConfig';
 import { RotateCcw, Award, ShieldAlert, Sparkles, BookOpen, Clock, Heart } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import confetti from 'canvas-confetti';
 
 export default function GameCanvas({ dream, onBack, onSaveScore }) {
+  const { t } = useTranslation();
   const containerRef = useRef(null);
   const gameRef = useRef(null);
   const [gameState, setGameState] = useState('playing'); // 'playing', 'win', 'lose'
@@ -37,7 +39,10 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
       setGameState('lose');
     };
 
-    const config = createGameConfig(containerRef.current, dream.blueprint, handleWin, handleLose);
+    const config = createGameConfig(containerRef.current, dream.blueprint, {
+      onWin: handleWin,
+      onLose: handleLose,
+    });
     const game = new Phaser.Game(config);
     gameRef.current = game;
 
@@ -58,19 +63,17 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
       gameRef.current.destroy(true);
     }
 
-    const config = createGameConfig(
-      containerRef.current,
-      dream.blueprint,
-      (stats) => {
+    const config = createGameConfig(containerRef.current, dream.blueprint, {
+      onWin: (stats) => {
         setGameStats(stats);
         setGameState('win');
         confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
       },
-      (stats) => {
+      onLose: (stats) => {
         setGameStats(stats);
         setGameState('lose');
-      }
-    );
+      },
+    });
     gameRef.current = new Phaser.Game(config);
   };
 
@@ -100,14 +103,14 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
           onClick={onBack}
           className="px-4 py-2 border border-white/10 rounded-lg text-sm text-gray-400 hover:text-white hover:border-white/20 bg-white/5 transition-all cursor-pointer font-bold uppercase tracking-wider"
         >
-          &larr; Exit Canvas
+          &larr; {t('exitCanvas')}
         </button>
         <div className="flex items-center gap-4 text-xs font-mono">
           <div className="flex items-center gap-1 text-[var(--accent-color)]">
-            <span className="font-bold">MOOD:</span> {dream.blueprint.mood}
+            <span className="font-bold">{t('moodLabel').toUpperCase()}:</span> {dream.blueprint.mood}
           </div>
           <div className="flex items-center gap-1 text-[var(--secondary-color)]">
-            <span className="font-bold">HERO:</span> {dream.blueprint.hero}
+            <span className="font-bold">{t('heroLabel').toUpperCase()}:</span> {dream.blueprint.hero}
           </div>
         </div>
       </div>
@@ -129,7 +132,7 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
                         <Award className="w-10 h-10" />
                       </div>
                       <h2 className="text-3xl font-black text-yellow-400 tracking-wider font-[var(--title-font)] uppercase pt-4">
-                        Victory Achieved!
+                        {t('victoryAchieved')}
                       </h2>
                       <p className="text-xs text-gray-300 italic">"{dream.blueprint.stories.ending}"</p>
                     </>
@@ -139,10 +142,10 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
                         <ShieldAlert className="w-10 h-10" />
                       </div>
                       <h2 className="text-3xl font-black text-red-500 tracking-wider font-[var(--title-font)] uppercase pt-4">
-                        Dream Collapsed
+                        {t('dreamCollapsed')}
                       </h2>
                       <p className="text-xs text-gray-400 italic">
-                        The nightmare proved too strong. The dream state dissolved.
+                        {t('dreamCollapsedCopy')}
                       </p>
                     </>
                   )}
@@ -150,11 +153,11 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
                   {/* Score Breakdown */}
                   <div className="grid grid-cols-2 gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
                     <div className="flex flex-col gap-0.5">
-                      <span className="text-[10px] text-gray-400 uppercase font-bold">Total Score</span>
+                      <span className="text-[10px] text-gray-400 uppercase font-bold">{t('totalScore')}</span>
                       <span className="text-2xl font-black text-white">{gameStats.score}</span>
                     </div>
                     <div className="flex flex-col gap-0.5">
-                      <span className="text-[10px] text-gray-400 uppercase font-bold">Survival Time</span>
+                      <span className="text-[10px] text-gray-400 uppercase font-bold">{t('survivalTime')}</span>
                       <span className="text-2xl font-black text-white flex items-center justify-center gap-1">
                         <Clock className="w-4 h-4 text-gray-400" />
                         {gameStats.completionTime}s
@@ -170,13 +173,13 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
                       className="w-full py-3 rounded-xl font-bold bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/40 text-yellow-300 text-xs tracking-wider transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <Sparkles className="w-4 h-4" />
-                      {isSubmittingScore ? 'SUBMITTING...' : 'POST SCORE TO LEADERBOARD'}
+                      {isSubmittingScore ? t('submitting').toUpperCase() : t('postScoreToLeaderboard').toUpperCase()}
                     </button>
                   )}
 
                   {scoreSubmitted && (
                     <div className="text-xs text-green-400 font-bold border border-green-500/20 bg-green-500/5 py-2.5 rounded-lg">
-                      SCORE SUBMITTED SUCCESSFULLY!
+                      {t('scoreSubmittedSuccess').toUpperCase()}
                     </div>
                   )}
 
@@ -187,24 +190,21 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
                       className="flex-1 py-3 px-4 rounded-xl font-bold text-xs tracking-wider bg-white/5 border border-white/10 hover:border-white/20 text-white hover:bg-white/10 transition-all flex items-center justify-center gap-1 cursor-pointer"
                     >
                       <RotateCcw className="w-4 h-4" />
-                      REPLAY
+                      {t('replay').toUpperCase()}
                     </button>
                     <button
                       onClick={onBack}
                       className="flex-1 py-3 px-4 rounded-xl font-bold text-xs tracking-wider bg-[var(--accent-color)] hover:opacity-95 text-white transition-all cursor-pointer"
                     >
-                      DASHBOARD
+                      {t('dashboardBtn').toUpperCase()}
                     </button>
                   </div>
                 </div>
               </div>
             )}
           </div>
-          <span className="text-[10px] text-gray-500 font-mono mt-3">
-            MOVE: ← → Arrows &nbsp;|&nbsp; JUMP: ↑ Arrow &nbsp;|&nbsp; SHOOT: Space &nbsp;|&nbsp;{' '}
-            <span className="text-cyan-400">[Q] Dash</span> &nbsp;|&nbsp;{' '}
-            <span className="text-violet-400">[E] Shield</span> &nbsp;|&nbsp;{' '}
-            <span className="text-sky-400">[R] Triple Shot</span>
+          <span className="text-[10px] text-gray-500 font-mono mt-3 text-center">
+            {t('controls')}
           </span>
         </div>
 
@@ -213,32 +213,32 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
           <div className="glass-panel p-6 rounded-2xl flex flex-col gap-5">
             <h3 className="text-sm font-bold text-white border-b border-white/5 pb-2.5 flex items-center gap-1.5 font-[var(--title-font)]">
               <BookOpen className="w-4 h-4 text-[var(--accent-color)]" />
-              GAME BLUEPRINT
+              {t('gameBlueprint').toUpperCase()}
             </h3>
 
             <div className="flex flex-col gap-3.5 text-xs">
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">World Theme</span>
+                <span className="text-gray-400">{t('world')}</span>
                 <span className="font-bold text-white">{dream.blueprint.world}</span>
               </div>
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Hero Character</span>
+                <span className="text-gray-400">{t('hero')}</span>
                 <span className="font-bold text-white">{dream.blueprint.hero}</span>
               </div>
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Enemies</span>
+                <span className="text-gray-400">{t('enemies')}</span>
                 <span className="font-bold text-white">{dream.blueprint.enemies.join(', ')}</span>
               </div>
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Boss Deity</span>
+                <span className="text-gray-400">{t('boss')}</span>
                 <span className="font-bold text-white text-red-400">{dream.blueprint.boss}</span>
               </div>
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-gray-400">Difficulty Setting</span>
+                <span className="text-gray-400">{t('difficulty')}</span>
                 <span className="font-bold text-yellow-400 uppercase tracking-wider">{dream.blueprint.difficulty}</span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="text-gray-400">Core Objective</span>
+                <span className="text-gray-400">{t('objective')}</span>
                 <p className="text-white bg-white/5 p-2.5 rounded-lg leading-relaxed border border-white/5">
                   {dream.blueprint.objective}
                 </p>
@@ -249,7 +249,7 @@ export default function GameCanvas({ dream, onBack, onSaveScore }) {
           <div className="glass-panel p-6 rounded-2xl flex flex-col gap-3 relative overflow-hidden bg-gradient-to-br from-[var(--bg-secondary)] to-black">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--accent-color)]/5 rounded-full filter blur-xl pointer-events-none" />
             <h4 className="text-xs font-bold text-white uppercase tracking-wider font-[var(--title-font)]">
-              Dream Storyline
+              {t('dreamStoryline')}
             </h4>
             <div className="flex flex-col gap-3 text-xs leading-relaxed text-gray-300">
               <p>{dream.blueprint.stories.intro}</p>
