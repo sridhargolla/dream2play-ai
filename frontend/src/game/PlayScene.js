@@ -329,11 +329,31 @@ export default class PlayScene extends Phaser.Scene {
     }
 
     // Boss loop
-    if (this.bossActive && this.boss) {
-      this.boss.y = 200 + Math.sin(time / 400) * 100;
+    if (this.bossActive && this.boss && this.boss.active) {
+      let fireChance = 0.02;
+      let oscSpeed = 400;
+      let oscAmp = 100;
+
+      const currentHP = typeof this.boss.health === 'number' ? this.boss.health : this.bossHealth;
+
+      if (currentHP <= 69) {
+        fireChance = 0.07;
+        oscSpeed = 200;
+        oscAmp = 150;
+      } else if (currentHP <= 139) {
+        fireChance = 0.04;
+        oscSpeed = 300;
+        oscAmp = 120;
+      } else {
+        fireChance = 0.02;
+        oscSpeed = 400;
+        oscAmp = 100;
+      }
+
+      this.boss.y = 200 + Math.sin(time / oscSpeed) * oscAmp;
       this.boss.x = this.player.x + 450;
 
-      if (Math.random() < 0.02) {
+      if (Math.random() < fireChance) {
         this.fireBossLaser();
       }
     }
@@ -1037,7 +1057,20 @@ export default class PlayScene extends Phaser.Scene {
   updateBossHealthBar() {
     this.bossHealthBar.clear();
     this.bossHealthBar.fillStyle(0xdc2626, 1);
-    this.bossHealthBar.fillRect(this.scale.width / 2 - 150, 30, (this.bossHealth / this.bossMaxHealth) * 300, 12);
+    const maxHP = this.boss && typeof this.boss.maxHealth === 'number' ? this.boss.maxHealth : 200;
+    const currentHP = this.boss && typeof this.boss.health === 'number' ? this.boss.health : this.bossHealth;
+    this.bossHealthBar.fillRect(this.scale.width / 2 - 150, 30, Math.max(0, currentHP / maxHP) * 300, 12);
+
+    if (this.boss && this.boss.active) {
+      let phaseText = "Phase 1";
+      if (currentHP <= 69) {
+        phaseText = "Phase 3 (Enraged)";
+      } else if (currentHP <= 139) {
+        phaseText = "Phase 2 (Aggressive)";
+      }
+      const stageBossName = this.getCurrentBossName();
+      this.bossLabel.setText(`BOSS: ${stageBossName.toUpperCase()} [${phaseText}]`);
+    }
   }
 
   updateObjectivesHUD() {
@@ -1347,14 +1380,11 @@ export default class PlayScene extends Phaser.Scene {
     this.bossActive = true;
     this.bossLastHurt = 0;
 
-    // Enforce minimum HP so boss always requires multiple hits (never 1-shot)
-    const rawHp = Number(stageBoss.hp);
-    const minHp = 300; // always at least 300 HP → ~6 hits
-    this.bossMaxHealth = Math.max(rawHp > 0 ? rawHp : 500, minHp);
-    // Sync the stateObject hp to match the enforced value so bossState.hp stays consistent
-    stageBoss.hp = this.bossMaxHealth;
-    stageBoss.maxHp = this.bossMaxHealth;
-    this.bossHealth = this.bossMaxHealth;
+    // Enforce exactly 200 HP for the boss
+    this.bossMaxHealth = 200;
+    this.bossHealth = 200;
+    stageBoss.hp = 200;
+    stageBoss.maxHp = 200;
 
     const bx = Number.isFinite(stageBoss.x) ? stageBoss.x : this.player.x + 450;
     const by = Number.isFinite(stageBoss.y) ? stageBoss.y : 200;
@@ -1364,13 +1394,22 @@ export default class PlayScene extends Phaser.Scene {
     this.boss.body.setAllowGravity(false);
     this.boss.setImmovable(true);
 
+    // Set HP directly on the sprite
+    this.boss.maxHealth = 200;
+    this.boss.health = 200;
+
     this.boss.setData('stateObject', stageBoss);
 
-    this.bossLabel.setText(`BOSS: ${stageBoss.name.toUpperCase()}`);
+    this.bossLabel.setText(`BOSS: ${stageBoss.name.toUpperCase()} [Phase 1]`);
     this.bossUI.setVisible(true);
     this.updateBossHealthBar();
 
-    this.physics.add.overlap(this.projectiles, this.boss, this.hitBoss, null, this);
+    // Prevent duplicate overlap colliders
+    if (this.bossOverlapCollider) {
+      this.physics.world.removeCollider(this.bossOverlapCollider);
+      this.bossOverlapCollider = null;
+    }
+    this.bossOverlapCollider = this.physics.add.overlap(this.projectiles, this.boss, this.hitBoss, null, this);
 
     this.objectiveText.setText(`DEFEAT THE BOSS: ${stageBoss.name.toUpperCase()}`);
     this.cameras.main.shake(300, 0.01);
@@ -1394,7 +1433,25 @@ export default class PlayScene extends Phaser.Scene {
     });
   }
 
-  hitBoss(projectile, bossSprite) {
+  hitBoss(param1, param2) {
+    let projectile = null;
+    let bossSprite = null;
+
+    // Resolve parameter order issues
+    if (param1 === this.boss) {
+      bossSprite = param1;
+      projectile = param2;
+    } else if (param2 === this.boss) {
+      bossSprite = param2;
+      projectile = param1;
+    } else if (param1 && param1.texture && param1.texture.key === 'boss_tex') {
+      bossSprite = param1;
+      projectile = param2;
+    } else {
+      projectile = param1;
+      bossSprite = param2;
+    }
+
     if (!bossSprite || !bossSprite.active) return;
     if (!projectile || !projectile.active) return;
 
@@ -1411,12 +1468,33 @@ export default class PlayScene extends Phaser.Scene {
     if (typeof projectile.destroy === 'function') projectile.destroy();
 
     const bossState = bossSprite.getData('stateObject');
-    if (!bossState) return;
 
-    const damage = Math.max(25, this.bossMaxHealth / 6);
-    bossState.hp = Math.max(0, bossState.hp - damage);
-    this.bossHealth = bossState.hp;
+    // Ensure health is properly initialized and never becomes undefined/NaN/null
+    if (typeof bossSprite.health !== 'number' || Number.isNaN(bossSprite.health)) {
+      bossSprite.health = 200;
+    }
+    if (typeof bossSprite.maxHealth !== 'number' || Number.isNaN(bossSprite.maxHealth)) {
+      bossSprite.maxHealth = 200;
+    }
+
+    // Decrement exactly 10 health on bullet overlap
+    bossSprite.health -= 10;
+
+    // Sync state
+    this.bossHealth = bossSprite.health;
+    if (bossState) {
+      bossState.hp = bossSprite.health;
+    }
+
     this.updateBossHealthBar();
+
+    // Debugging log: "Boss HP:", boss.health, "/", boss.maxHealth
+    console.log(
+      "Boss HP:",
+      bossSprite.health,
+      "/",
+      bossSprite.maxHealth
+    );
 
     AudioSynth.playSFX('hurt');
     this.createSpark(bossSprite.x, bossSprite.y, '#ffffff');
@@ -1426,7 +1504,8 @@ export default class PlayScene extends Phaser.Scene {
       if (bossSprite && bossSprite.active) bossSprite.clearTint();
     });
 
-    if (bossState.hp <= 0) {
+    // Boss should only be defeated when health <= 0
+    if (bossSprite.health <= 0) {
       this.defeatBoss(bossSprite);
     }
   }
@@ -1435,11 +1514,21 @@ export default class PlayScene extends Phaser.Scene {
     if (this._bossDefeating) return; // prevent double-trigger
     this._bossDefeating = true;
 
+    // Step 1: Stop boss movement
+    this.bossActive = false;
+    if (bossSprite && bossSprite.active) {
+      if (bossSprite.body) {
+        bossSprite.body.setVelocity(0, 0);
+      }
+    }
+
+    // Step 2: Disable attacks (checked in the update loop by checking this.bossActive)
+
     // Capture position BEFORE destroying sprite
     const bx = bossSprite && bossSprite.active ? bossSprite.x : this.scale.width / 2;
     const by = bossSprite && bossSprite.active ? bossSprite.y : this.scale.height / 2;
 
-    // Mark boss state as defeated
+    // Mark boss state as defeated in stateObject
     const bossState = bossSprite ? bossSprite.getData('stateObject') : null;
     if (bossState) {
       bossState.hp = 0;
@@ -1447,85 +1536,45 @@ export default class PlayScene extends Phaser.Scene {
       bossState.defeated = true;
     }
 
-    // Cleanup boss sprite
-    this.bossActive = false;
-    this.bossSpawned = false;
-    if (bossSprite && bossSprite.active) bossSprite.destroy();
-    this.boss = null;
-    if (this.bossUI) this.bossUI.setVisible(false);
-
-    // Explosion sparks at captured position
-    for (let i = 0; i < 3; i++) {
-      this.time.delayedCall(i * 120, () => {
-        this.createSpark(bx + (Math.random() - 0.5) * 60, by + (Math.random() - 0.5) * 60, '#ffff00');
-        this.createSpark(bx + (Math.random() - 0.5) * 60, by + (Math.random() - 0.5) * 60, '#ff8800');
+    // Step 3: Play explosion animation
+    AudioSynth.playSFX('explosion');
+    
+    // Scale and spin boss while shaking camera
+    if (bossSprite && bossSprite.active) {
+      this.tweens.add({
+        targets: bossSprite,
+        angle: 720,
+        scaleX: 0.1,
+        scaleY: 0.1,
+        alpha: 0.1,
+        duration: 2000,
+        ease: 'Cubic.easeOut'
       });
     }
-    this.cameras.main.shake(400, 0.015);
 
-    // --- BOSS DEFEATED BANNER ---
-    const width = this.scale.width;
-    const height = this.scale.height;
-
-    const bannerBg = this.add
-      .rectangle(width / 2, height / 2, 420, 80, 0x1e1b4b, 0.93)
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(90)
-      .setStrokeStyle(3, 0xff4444);
-
-    const bannerText = this.add
-      .text(width / 2, height / 2 - 12, 'BOSS DEFEATED!', {
-        font: 'bold 32px Outfit, sans-serif',
-        fill: '#ff6666',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(91);
-
-    const subText = this.add
-      .text(width / 2, height / 2 + 22, 'Stage Clear — Advancing...', {
-        font: '16px Outfit, sans-serif',
-        fill: '#fde68a',
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(91);
-
-    // Pop-in animation
-    bannerBg.setScale(0.1);
-    bannerText.setScale(0.1);
-    subText.setAlpha(0);
-
-    this.tweens.add({
-      targets: [bannerBg, bannerText],
-      scaleX: 1,
-      scaleY: 1,
-      duration: 350,
-      ease: 'Back.easeOut',
-    });
-    this.tweens.add({
-      targets: subText,
-      alpha: 1,
-      delay: 300,
-      duration: 300,
-    });
-
-    // Fade out after 2 seconds, then trigger stage completion
-    this.time.delayedCall(2200, () => {
-      this.tweens.add({
-        targets: [bannerBg, bannerText, subText],
-        alpha: 0,
-        duration: 400,
-        onComplete: () => {
-          if (bannerBg.active) bannerBg.destroy();
-          if (bannerText.active) bannerText.destroy();
-          if (subText.active) subText.destroy();
-          this._bossDefeating = false;
-          this.updateObjectivesHUD();
-          this.checkStageCompletion();
-        },
+    // Spawn multiple waves of explosion sparks over 2 seconds
+    for (let i = 0; i < 10; i++) {
+      this.time.delayedCall(i * 200, () => {
+        this.createSpark(bx + (Math.random() - 0.5) * 80, by + (Math.random() - 0.5) * 80, '#ffff00');
+        this.createSpark(bx + (Math.random() - 0.5) * 80, by + (Math.random() - 0.5) * 80, '#ff6600');
+        this.cameras.main.shake(100, 0.008);
       });
+    }
+
+    // Step 4: Wait until explosion animation finishes (2000 ms)
+    this.time.delayedCall(2000, () => {
+      // Step 5: Destroy boss
+      if (bossSprite && bossSprite.active) {
+        bossSprite.destroy();
+      }
+      this.boss = null;
+      if (this.bossUI) this.bossUI.setVisible(false);
+
+      // Step 6 & 7: Show Victory Screen / Level Completed
+      this.showBossVictoryScreen();
+
+      // Step 8: Pause game physics and updates
+      this.physics.pause();
     });
   }
 
@@ -1802,5 +1851,123 @@ export default class PlayScene extends Phaser.Scene {
       score: this.score,
       completionTime: this.completionTime,
     });
+  }
+
+  showBossVictoryScreen() {
+    const width = this.scale.width;
+    const height = this.scale.height;
+
+    // Dark semi-transparent overlay
+    this.victoryOverlay = this.add
+      .rectangle(width / 2, height / 2, width, height, 0x000000, 0.8)
+      .setScrollFactor(0)
+      .setDepth(150);
+
+    // Main panel card with green/emerald border
+    this.victoryPanel = this.add
+      .rectangle(width / 2, height / 2, 450, 320, 0x0f172a, 0.95)
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(151)
+      .setStrokeStyle(3, 0x10b981);
+
+    // "Victory!" Title
+    this.victoryTitle = this.add
+      .text(width / 2, height / 2 - 100, 'VICTORY!', {
+        font: 'bold 42px Outfit, sans-serif',
+        fill: '#10b981',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(152);
+
+    // "Level Completed" Text
+    this.victoryLevelText = this.add
+      .text(width / 2, height / 2 - 50, 'Level Completed', {
+        font: 'bold 24px Outfit, sans-serif',
+        fill: '#e2e8f0',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(152);
+
+    // "Boss Defeated" Text
+    const stageBossName = this.getCurrentBossName();
+    this.victoryBossDefeatedText = this.add
+      .text(width / 2, height / 2 - 15, `Boss Defeated: ${stageBossName}`, {
+        font: 'italic 18px Outfit, sans-serif',
+        fill: '#f87171',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(152);
+
+    // "Final Score" Display
+    this.victoryScoreText = this.add
+      .text(width / 2, height / 2 + 30, `Final Score: ${this.score}`, {
+        font: 'bold 22px Outfit, sans-serif',
+        fill: '#fbbf24',
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(152);
+
+    // Play Again Button
+    this.playAgainBtn = this.add
+      .text(width / 2, height / 2 + 95, 'PLAY AGAIN', {
+        font: 'bold 20px Outfit, sans-serif',
+        fill: '#ffffff',
+        backgroundColor: '#10b981',
+        padding: { x: 25, y: 12 },
+      })
+      .setOrigin(0.5)
+      .setScrollFactor(0)
+      .setDepth(152)
+      .setInteractive({ useHandCursor: true });
+
+    this.playAgainBtn.on('pointerover', () => {
+      this.playAgainBtn.setStyle({ backgroundColor: '#059669' });
+    });
+    this.playAgainBtn.on('pointerout', () => {
+      this.playAgainBtn.setStyle({ backgroundColor: '#10b981' });
+    });
+
+    this.playAgainBtn.on('pointerdown', () => {
+      this.cleanupVictoryScreen();
+      this.scene.restart();
+    });
+
+    // Pop-in animation
+    this.victoryPanel.setScale(0, 0);
+    this.victoryTitle.setScale(0, 0);
+    this.victoryLevelText.setScale(0, 0);
+    this.victoryBossDefeatedText.setScale(0, 0);
+    this.victoryScoreText.setScale(0, 0);
+    this.playAgainBtn.setScale(0, 0);
+
+    this.tweens.add({
+      targets: [
+        this.victoryPanel,
+        this.victoryTitle,
+        this.victoryLevelText,
+        this.victoryBossDefeatedText,
+        this.victoryScoreText,
+        this.playAgainBtn,
+      ],
+      scaleX: 1,
+      scaleY: 1,
+      duration: 500,
+      ease: 'Back.easeOut',
+    });
+  }
+
+  cleanupVictoryScreen() {
+    if (this.victoryOverlay) this.victoryOverlay.destroy();
+    if (this.victoryPanel) this.victoryPanel.destroy();
+    if (this.victoryTitle) this.victoryTitle.destroy();
+    if (this.victoryLevelText) this.victoryLevelText.destroy();
+    if (this.victoryBossDefeatedText) this.victoryBossDefeatedText.destroy();
+    if (this.victoryScoreText) this.victoryScoreText.destroy();
+    if (this.playAgainBtn) this.playAgainBtn.destroy();
   }
 }
