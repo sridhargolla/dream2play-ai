@@ -30,6 +30,12 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// --- SERVE FRONTEND STATIC FILES IN PRODUCTION ---
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, '../frontend/dist');
+  app.use(express.static(distPath));
+}
+
 // --- TRANSLATION HELPER ---
 const ERROR_TRANSLATIONS = {
   hi: {
@@ -126,12 +132,12 @@ const authenticateToken = (req, res, next) => {
 };
 
 // --- HEALTH / ROOT ROUTE ---
-app.get('/', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.json({
     message: 'Dream2Play AI backend is running',
     status: 'ok',
     timestamp: new Date().toISOString(),
-    frontend: 'http://localhost:5176/',
+    frontend: process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5173/',
     api: {
       auth: ['/api/auth/register', '/api/auth/login', '/api/auth/me'],
       dreams: ['/api/dreams', '/api/dreams/generate', '/api/dreams/fuse', '/api/dreams/:id'],
@@ -401,10 +407,9 @@ app.post('/api/scores', authenticateToken, (req, res) => {
   }
 });
 
-// --- SERVE FRONTEND STATIC FILES IN PRODUCTION ---
+// --- SERVE FRONTEND STATIC FILES IN PRODUCTION (FALLBACK) ---
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../frontend/dist');
-  app.use(express.static(distPath));
   app.get('*', (req, res, next) => {
     // Only fallback for non-API routes
     if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
