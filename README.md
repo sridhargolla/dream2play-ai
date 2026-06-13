@@ -101,7 +101,7 @@ npm run dev:frontend  # UI only
 
 - Hook repositories configured: 3
 - Total hooks configured: 12
-- Included tools: eslint, oxlint, biome, prettier, TypeScript type-check via the pre-commit typecheck hook using npm run typecheck (tsc --noEmit), Knip, npm audit, Gitleaks, and basic pre-commit hygiene checks.
+- Included tools: eslint, oxlint, biome, prettier, TypeScript type-check via the pre-commit type-check hook using npm run typecheck (tsc --noEmit), Knip, npm audit, Gitleaks, and basic pre-commit hygiene checks.
 
 ## License
 

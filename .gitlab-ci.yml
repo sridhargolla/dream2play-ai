@@ -1,7 +1,7 @@
 stages:
   - lint
   - format
-  - typecheck
+  - type_check
   - test
   - coverage
   - security
@@ -32,7 +32,7 @@ format_job:
     - npx prettier --check .
 
 type_check_job:
-  stage: typecheck
+  stage: type_check
   script:
     - npm run typecheck
 

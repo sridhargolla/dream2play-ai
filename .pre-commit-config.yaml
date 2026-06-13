@@ -42,7 +42,7 @@ repos:
         files: \.(js|jsx|json|css|md)$
         pass_filenames: false
 
-      - id: typecheck
+      - id: type-check
         name: TypeScript Type Check
         entry: npm run typecheck
         language: system
