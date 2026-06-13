@@ -7,7 +7,7 @@ COPY package.json package-lock.json ./
 COPY backend/package.json ./backend/package.json
 COPY frontend/package.json ./frontend/package.json
 
-RUN npm ci
+RUN npm install
 
 FROM dependencies AS build
 WORKDIR /app
@@ -24,7 +24,7 @@ COPY package.json package-lock.json ./
 COPY backend/package.json ./backend/package.json
 COPY frontend/package.json ./frontend/package.json
 
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm install --omit=dev && npm cache clean --force
 
 COPY --chown=node:node backend ./backend
 COPY --from=build --chown=node:node /app/frontend/dist ./frontend/dist
