@@ -106,6 +106,25 @@ const getAIConfig = (req) => {
   };
 };
 
+// --- JWT AUTHENTICATION MIDDLEWARE ---
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  const lang = getLang(req);
+
+  if (!token) {
+    return sendError(res, 401, 'Access token missing', lang);
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return sendError(res, 403, 'Token is invalid or expired', lang);
+    }
+    req.user = user;
+    next();
+  });
+};
+
 // --- HEALTH / ROOT ROUTE ---
 app.get('/', (req, res) => {
   res.json({
@@ -132,25 +151,6 @@ app.post('/api/ai/test', authenticateToken, async (req, res) => {
     res.status(500).json({ ok: false, error: err.message });
   }
 });
-
-// --- JWT AUTHENTICATION MIDDLEWARE ---
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  const lang = getLang(req);
-
-  if (!token) {
-    return sendError(res, 401, 'Access token missing', lang);
-  }
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) {
-      return sendError(res, 403, 'Token is invalid or expired', lang);
-    }
-    req.user = user;
-    next();
-  });
-};
 
 // --- AUTHENTICATION ROUTES ---
 
@@ -400,6 +400,19 @@ app.post('/api/scores', authenticateToken, (req, res) => {
     sendError(res, 500, 'Failed to save score', lang);
   }
 });
+
+// --- SERVE FRONTEND STATIC FILES IN PRODUCTION ---
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, '../frontend/dist');
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    // Only fallback for non-API routes
+    if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
+      return next();
+    }
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
 
 // --- SERVER INITIALIZATION ---
 if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
