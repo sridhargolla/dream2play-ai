@@ -15,4 +15,4 @@ The repository currently configures 3 hook repositories with 12 hooks in total.
 Configured hook sources:
 - pre-commit-hooks: trailing whitespace, EOF fixing, YAML validation, large-file checks
 - gitleaks: secret scanning
-- local: eslint, oxlint, biome, prettier, TypeScript type-check via the type-check hook (npm run typecheck / tsc --noEmit), Knip, npm audit
+- local: eslint, oxlint, biome, prettier, TypeScript type-check via the tsc hook (npx tsc --noEmit), Knip, npm audit
