@@ -1,20 +1,29 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "entry": [
-    "frontend/src/App.jsx",
-    "backend/server.js"
+  "ignoreDependencies": [
+    "@biomejs/biome",
+    "eslint-config-prettier",
+    "husky",
+    "oxlint"
   ],
-  "project": [
-    "frontend/src/**/*.js",
-    "frontend/src/**/*.jsx",
-    "backend/**/*.js",
-    "spec/**/*.js"
+  "ignoreFiles": [
+    "backend/test_generator.js"
   ],
-  "ignore": [
-    "**/node_modules/**",
-    "frontend/dist/**",
-    "coverage/**",
-    "backend/test_generator.js",
-    "spec/index.js"
-  ]
+  "ignoreIssues": {
+    "backend/utils/aiProvider.js": [
+      "exports"
+    ]
+  },
+  "workspaces": {
+    "backend": {
+      "project": [
+        "**/*.js"
+      ]
+    },
+    "frontend": {
+      "project": [
+        "src/**/*.{js,jsx}"
+      ]
+    }
+  }
 }

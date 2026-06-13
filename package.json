@@ -1,0 +1,38 @@
+{
+  "name": "dream2play-ai",
+  "version": "1.0.0",
+  "description": "AI-powered platform that converts dream descriptions into playable browser-based games.",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "author": "Dream2Play AI Team",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "build": "npm run build --workspace frontend",
+    "dev:backend": "npm run dev --workspace backend",
+    "dev:frontend": "npm run dev --workspace frontend",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "knip": "knip",
+    "test": "vitest run --passWithNoTests",
+    "test:coverage": "vitest run --coverage --passWithNoTests"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.6.4",
+    "@vitest/coverage-v8": "^1.5.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.11",
+    "knip": "^5.0.0",
+    "oxlint": "^0.5.0",
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.0"
+  }
+}

@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use Dream2Play AI, please cite it using this metadata."
+type: software
+title: "Dream2Play AI"
+abstract: "Dream2Play AI converts dream descriptions into playable browser-based games using React, Node.js, OpenAI APIs, and Phaser 3."
+authors:
+  - name: "Dream2Play AI Team"
+version: "1.0.0"
+date-released: "2026-06-13"
+license: "AGPL-3.0-only"
+repository-code: "https://code.swecha.org/sridhar24/dream2play-ai"
+keywords:
+  - artificial-intelligence
+  - browser-game
+  - phaser
+  - react
+  - nodejs
