@@ -1,11 +1,10 @@
 stages:
   - lint
   - format
-  - type_check
+  - typecheck
   - test
   - coverage
-  - audit
-  - secret-scan
+  - security
 
 default:
   image: node:20
@@ -33,9 +32,9 @@ format_job:
     - npx prettier --check .
 
 type_check_job:
-  stage: type_check
+  stage: typecheck
   script:
-    - npx tsc --noEmit
+    - npm run typecheck
 
 test_job:
   stage: test
@@ -48,12 +47,12 @@ coverage_job:
     - npx vitest run --coverage
 
 audit_job:
-  stage: audit
+  stage: security
   script:
     - npm audit --audit-level=high
 
 gitleaks_job:
-  stage: secret-scan
+  stage: security
   image:
     name: zricethezav/gitleaks:latest
     entrypoint: [""]

@@ -42,18 +42,16 @@ repos:
         files: \.(js|jsx|json|css|md)$
         pass_filenames: false
 
-      - id: typescript-typecheck
-        name: TypeScript type-check
+      - id: typecheck
+        name: TypeScript Type Check
         entry: npm run typecheck
         language: system
-        files: \.(ts|tsx|js|jsx|json)$
         pass_filenames: false
 
       - id: knip
-        name: knip
+        name: Knip Dead Code Check
         entry: npm run knip
         language: system
-        files: \.(ts|tsx|js|jsx|json)$
         pass_filenames: false
 
       - id: npm-audit
