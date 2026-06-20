@@ -5,10 +5,5 @@
     "suspicious": "warn",
     "perf": "warn"
   },
-  "ignorePatterns": [
-    "node_modules",
-    "dist",
-    "build",
-    "coverage"
-  ]
+  "ignorePatterns": ["node_modules", "dist", "build", "coverage"]
 }

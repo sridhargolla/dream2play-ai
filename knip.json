@@ -6,24 +6,16 @@
     "husky",
     "oxlint"
   ],
-  "ignoreFiles": [
-    "backend/test_generator.js"
-  ],
+  "ignoreFiles": ["backend/test_generator.js"],
   "ignoreIssues": {
-    "backend/utils/aiProvider.js": [
-      "exports"
-    ]
+    "backend/utils/aiProvider.js": ["exports"]
   },
   "workspaces": {
     "backend": {
-      "project": [
-        "**/*.js"
-      ]
+      "project": ["**/*.js"]
     },
     "frontend": {
-      "project": [
-        "src/**/*.{js,jsx}"
-      ]
+      "project": ["src/**/*.{js,jsx}"]
     }
   }
 }

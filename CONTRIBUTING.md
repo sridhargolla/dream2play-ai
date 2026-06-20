@@ -43,10 +43,10 @@ git checkout -b feature/your-feature-name
 
 ## Contribution Guidelines
 
-* Follow the existing code structure (`frontend/`, `backend/`)
-* Match naming and style in surrounding files
-* Run `npm run lint` and `npm run test` before submitting
-* Update README or USER_MANUAL if behavior changes
+- Follow the existing code structure (`frontend/`, `backend/`)
+- Match naming and style in surrounding files
+- Run `npm run lint` and `npm run test` before submitting
+- Update README or USER_MANUAL if behavior changes
 
 ## Pull Request Process
 

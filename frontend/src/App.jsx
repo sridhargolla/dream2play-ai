@@ -1,24 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import LandingPage from './pages/LandingPage';
-import DashboardPage from './pages/DashboardPage';
-import HistoryPage from './pages/HistoryPage';
-import ProfilePage from './pages/ProfilePage';
-import SettingsPage from './pages/SettingsPage';
-import GamePage from './pages/GamePage';
-import BlueprintPreviewPage from './pages/BlueprintPreviewPage';
-import DreamForm from './components/DreamForm';
-import AudioSynth from './game/AudioSynth';
-import i18n from './i18n';
-import { getAIHeaders } from './utils/aiSettings';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import DreamForm from "./components/DreamForm";
+import Navbar from "./components/Navbar";
+import AudioSynth from "./game/AudioSynth";
+import i18n from "./i18n";
+import BlueprintPreviewPage from "./pages/BlueprintPreviewPage";
+import DashboardPage from "./pages/DashboardPage";
+import GamePage from "./pages/GamePage";
+import HistoryPage from "./pages/HistoryPage";
+import LandingPage from "./pages/LandingPage";
+import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
+import { getAIHeaders } from "./utils/aiSettings";
 
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activePage, setActivePage] = useState('landing');
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user_details')) || null);
-  const [token, setToken] = useState(localStorage.getItem('auth_token') || null);
+  const [activePage, setActivePage] = useState("landing");
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user_details")) || null,
+  );
+  const [token, setToken] = useState(
+    localStorage.getItem("auth_token") || null,
+  );
 
   const [dreams, setDreams] = useState([]);
   const [scores, setScores] = useState([]);
@@ -34,9 +38,19 @@ export default function App() {
     AudioSynth.setMute(isMuted);
   }, [isMuted]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: activePage is deliberately omitted to prevent routing loop
   useEffect(() => {
-    const pathPage = location.pathname.replace('/', '') || 'landing';
-    const allowed = ['landing', 'dashboard', 'generator', 'preview', 'history', 'profile', 'settings', 'game'];
+    const pathPage = location.pathname.replace("/", "") || "landing";
+    const allowed = [
+      "landing",
+      "dashboard",
+      "generator",
+      "preview",
+      "history",
+      "profile",
+      "settings",
+      "game",
+    ];
     if (allowed.includes(pathPage) && pathPage !== activePage) {
       setActivePage(pathPage);
     }
@@ -44,41 +58,41 @@ export default function App() {
 
   const goToPage = (page) => {
     setActivePage(page);
-    navigate(page === 'landing' ? '/' : `/${page}`);
+    navigate(page === "landing" ? "/" : `/${page}`);
   };
 
   // Sync token & user data to localStorage
   const handleLoginSuccess = (newToken, newUser) => {
     setToken(newToken);
     setUser(newUser);
-    localStorage.setItem('auth_token', newToken);
-    localStorage.setItem('user_details', JSON.stringify(newUser));
-    goToPage('dashboard');
+    localStorage.setItem("auth_token", newToken);
+    localStorage.setItem("user_details", JSON.stringify(newUser));
+    goToPage("dashboard");
   };
 
   const handleLogout = () => {
     setToken(null);
     setUser(null);
     setDreams([]);
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_details');
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user_details");
     AudioSynth.stopBGM();
-    goToPage('landing');
+    goToPage("landing");
   };
 
-  const showToast = (message, type = 'error') => {
+  const showToast = (message, type = "error") => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 4500);
   };
 
   const openDreamPreview = (dream) => {
     setSelectedDream(dream);
-    goToPage('preview');
+    goToPage("preview");
   };
   const fetchDreams = async () => {
     if (!token) return;
     try {
-      const res = await fetch('/api/dreams', {
+      const res = await fetch("/api/dreams", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -86,29 +100,30 @@ export default function App() {
         setDreams(data);
       }
     } catch (err) {
-      console.error('Failed to fetch dreams:', err);
+      console.error("Failed to fetch dreams:", err);
     }
   };
 
   const fetchScores = async () => {
     try {
-      const res = await fetch('/api/scores');
+      const res = await fetch("/api/scores");
       if (res.ok) {
         const data = await res.json();
         setScores(data);
       }
     } catch (err) {
-      console.error('Failed to fetch scores:', err);
+      console.error("Failed to fetch scores:", err);
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only run when token changes
   useEffect(() => {
     if (token) {
       fetchDreams();
       fetchScores();
-      goToPage('dashboard');
+      goToPage("dashboard");
     } else {
-      goToPage('landing');
+      goToPage("landing");
     }
   }, [token]);
 
@@ -121,12 +136,12 @@ export default function App() {
     const minAnimPromise = new Promise((resolve) => setTimeout(resolve, 3500));
 
     try {
-      const apiPromise = fetch('/api/dreams/generate', {
-        method: 'POST',
+      const apiPromise = fetch("/api/dreams/generate", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          'x-lang': i18n.language || 'en',
+          "x-lang": i18n.language || "en",
           ...getAIHeaders(),
         },
         body: JSON.stringify({ title, description }),
@@ -137,13 +152,13 @@ export default function App() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || 'Generation failed');
+        throw new Error(data.message || "Generation failed");
       }
 
       setDreams((prev) => [...prev, data]);
       setSelectedDream(data);
       setIsGenerating(false);
-      goToPage('preview');
+      goToPage("preview");
     } catch (err) {
       showToast(err.message);
       setIsGenerating(false);
@@ -155,12 +170,12 @@ export default function App() {
     if (!token) return;
     setIsFusing(true);
     try {
-      const res = await fetch('/api/dreams/fuse', {
-        method: 'POST',
+      const res = await fetch("/api/dreams/fuse", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          'x-lang': i18n.language || 'en',
+          "x-lang": i18n.language || "en",
           ...getAIHeaders(),
         },
         body: JSON.stringify({ dreamId1, dreamId2 }),
@@ -168,14 +183,12 @@ export default function App() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message || 'Fusion failed');
+        throw new Error(data.message || "Fusion failed");
       }
 
       setDreams((prev) => [...prev, data]);
       setSelectedDream(data);
-      goToPage('preview');
-    } catch (err) {
-      throw err;
+      goToPage("preview");
     } finally {
       setIsFusing(false);
     }
@@ -184,10 +197,10 @@ export default function App() {
   // Delete a dream
   const handleDeleteDream = async (id) => {
     if (!token) return;
-    if (!confirm('Are you sure you want to delete this dream game?')) return;
+    if (!confirm("Are you sure you want to delete this dream game?")) return;
     try {
       const res = await fetch(`/api/dreams/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -198,7 +211,7 @@ export default function App() {
         showToast(data.message);
       }
     } catch (err) {
-      console.error('Failed to delete dream:', err);
+      console.error("Failed to delete dream:", err);
     }
   };
 
@@ -206,10 +219,10 @@ export default function App() {
   const handleSaveScore = async (scorePayload) => {
     if (!token) return;
     try {
-      const res = await fetch('/api/scores', {
-        method: 'POST',
+      const res = await fetch("/api/scores", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(scorePayload),
@@ -221,7 +234,7 @@ export default function App() {
         showToast(data.message);
       }
     } catch (err) {
-      console.error('Failed to save score:', err);
+      console.error("Failed to save score:", err);
     }
   };
 
@@ -232,9 +245,9 @@ export default function App() {
   // Render current active page
   const renderPage = () => {
     switch (activePage) {
-      case 'landing':
+      case "landing":
         return <LandingPage onLoginSuccess={handleLoginSuccess} />;
-      case 'dashboard':
+      case "dashboard":
         return (
           <DashboardPage
             user={user}
@@ -245,17 +258,22 @@ export default function App() {
             onOpenPreview={openDreamPreview}
           />
         );
-      case 'generator':
-        return <DreamForm onSubmit={handleGenerateGame} isGenerating={isGenerating} />;
-      case 'preview':
+      case "generator":
+        return (
+          <DreamForm
+            onSubmit={handleGenerateGame}
+            isGenerating={isGenerating}
+          />
+        );
+      case "preview":
         return (
           <BlueprintPreviewPage
             dream={selectedDream}
-            onPlay={() => goToPage('game')}
-            onBack={() => goToPage('dashboard')}
+            onPlay={() => goToPage("game")}
+            onBack={() => goToPage("dashboard")}
           />
         );
-      case 'history':
+      case "history":
         return (
           <HistoryPage
             dreams={dreams}
@@ -265,17 +283,17 @@ export default function App() {
             isFusing={isFusing}
           />
         );
-      case 'profile':
+      case "profile":
         return <ProfilePage user={user} scores={scores} />;
-      case 'settings':
+      case "settings":
         return <SettingsPage />;
-      case 'game':
+      case "game":
         return (
           <GamePage
             dream={selectedDream}
             onBack={() => {
               AudioSynth.stopBGM();
-              goToPage('preview');
+              goToPage("preview");
             }}
             onSaveScore={handleSaveScore}
           />
@@ -303,14 +321,17 @@ export default function App() {
       />
 
       {/* Main Page Content */}
-      <main className="flex-1 w-full max-w-7xl mx-auto py-8">{renderPage()}</main>
+      <main className="flex-1 w-full max-w-7xl mx-auto py-8">
+        {renderPage()}
+      </main>
 
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-[100] px-5 py-3 rounded-xl text-sm font-semibold shadow-xl border ${toast.type === 'error'
-            ? 'bg-red-500/15 border-red-500/30 text-red-200'
-            : 'bg-green-500/15 border-green-500/30 text-green-200'
-            }`}
+          className={`fixed bottom-6 right-6 z-[100] px-5 py-3 rounded-xl text-sm font-semibold shadow-xl border ${
+            toast.type === "error"
+              ? "bg-red-500/15 border-red-500/30 text-red-200"
+              : "bg-green-500/15 border-green-500/30 text-green-200"
+          }`}
         >
           {toast.message}
         </div>
@@ -318,7 +339,8 @@ export default function App() {
 
       {/* Footer */}
       <footer className="py-6 border-t border-white/5 bg-black/40 text-center text-[10px] text-gray-500 font-mono tracking-wider">
-        DREAM2PLAY AI // INTERACTIVE COGNITIVE GAME GENERATION NODE // HACKATHON v1.0.0 //@ SRIDHAR GOLLA
+        DREAM2PLAY AI // INTERACTIVE COGNITIVE GAME GENERATION NODE // HACKATHON
+        v1.0.0 //@ SRIDHAR GOLLA
       </footer>
     </div>
   );

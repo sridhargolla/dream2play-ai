@@ -1,12 +1,18 @@
-import Phaser from 'phaser';
-import PlayScene from './PlayScene';
+import Phaser from "phaser";
+import PlayScene from "./PlayScene";
 
 /**
  * Generates the Phaser Game config object dynamically.
  * Callbacks are stored on window so PlayScene.init() can pick them up.
  */
 export const createGameConfig = (parentDiv, blueprint, callbacks = {}) => {
-  const { labels = {}, onWin, onLose, onBossDefeated, onStageComplete } = callbacks;
+  const {
+    labels = {},
+    onWin,
+    onLose,
+    onBossDefeated,
+    onStageComplete,
+  } = callbacks;
 
   window.__dream2play_data = {
     blueprint,
@@ -23,7 +29,7 @@ export const createGameConfig = (parentDiv, blueprint, callbacks = {}) => {
     height: 450,
     parent: parentDiv,
     physics: {
-      default: 'arcade',
+      default: "arcade",
       arcade: {
         gravity: { y: 0 },
         debug: false,

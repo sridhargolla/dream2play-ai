@@ -10,19 +10,19 @@
  */
 
 const DEFAULT_ENDPOINTS = {
-  openai: 'https://api.openai.com',
-  ollama: 'http://localhost:11434',
-  local: 'http://localhost:1234',
-  anthropic: 'https://api.anthropic.com',
-  gemini: 'https://generativelanguage.googleapis.com',
+  openai: "https://api.openai.com",
+  ollama: "http://localhost:11434",
+  local: "http://localhost:1234",
+  anthropic: "https://api.anthropic.com",
+  gemini: "https://generativelanguage.googleapis.com",
 };
 
 const DEFAULT_MODELS = {
-  openai: 'gpt-3.5-turbo',
-  ollama: 'llama3',
-  local: 'local-model',
-  anthropic: 'claude-3-haiku-20240307',
-  gemini: 'gemini-1.5-flash',
+  openai: "gpt-3.5-turbo",
+  ollama: "llama3",
+  local: "local-model",
+  anthropic: "claude-3-haiku-20240307",
+  gemini: "gemini-1.5-flash",
 };
 
 /**
@@ -35,20 +35,29 @@ const DEFAULT_MODELS = {
  * @param {Array}  messages          - OpenAI-style messages [{role, content}]
  * @returns {Promise<string>}        - The assistant's text response
  */
-async function callAI({ provider = 'openai', apiKey = '', model, endpoint } = {}, messages = []) {
-  const resolvedModel = model || DEFAULT_MODELS[provider] || DEFAULT_MODELS.openai;
-  const resolvedEndpoint = endpoint || DEFAULT_ENDPOINTS[provider] || DEFAULT_ENDPOINTS.openai;
+async function callAI(
+  { provider = "openai", apiKey = "", model, endpoint } = {},
+  messages = [],
+) {
+  const resolvedModel =
+    model || DEFAULT_MODELS[provider] || DEFAULT_MODELS.openai;
+  const resolvedEndpoint =
+    endpoint || DEFAULT_ENDPOINTS[provider] || DEFAULT_ENDPOINTS.openai;
 
   switch (provider) {
-    case 'ollama':
+    case "ollama":
       return callOllama(resolvedEndpoint, resolvedModel, messages);
-    case 'local':
-      return callOpenAICompatible(resolvedEndpoint, resolvedModel, apiKey, messages);
-    case 'anthropic':
+    case "local":
+      return callOpenAICompatible(
+        resolvedEndpoint,
+        resolvedModel,
+        apiKey,
+        messages,
+      );
+    case "anthropic":
       return callAnthropic(resolvedEndpoint, resolvedModel, apiKey, messages);
-    case 'gemini':
+    case "gemini":
       return callGemini(resolvedEndpoint, resolvedModel, apiKey, messages);
-    case 'openai':
     default:
       return callOpenAI(apiKey, resolvedModel, messages);
   }
@@ -57,12 +66,12 @@ async function callAI({ provider = 'openai', apiKey = '', model, endpoint } = {}
 // ─── OpenAI ──────────────────────────────────────────────────────────────────
 
 async function callOpenAI(apiKey, model, messages) {
-  if (!apiKey) throw new Error('OpenAI API key is required.');
+  if (!apiKey) throw new Error("OpenAI API key is required.");
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({ model, messages, temperature: 0.85 }),
@@ -81,10 +90,10 @@ async function callOpenAI(apiKey, model, messages) {
 
 async function callOllama(endpoint, model, messages) {
   // Ollama uses /api/chat with its own format
-  const base = endpoint.replace(/\/$/, '');
+  const base = endpoint.replace(/\/$/, "");
   const response = await fetch(`${base}/api/chat`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model,
       messages, // Ollama accepts OpenAI-style messages array
@@ -99,18 +108,18 @@ async function callOllama(endpoint, model, messages) {
 
   const data = await response.json();
   // Ollama response: { message: { content: "..." } }
-  return (data.message?.content || data.response || '').trim();
+  return (data.message?.content || data.response || "").trim();
 }
 
 // ─── OpenAI-Compatible (LM Studio, Jan, etc.) ────────────────────────────────
 
 async function callOpenAICompatible(endpoint, model, apiKey, messages) {
-  const base = endpoint.replace(/\/$/, '');
-  const headers = { 'Content-Type': 'application/json' };
+  const base = endpoint.replace(/\/$/, "");
+  const headers = { "Content-Type": "application/json" };
   if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
 
   const response = await fetch(`${base}/v1/chat/completions`, {
-    method: 'POST',
+    method: "POST",
     headers,
     body: JSON.stringify({ model, messages, temperature: 0.85 }),
   });
@@ -127,19 +136,19 @@ async function callOpenAICompatible(endpoint, model, apiKey, messages) {
 // ─── Anthropic ────────────────────────────────────────────────────────────────
 
 async function callAnthropic(endpoint, model, apiKey, messages) {
-  if (!apiKey) throw new Error('Anthropic API key is required.');
+  if (!apiKey) throw new Error("Anthropic API key is required.");
 
   // Anthropic separates system messages from user/assistant messages
-  const systemMsg = messages.find((m) => m.role === 'system')?.content || '';
-  const conversationMsgs = messages.filter((m) => m.role !== 'system');
+  const systemMsg = messages.find((m) => m.role === "system")?.content || "";
+  const conversationMsgs = messages.filter((m) => m.role !== "system");
 
-  const base = endpoint.replace(/\/$/, '');
+  const base = endpoint.replace(/\/$/, "");
   const response = await fetch(`${base}/v1/messages`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
+      "Content-Type": "application/json",
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
       model,
@@ -161,29 +170,32 @@ async function callAnthropic(endpoint, model, apiKey, messages) {
 // ─── Google Gemini ────────────────────────────────────────────────────────────
 
 async function callGemini(endpoint, model, apiKey, messages) {
-  if (!apiKey) throw new Error('Google Gemini API key is required.');
+  if (!apiKey) throw new Error("Google Gemini API key is required.");
 
   // Convert OpenAI messages to Gemini format
-  const systemMsg = messages.find((m) => m.role === 'system')?.content || '';
-  const conversationMsgs = messages.filter((m) => m.role !== 'system');
+  const systemMsg = messages.find((m) => m.role === "system")?.content || "";
+  const conversationMsgs = messages.filter((m) => m.role !== "system");
 
   const geminiContents = conversationMsgs.map((m) => ({
-    role: m.role === 'assistant' ? 'model' : 'user',
+    role: m.role === "assistant" ? "model" : "user",
     parts: [{ text: m.content }],
   }));
 
   // Prepend system instruction as first user message if present
   if (systemMsg) {
-    geminiContents.unshift({ role: 'user', parts: [{ text: systemMsg }] });
-    geminiContents.splice(1, 0, { role: 'model', parts: [{ text: 'Understood.' }] });
+    geminiContents.unshift({ role: "user", parts: [{ text: systemMsg }] });
+    geminiContents.splice(1, 0, {
+      role: "model",
+      parts: [{ text: "Understood." }],
+    });
   }
 
-  const base = endpoint.replace(/\/$/, '');
+  const base = endpoint.replace(/\/$/, "");
   const url = `${base}/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ contents: geminiContents }),
   });
 
@@ -204,8 +216,8 @@ async function callGemini(endpoint, model, apiKey, messages) {
  */
 async function testAIConnection(aiConfig) {
   const testMessages = [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Reply with only the word: ok' },
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Reply with only the word: ok" },
   ];
 
   const start = Date.now();
@@ -215,9 +227,14 @@ async function testAIConnection(aiConfig) {
   return {
     ok: true,
     latency,
-    model: aiConfig.model || DEFAULT_MODELS[aiConfig.provider] || 'unknown',
+    model: aiConfig.model || DEFAULT_MODELS[aiConfig.provider] || "unknown",
     response: result.substring(0, 50),
   };
 }
 
-module.exports = { callAI, testAIConnection, DEFAULT_MODELS, DEFAULT_ENDPOINTS };
+module.exports = {
+  callAI,
+  testAIConnection,
+  DEFAULT_MODELS,
+  DEFAULT_ENDPOINTS,
+};

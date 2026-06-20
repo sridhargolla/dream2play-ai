@@ -5,9 +5,9 @@
 Dream2Play AI is currently maintained from the default branch. Security fixes are prioritized for the latest released version and the active development branch.
 
 | Version | Supported |
-| --- | --- |
-| 1.x | Yes |
-| < 1.0 | No |
+| ------- | --------- |
+| 1.x     | Yes       |
+| < 1.0   | No        |
 
 ## Reporting a Vulnerability
 

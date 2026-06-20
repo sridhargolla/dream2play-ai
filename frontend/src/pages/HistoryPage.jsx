@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
-import { Play, Trash2, GitMerge, Sparkles, BookOpen, AlertCircle } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import {
+  AlertCircle,
+  BookOpen,
+  GitMerge,
+  Play,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuseDreams, isFusing = false }) {
+export default function HistoryPage({
+  dreams,
+  onDeleteDream,
+  onPlayDream,
+  onFuseDreams,
+  isFusing = false,
+}) {
   const { t } = useTranslation();
   const [selectedForFusion, setSelectedForFusion] = useState([]);
-  const [fusionError, setFusionError] = useState('');
+  const [fusionError, setFusionError] = useState("");
 
   const handleCheckboxChange = (dreamId) => {
     if (selectedForFusion.includes(dreamId)) {
@@ -22,12 +35,12 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
 
   const handleFuse = async () => {
     if (selectedForFusion.length !== 2 || isFusing) return;
-    setFusionError('');
+    setFusionError("");
     try {
       await onFuseDreams(selectedForFusion[0], selectedForFusion[1]);
       setSelectedForFusion([]);
     } catch (err) {
-      setFusionError(err.message || t('generationError'));
+      setFusionError(err.message || t("generationError"));
     }
   };
 
@@ -37,10 +50,10 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
       <div className="flex flex-col gap-1.5">
         <h2 className="text-3xl font-black text-white font-[var(--title-font)] uppercase flex items-center gap-2">
           <BookOpen className="w-7 h-7 text-[var(--accent-color)]" />
-          {t('cognitiveLogsTitle').toUpperCase()}
+          {t("cognitiveLogsTitle").toUpperCase()}
         </h2>
         <p className="text-xs text-gray-400 max-w-xl font-medium">
-          {t('cognitiveLogsDesc')}
+          {t("cognitiveLogsDesc")}
         </p>
       </div>
 
@@ -54,14 +67,14 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
           </div>
           <div className="flex flex-col gap-1 text-xs">
             <h4 className="font-extrabold text-sm text-white uppercase tracking-wider font-[var(--title-font)] flex items-center gap-1.5">
-              {t('fusionChamberTitle')}
+              {t("fusionChamberTitle")}
             </h4>
             <p className="text-gray-400 max-w-lg leading-relaxed">
-              {t('fusionChamberDesc')}
+              {t("fusionChamberDesc")}
             </p>
             {selectedForFusion.length > 0 && (
               <span className="text-[var(--accent-color)] font-bold uppercase tracking-wider mt-1">
-                {t('selectedDreamsCount', { count: selectedForFusion.length })}
+                {t("selectedDreamsCount", { count: selectedForFusion.length })}
               </span>
             )}
             {fusionError && (
@@ -79,7 +92,9 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
           className="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-3 rounded-xl text-xs tracking-wider transition-all disabled:opacity-30 disabled:hover:bg-purple-600 shadow-md shadow-purple-950 border border-purple-500/30 flex items-center gap-2 cursor-pointer font-[var(--title-font)]"
         >
           <Sparkles className="w-4 h-4" />
-          {isFusing ? t('fusingMatrix').toUpperCase() : t('fuseChosenDreams').toUpperCase()}
+          {isFusing
+            ? t("fusingMatrix").toUpperCase()
+            : t("fuseChosenDreams").toUpperCase()}
         </button>
       </div>
 
@@ -93,8 +108,8 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
                 key={dream.id}
                 className={`glass-panel rounded-2xl border transition-all duration-300 p-6 flex flex-col gap-4 relative ${
                   isSelected
-                    ? 'border-purple-500 shadow-lg shadow-purple-950/20 bg-purple-500/[0.02]'
-                    : 'border-white/5 bg-white/5 hover:border-white/10'
+                    ? "border-purple-500 shadow-lg shadow-purple-950/20 bg-purple-500/[0.02]"
+                    : "border-white/5 bg-white/5 hover:border-white/10"
                 }`}
               >
                 {/* Checkbox for Fusion */}
@@ -116,11 +131,13 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
                     </span>
                     {dream.isFused && (
                       <span className="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-400 border border-purple-500/20">
-                        {t('fusedLabel')}
+                        {t("fusedLabel")}
                       </span>
                     )}
                   </div>
-                  <h4 className="font-extrabold text-white text-base leading-snug line-clamp-1">{dream.title}</h4>
+                  <h4 className="font-extrabold text-white text-base leading-snug line-clamp-1">
+                    {dream.title}
+                  </h4>
                   <p className="text-xs text-gray-400 line-clamp-3 leading-relaxed mt-1 font-medium">
                     {dream.description}
                   </p>
@@ -128,15 +145,18 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
 
                 <div className="border-t border-white/5 pt-4 mt-auto flex items-center justify-between">
                   <span className="text-[9px] text-gray-500 font-mono">
-                    {new Date(dream.createdAt).toLocaleDateString()} at{' '}
-                    {new Date(dream.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(dream.createdAt).toLocaleDateString()} at{" "}
+                    {new Date(dream.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </span>
 
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => onDeleteDream(dream.id)}
                       className="p-2.5 rounded-lg border border-transparent hover:border-red-500/30 hover:bg-red-500/10 text-gray-500 hover:text-red-400 transition-all cursor-pointer"
-                      title={t('deleteDream')}
+                      title={t("deleteDream")}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -146,7 +166,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
                       className="px-4 py-2.5 rounded-lg bg-[var(--accent-color)] hover:opacity-95 text-white text-xs font-bold tracking-wider flex items-center gap-1 cursor-pointer transition-all shadow-md"
                     >
                       <Play className="w-3.5 h-3.5 fill-white" />
-                      {t('launchGame').toUpperCase()}
+                      {t("launchGame").toUpperCase()}
                     </button>
                   </div>
                 </div>
@@ -156,7 +176,7 @@ export default function HistoryPage({ dreams, onDeleteDream, onPlayDream, onFuse
         </div>
       ) : (
         <div className="glass-panel p-16 rounded-2xl text-center border border-dashed border-white/10 text-gray-400 text-sm">
-          {t('emptyLogDesc')}
+          {t("emptyLogDesc")}
         </div>
       )}
     </div>

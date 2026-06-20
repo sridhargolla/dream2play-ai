@@ -6,10 +6,10 @@ Dream2Play AI is an AI-powered platform that converts dream descriptions into pl
 
 The system combines:
 
-* React Frontend
-* Node.js Backend
-* OpenAI API
-* Phaser 3 Game Engine
+- React Frontend
+- Node.js Backend
+- OpenAI API
+- Phaser 3 Game Engine
 
 ---
 
@@ -21,13 +21,13 @@ Purpose:
 
 Analyze user dream descriptions and extract:
 
-* Hero
-* World
-* Enemy
-* Boss
-* Objective
-* Mood
-* Difficulty
+- Hero
+- World
+- Enemy
+- Boss
+- Objective
+- Mood
+- Difficulty
 
 Output Format:
 
@@ -53,10 +53,10 @@ Convert analyzed dream data into a game blueprint.
 
 Responsibilities:
 
-* Create game structure
-* Define levels
-* Define objectives
-* Generate progression logic
+- Create game structure
+- Define levels
+- Define objectives
+- Generate progression logic
 
 ---
 
@@ -66,11 +66,11 @@ Purpose:
 
 Generate prompts for:
 
-* Characters
-* Enemies
-* Bosses
-* Backgrounds
-* Promotional Posters
+- Characters
+- Enemies
+- Bosses
+- Backgrounds
+- Promotional Posters
 
 ---
 
@@ -82,10 +82,10 @@ Generate Phaser-compatible game configuration.
 
 Responsibilities:
 
-* Enemy spawning
-* Level setup
-* Boss placement
-* Difficulty scaling
+- Enemy spawning
+- Level setup
+- Boss placement
+- Difficulty scaling
 
 ---
 
@@ -101,11 +101,11 @@ Responsibilities:
 
 ## Future Agents
 
-* Dream Fusion Agent
-* NPC Dialogue Agent
-* Story Expansion Agent
-* Multiplayer Session Agent
-* Achievement Agent
+- Dream Fusion Agent
+- NPC Dialogue Agent
+- Story Expansion Agent
+- Multiplayer Session Agent
+- Achievement Agent
 
 ---
 

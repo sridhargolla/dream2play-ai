@@ -1,12 +1,12 @@
-import { describe, it, expect, beforeAll } from 'vitest';
-import path from 'path';
+import path from "node:path";
+import { beforeAll, describe, expect, it } from "vitest";
 
 // Setup browser globals using Object.defineProperty to bypass node getter-only restrictions
 class MockImage {
   constructor() {
     this.onload = null;
     this.onerror = null;
-    this.src = '';
+    this.src = "";
   }
 }
 
@@ -30,7 +30,7 @@ const mockContext = {
 
 const mockWindow = {
   navigator: {
-    userAgent: 'Mozilla/5.0',
+    userAgent: "Mozilla/5.0",
     maxTouchPoints: 0,
   },
   document: {
@@ -41,48 +41,48 @@ const mockWindow = {
     }),
   },
   location: {
-    href: 'http://localhost/',
+    href: "http://localhost/",
   },
   Image: MockImage,
   HTMLCanvasElement: MockHTMLCanvasElement,
 };
 
-Object.defineProperty(global, 'window', {
+Object.defineProperty(global, "window", {
   value: mockWindow,
   configurable: true,
   writable: true,
 });
 
-Object.defineProperty(global, 'navigator', {
+Object.defineProperty(global, "navigator", {
   value: mockWindow.navigator,
   configurable: true,
   writable: true,
 });
 
-Object.defineProperty(global, 'document', {
+Object.defineProperty(global, "document", {
   value: mockWindow.document,
   configurable: true,
   writable: true,
 });
 
-Object.defineProperty(global, 'Image', {
+Object.defineProperty(global, "Image", {
   value: MockImage,
   configurable: true,
   writable: true,
 });
 
-Object.defineProperty(global, 'HTMLCanvasElement', {
+Object.defineProperty(global, "HTMLCanvasElement", {
   value: MockHTMLCanvasElement,
   configurable: true,
   writable: true,
 });
 
 // Resolve the exact path of PlayScene.js to get its directory context
-const playScenePath = require.resolve('../frontend/src/game/PlayScene.js');
+const playScenePath = require.resolve("../frontend/src/game/PlayScene.js");
 const playSceneDir = path.dirname(playScenePath);
 
 // Resolve phaser relative to PlayScene.js's directory and poison the cache
-const phaserPath = require.resolve('phaser', { paths: [playSceneDir] });
+const phaserPath = require.resolve("phaser", { paths: [playSceneDir] });
 const mockPhaser = {
   Scene: class MockScene {
     constructor(config) {
@@ -100,11 +100,9 @@ require.cache[phaserPath] = {
 };
 
 // Poison AudioSynth.js path cache directly
-const audioSynthPath = require.resolve('../frontend/src/game/AudioSynth.js');
+const audioSynthPath = require.resolve("../frontend/src/game/AudioSynth.js");
 const mockAudioSynth = {
-  default: class MockAudioSynth {
-    constructor() {}
-  },
+  default: class MockAudioSynth {},
 };
 require.cache[audioSynthPath] = {
   id: audioSynthPath,
@@ -113,26 +111,26 @@ require.cache[audioSynthPath] = {
   exports: mockAudioSynth,
 };
 
-describe('Phaser PlayScene Spec', () => {
+describe("Phaser PlayScene Spec", () => {
   let PlayScene;
 
   beforeAll(async () => {
     // Dynamically import PlayScene now that cache poisoning is successfully established
-    const module = await import('../frontend/src/game/PlayScene.js');
+    const module = await import("../frontend/src/game/PlayScene.js");
     PlayScene = module.default;
   });
 
-  it('should instantiate PlayScene successfully', () => {
+  it("should instantiate PlayScene successfully", () => {
     const scene = new PlayScene();
     expect(scene).toBeDefined();
   });
 
-  it('should initialize stages and states on init()', () => {
+  it("should initialize stages and states on init()", () => {
     const scene = new PlayScene();
     scene.init({
       blueprint: {
-        hero: 'Explorer',
-        genre: 'platformer',
+        hero: "Explorer",
+        genre: "platformer",
         stages: [
           {
             stageNumber: 1,
@@ -145,7 +143,7 @@ describe('Phaser PlayScene Spec', () => {
 
     expect(scene.health).toBe(100);
     expect(scene.bossSpawned).toBe(false);
-    expect(scene.genre).toBe('platformer');
+    expect(scene.genre).toBe("platformer");
     expect(scene.stages.length).toBe(1);
   });
 });

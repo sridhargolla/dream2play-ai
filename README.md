@@ -64,13 +64,13 @@ dream2play-ai/
 
 ## Supported Game Genres
 
-| Genre | Description |
-|-------|-------------|
-| `platformer` | Jump, shoot, defeat boss |
-| `driving` / `racing` / `bike_racing` | Lane-based vehicle gameplay |
-| `endless_runner` | 3-lane runner with coins |
-| `shooter` / `survival` / `battle_royale` | Combat-focused modes |
-| `puzzle` | Collect all puzzle pieces across platforms |
+| Genre                                    | Description                                |
+| ---------------------------------------- | ------------------------------------------ |
+| `platformer`                             | Jump, shoot, defeat boss                   |
+| `driving` / `racing` / `bike_racing`     | Lane-based vehicle gameplay                |
+| `endless_runner`                         | 3-lane runner with coins                   |
+| `shooter` / `survival` / `battle_royale` | Combat-focused modes                       |
+| `puzzle`                                 | Collect all puzzle pieces across platforms |
 
 ## Workflow
 

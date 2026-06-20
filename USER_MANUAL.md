@@ -54,29 +54,29 @@ Click **Synthesize Playable Game**. The AI builds a staged blueprint and generat
 
 After generation you see a **Blueprint Preview** with:
 
-* Game title and genre
-* Hero and difficulty
-* All stages with objectives and bosses
-* Generated asset thumbnails
+- Game title and genre
+- Hero and difficulty
+- All stages with objectives and bosses
+- Generated asset thumbnails
 
 ### Step 5: Play the Game
 
 Click **Launch Game**. Controls:
 
-| Action | Key |
-|--------|-----|
-| Move | ← → Arrow keys |
-| Jump | ↑ Arrow |
-| Shoot | Space |
-| Dash | Q |
-| Shield | E |
-| Triple Shot | R |
+| Action      | Key            |
+| ----------- | -------------- |
+| Move        | ← → Arrow keys |
+| Jump        | ↑ Arrow        |
+| Shoot       | Space          |
+| Dash        | Q              |
+| Shield      | E              |
+| Triple Shot | R              |
 
 ### Step 6: Clear Stages
 
-* Watch the **Live Mission Feed** for boss defeat and stage completion messages
-* In-game banners show **BOSS DEFEATED** and **STAGE X COMPLETE**
-* Complete all stages to win and post your score
+- Watch the **Live Mission Feed** for boss defeat and stage completion messages
+- In-game banners show **BOSS DEFEATED** and **STAGE X COMPLETE**
+- Complete all stages to win and post your score
 
 ---
 
@@ -88,9 +88,9 @@ From **Dream Logs**, select two dreams and click **Fuse Chosen Dreams** to creat
 
 ## Tips for Better Results
 
-* Use detailed descriptions with locations, characters, and actions
-* Mention a genre keyword: *racing*, *puzzle*, *zombie*, *shooter*, etc.
-* Optional: add your OpenAI API key in the dream form for smarter blueprints and DALL-E assets
+- Use detailed descriptions with locations, characters, and actions
+- Mention a genre keyword: _racing_, _puzzle_, _zombie_, _shooter_, etc.
+- Optional: add your OpenAI API key in the dream form for smarter blueprints and DALL-E assets
 
 Example:
 
@@ -104,18 +104,18 @@ I was a wizard solving crystal puzzles in a maze on Mars while robots guarded th
 
 ### Game Not Generating
 
-* Ensure the backend is running on port 5000
-* Check `backend/.env` for `OPENAI_API_KEY` (optional — local fallback exists)
+- Ensure the backend is running on port 5000
+- Check `backend/.env` for `OPENAI_API_KEY` (optional — local fallback exists)
 
 ### Boss Disappears Too Fast
 
-* Bosses require multiple hits — use Space to shoot, not dash through them
-* Watch the boss HP bar at the top of the canvas
+- Bosses require multiple hits — use Space to shoot, not dash through them
+- Watch the boss HP bar at the top of the canvas
 
 ### No Stage Completion Message
 
-* Defeat the stage boss first (or collect all puzzle pieces in puzzle mode)
-* Check the Live Mission Feed sidebar during gameplay
+- Defeat the stage boss first (or collect all puzzle pieces in puzzle mode)
+- Check the Live Mission Feed sidebar during gameplay
 
 ---
 

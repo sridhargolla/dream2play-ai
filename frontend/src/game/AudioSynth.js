@@ -16,7 +16,8 @@ class AudioSynth {
   init() {
     if (this.ctx) return;
     try {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      const AudioContextClass =
+        window.AudioContext || window.webkitAudioContext;
       this.ctx = new AudioContextClass();
 
       this.masterGain = this.ctx.createGain();
@@ -27,13 +28,13 @@ class AudioSynth {
       this.bgmGain.gain.setValueAtTime(0.4, this.ctx.currentTime); // BGM volume relative to SFX
       this.bgmGain.connect(this.masterGain);
     } catch (err) {
-      console.error('Failed to initialize Web Audio API:', err);
+      console.error("Failed to initialize Web Audio API:", err);
     }
   }
 
   ensureContext() {
     this.init();
-    if (this.ctx && this.ctx.state === 'suspended') {
+    if (this.ctx && this.ctx.state === "suspended") {
       this.ctx.resume();
     }
   }
@@ -41,7 +42,10 @@ class AudioSynth {
   setMute(mute) {
     this.isMuted = mute;
     if (this.masterGain) {
-      this.masterGain.gain.setValueAtTime(mute ? 0 : 0.3, this.ctx ? this.ctx.currentTime : 0);
+      this.masterGain.gain.setValueAtTime(
+        mute ? 0 : 0.3,
+        this.ctx ? this.ctx.currentTime : 0,
+      );
     }
   }
 
@@ -52,10 +56,10 @@ class AudioSynth {
     const t = this.ctx.currentTime;
 
     switch (type) {
-      case 'laser': {
+      case "laser": {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'sawtooth';
+        osc.type = "sawtooth";
         osc.frequency.setValueAtTime(800, t);
         osc.frequency.exponentialRampToValueAtTime(100, t + 0.15);
 
@@ -68,10 +72,10 @@ class AudioSynth {
         osc.stop(t + 0.15);
         break;
       }
-      case 'jump': {
+      case "jump": {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'triangle';
+        osc.type = "triangle";
         osc.frequency.setValueAtTime(150, t);
         osc.frequency.exponentialRampToValueAtTime(600, t + 0.12);
 
@@ -84,10 +88,10 @@ class AudioSynth {
         osc.stop(t + 0.12);
         break;
       }
-      case 'collect': {
+      case "collect": {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'sine';
+        osc.type = "sine";
         osc.frequency.setValueAtTime(523.25, t); // C5
         osc.frequency.setValueAtTime(659.25, t + 0.08); // E5
 
@@ -101,10 +105,10 @@ class AudioSynth {
         osc.stop(t + 0.2);
         break;
       }
-      case 'hurt': {
+      case "hurt": {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = 'sawtooth';
+        osc.type = "sawtooth";
         osc.frequency.setValueAtTime(180, t);
         osc.frequency.linearRampToValueAtTime(60, t + 0.15);
 
@@ -117,17 +121,17 @@ class AudioSynth {
         osc.stop(t + 0.15);
         break;
       }
-      case 'explosion': {
+      case "explosion": {
         // Synthesizing a dirty noise crash using low frequency sawtooth and high gain roll off
         const osc = this.ctx.createOscillator();
         const filter = this.ctx.createBiquadFilter();
         const gain = this.ctx.createGain();
 
-        osc.type = 'sawtooth';
+        osc.type = "sawtooth";
         osc.frequency.setValueAtTime(120, t);
         osc.frequency.linearRampToValueAtTime(10, t + 0.4);
 
-        filter.type = 'lowpass';
+        filter.type = "lowpass";
         filter.frequency.setValueAtTime(400, t);
         filter.frequency.exponentialRampToValueAtTime(10, t + 0.4);
 
@@ -142,12 +146,12 @@ class AudioSynth {
         osc.stop(t + 0.45);
         break;
       }
-      case 'win': {
+      case "win": {
         const notes = [261.63, 329.63, 392.0, 523.25]; // C4, E4, G4, C5
         notes.forEach((freq, idx) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-          osc.type = 'triangle';
+          osc.type = "triangle";
           osc.frequency.setValueAtTime(freq, t + idx * 0.1);
           gain.gain.setValueAtTime(0.3, t + idx * 0.1);
           gain.gain.exponentialRampToValueAtTime(0.01, t + idx * 0.1 + 0.25);
@@ -158,12 +162,12 @@ class AudioSynth {
         });
         break;
       }
-      case 'gameover': {
+      case "gameover": {
         const notes = [392.0, 349.23, 311.13, 261.63]; // G4, F4, Eb4, C4
         notes.forEach((freq, idx) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-          osc.type = 'sawtooth';
+          osc.type = "sawtooth";
           osc.frequency.setValueAtTime(freq, t + idx * 0.12);
           gain.gain.setValueAtTime(0.35, t + idx * 0.12);
           gain.gain.exponentialRampToValueAtTime(0.01, t + idx * 0.12 + 0.3);
@@ -187,9 +191,11 @@ class AudioSynth {
     const t = this.ctx.currentTime;
 
     // Choose scales and tempos based on mood
-    if (mood === 'Sci-Fi') {
+    if (mood === "Sci-Fi") {
       // 8-step techno arpeggio
-      const scale = [261.63, 293.66, 311.13, 349.23, 392.0, 415.3, 466.16, 523.25]; // C minor
+      const scale = [
+        261.63, 293.66, 311.13, 349.23, 392.0, 415.3, 466.16, 523.25,
+      ]; // C minor
       let step = 0;
       this.bgmInterval = setInterval(() => {
         if (!this.ctx || this.isMuted) return;
@@ -197,7 +203,7 @@ class AudioSynth {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
 
-        osc.type = 'sine';
+        osc.type = "sine";
         osc.frequency.setValueAtTime(scale[step % scale.length], curTime);
 
         // Add a bit of pulse width behavior using square/sine combo
@@ -213,7 +219,7 @@ class AudioSynth {
         if (step % 4 === 0) {
           const bass = this.ctx.createOscillator();
           const bassGain = this.ctx.createGain();
-          bass.type = 'triangle';
+          bass.type = "triangle";
           bass.frequency.setValueAtTime(scale[0] / 2, curTime);
           bassGain.gain.setValueAtTime(0.2, curTime);
           bassGain.gain.exponentialRampToValueAtTime(0.001, curTime + 0.45);
@@ -225,7 +231,7 @@ class AudioSynth {
 
         step++;
       }, 200); // 120 bpm (8th notes)
-    } else if (mood === 'Horror') {
+    } else if (mood === "Horror") {
       // Eerie low drone + creepy high random minor seconds
       const droneScale = [110.0, 116.54]; // A2, Bb2 (dissonant semitone)
       const highScale = [440.0, 466.16, 493.88, 523.25]; // A4, Bb4, B4, C5
@@ -235,12 +241,12 @@ class AudioSynth {
       const droneOsc2 = this.ctx.createOscillator();
       const filter = this.ctx.createBiquadFilter();
 
-      droneOsc1.type = 'sawtooth';
+      droneOsc1.type = "sawtooth";
       droneOsc1.frequency.setValueAtTime(droneScale[0], t);
-      droneOsc2.type = 'sawtooth';
+      droneOsc2.type = "sawtooth";
       droneOsc2.frequency.setValueAtTime(droneScale[1], t); // Detuned drone
 
-      filter.type = 'lowpass';
+      filter.type = "lowpass";
       filter.frequency.setValueAtTime(150, t);
 
       const droneGain = this.ctx.createGain();
@@ -262,7 +268,7 @@ class AudioSynth {
         const bell = this.ctx.createOscillator();
         const bellGain = this.ctx.createGain();
 
-        bell.type = 'sine';
+        bell.type = "sine";
         const freq = highScale[Math.floor(Math.random() * highScale.length)];
         bell.frequency.setValueAtTime(freq, curTime);
 
@@ -275,9 +281,11 @@ class AudioSynth {
         bell.start(curTime);
         bell.stop(curTime + 1.3);
       }, 1200);
-    } else if (mood === 'Fantasy') {
+    } else if (mood === "Fantasy") {
       // Magic major scales, high chime arpeggios
-      const scale = [293.66, 329.63, 392.0, 440.0, 493.88, 587.33, 659.25, 783.99]; // D major pentatonic
+      const scale = [
+        293.66, 329.63, 392.0, 440.0, 493.88, 587.33, 659.25, 783.99,
+      ]; // D major pentatonic
       let step = 0;
 
       this.bgmInterval = setInterval(() => {
@@ -286,7 +294,7 @@ class AudioSynth {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
 
-        osc.type = 'triangle';
+        osc.type = "triangle";
         const note = scale[step % scale.length];
         osc.frequency.setValueAtTime(note, curTime);
 
@@ -300,11 +308,12 @@ class AudioSynth {
 
         // Add a secondary delayed chime for echo effect
         setTimeout(() => {
-          if (!this.ctx || this.isMuted || this.currentMood !== 'Fantasy') return;
+          if (!this.ctx || this.isMuted || this.currentMood !== "Fantasy")
+            return;
           const delayTime = this.ctx.currentTime;
           const echoOsc = this.ctx.createOscillator();
           const echoGain = this.ctx.createGain();
-          echoOsc.type = 'sine';
+          echoOsc.type = "sine";
           echoOsc.frequency.setValueAtTime(note * 1.5, delayTime); // Perfect fifth fifth harmony
           echoGain.gain.setValueAtTime(0.03, delayTime);
           echoGain.gain.exponentialRampToValueAtTime(0.001, delayTime + 0.4);
@@ -316,7 +325,7 @@ class AudioSynth {
 
         step++;
       }, 350);
-    } else if (mood === 'Adventure') {
+    } else if (mood === "Adventure") {
       // Upbeat 8-bit theme (square wave, fast pentatonic scale)
       const scale = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25]; // C Major pentatonic
       let step = 0;
@@ -327,7 +336,7 @@ class AudioSynth {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
 
-        osc.type = 'square';
+        osc.type = "square";
         // Fun retro patterns
         const pattern = [0, 2, 3, 4, 3, 4, 5, 4];
         const note = scale[pattern[step % pattern.length]];
@@ -345,7 +354,7 @@ class AudioSynth {
         if (step % 2 === 0) {
           const bass = this.ctx.createOscillator();
           const bassGain = this.ctx.createGain();
-          bass.type = 'triangle';
+          bass.type = "triangle";
           bass.frequency.setValueAtTime(scale[step % 3] / 2, curTime);
           bassGain.gain.setValueAtTime(0.15, curTime);
           bassGain.gain.exponentialRampToValueAtTime(0.001, curTime + 0.3);
@@ -357,7 +366,7 @@ class AudioSynth {
 
         step++;
       }, 150);
-    } else if (mood === 'Mystery') {
+    } else if (mood === "Mystery") {
       // Slow tempo jazzy chords, minor 7ths
       const chordC = [130.81, 196.0, 246.94, 293.66]; // C3, G3, B3, D4 (Cmaj9)
       const chordA = [110.0, 164.81, 220.0, 261.63]; // A2, E3, A3, C4 (Am)
@@ -371,7 +380,7 @@ class AudioSynth {
         notes.forEach((freq, idx) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-          osc.type = 'triangle';
+          osc.type = "triangle";
           // Spread trigger times slightly to sound like strumming
           const triggerTime = curTime + idx * 0.05;
           osc.frequency.setValueAtTime(freq, triggerTime);

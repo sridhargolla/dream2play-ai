@@ -74,6 +74,36 @@
       "username": "player1",
       "email": "player1@test.com",
       "password": "$2a$10$tef2QGwaqec7SNO5zvMMaOGw.eaq0yL32ETcs8jhypHwz3oZ4NtBq"
+    },
+    {
+      "id": "1781950212993",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781950407226",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781950977430",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781950993169",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781958496281",
+      "username": "testuser",
+      "email": "test@example.com"
+    },
+    {
+      "id": "1781958501334",
+      "username": "testuser",
+      "email": "test@example.com"
     }
   ],
   "dreams": [

@@ -1,21 +1,54 @@
-import React from 'react';
-import { Compass, Sparkles, Gamepad2, Award, History, Activity, Zap, Play } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import {
+  Activity,
+  Award,
+  Compass,
+  Gamepad2,
+  History,
+  Play,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
-export default function DashboardPage({ user, dreams, scores, setActivePage, setSelectedDream, onOpenPreview }) {
+export default function DashboardPage({
+  user,
+  dreams,
+  scores,
+  setActivePage,
+  setSelectedDream,
+  onOpenPreview,
+}) {
   const { t } = useTranslation();
 
   // Compute user statistics
   const totalGames = dreams.length;
   const userScores = scores.filter((s) => s.userId === user.id);
-  const maxScore = userScores.length > 0 ? Math.max(...userScores.map((s) => s.score)) : 0;
+  const maxScore =
+    userScores.length > 0 ? Math.max(...userScores.map((s) => s.score)) : 0;
 
   // Calculate badges unlocked based on achievements
   const badges = [
-    { name: t('badge_weaver_name'), desc: t('badge_weaver_desc'), unlocked: totalGames >= 1 },
-    { name: t('badge_lord_name'), desc: t('badge_lord_desc'), unlocked: totalGames >= 5 },
-    { name: t('badge_maestro_name'), desc: t('badge_maestro_desc'), unlocked: maxScore >= 100 },
-    { name: t('badge_walker_name'), desc: t('badge_walker_desc'), unlocked: dreams.some((d) => d.isFused) },
+    {
+      name: t("badge_weaver_name"),
+      desc: t("badge_weaver_desc"),
+      unlocked: totalGames >= 1,
+    },
+    {
+      name: t("badge_lord_name"),
+      desc: t("badge_lord_desc"),
+      unlocked: totalGames >= 5,
+    },
+    {
+      name: t("badge_maestro_name"),
+      desc: t("badge_maestro_desc"),
+      unlocked: maxScore >= 100,
+    },
+    {
+      name: t("badge_walker_name"),
+      desc: t("badge_walker_desc"),
+      unlocked: dreams.some((d) => d.isFused),
+    },
   ];
 
   const recentDreams = dreams.slice().reverse().slice(0, 3); // Last 3 dreams
@@ -27,18 +60,20 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
         <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--accent-glow)] rounded-full filter blur-3xl pointer-events-none opacity-40" />
 
         <div className="flex flex-col gap-1.5 text-left z-10">
-          <h2 className="text-3xl font-black text-white font-[var(--title-font)]">{t('cognitiveDockTitle').toUpperCase()}</h2>
+          <h2 className="text-3xl font-black text-white font-[var(--title-font)]">
+            {t("cognitiveDockTitle").toUpperCase()}
+          </h2>
           <p className="text-gray-400 text-sm font-medium">
-            {t('cognitiveDockDesc', { username: user.username })}
+            {t("cognitiveDockDesc", { username: user.username })}
           </p>
         </div>
 
         <button
-          onClick={() => setActivePage('generator')}
+          onClick={() => setActivePage("generator")}
           className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--secondary-color)] text-white px-6 py-3 rounded-xl text-sm font-bold tracking-wider hover:opacity-95 shadow-lg shadow-[var(--accent-glow)] flex items-center gap-2 transition-all cursor-pointer font-[var(--title-font)] z-10"
         >
           <Compass className="w-4 h-4" />
-          {t('synthesizeNewDream').toUpperCase()}
+          {t("synthesizeNewDream").toUpperCase()}
         </button>
       </div>
 
@@ -49,8 +84,12 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
             <Gamepad2 className="w-6 h-6" />
           </div>
           <div className="text-left">
-            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">{t('gamesSynthesized')}</span>
-            <h3 className="text-3xl font-black text-white mt-0.5">{totalGames}</h3>
+            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">
+              {t("gamesSynthesized")}
+            </span>
+            <h3 className="text-3xl font-black text-white mt-0.5">
+              {totalGames}
+            </h3>
           </div>
         </div>
 
@@ -59,8 +98,12 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
             <Award className="w-6 h-6" />
           </div>
           <div className="text-left">
-            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">{t('highScore')}</span>
-            <h3 className="text-3xl font-black text-white mt-0.5">{maxScore} pts</h3>
+            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">
+              {t("highScore")}
+            </span>
+            <h3 className="text-3xl font-black text-white mt-0.5">
+              {maxScore} pts
+            </h3>
           </div>
         </div>
 
@@ -69,7 +112,9 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
             <Zap className="w-6 h-6 animate-pulse" />
           </div>
           <div className="text-left">
-            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">{t('achievements')}</span>
+            <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">
+              {t("achievements")}
+            </span>
             <h3 className="text-3xl font-black text-white mt-0.5">
               {badges.filter((b) => b.unlocked).length} / {badges.length}
             </h3>
@@ -84,14 +129,14 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-black text-white flex items-center gap-2 font-[var(--title-font)]">
               <History className="w-5 h-5 text-[var(--accent-color)]" />
-              {t('recentDreamsTitle').toUpperCase()}
+              {t("recentDreamsTitle").toUpperCase()}
             </h3>
             {totalGames > 3 && (
               <button
-                onClick={() => setActivePage('history')}
+                onClick={() => setActivePage("history")}
                 className="text-xs text-[var(--accent-color)] font-bold hover:underline"
               >
-                {t('viewAllLogs')}
+                {t("viewAllLogs")}
               </button>
             )}
           </div>
@@ -105,26 +150,35 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
                 >
                   <div className="flex flex-col gap-1 select-none">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-white text-sm">{dream.title}</span>
+                      <span className="font-bold text-white text-sm">
+                        {dream.title}
+                      </span>
                       <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-white/10 text-gray-300">
                         {dream.blueprint.mood}
                       </span>
                       {dream.isFused && (
                         <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-400 border border-purple-500/30">
-                          {t('fusedLabel')}
+                          {t("fusedLabel")}
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-gray-400 max-w-lg line-clamp-1 leading-relaxed">{dream.description}</p>
+                    <p className="text-xs text-gray-400 max-w-lg line-clamp-1 leading-relaxed">
+                      {dream.description}
+                    </p>
                     <span className="text-[9px] text-gray-500 font-mono mt-0.5">
-                      {t('createdLabel').toUpperCase()}: {new Date(dream.createdAt).toLocaleDateString()}
+                      {t("createdLabel").toUpperCase()}:{" "}
+                      {new Date(dream.createdAt).toLocaleDateString()}
                     </span>
                   </div>
 
                   <button
-                    onClick={() => (onOpenPreview ? onOpenPreview(dream) : (setSelectedDream(dream), setActivePage('preview')))}
+                    onClick={() =>
+                      onOpenPreview
+                        ? onOpenPreview(dream)
+                        : (setSelectedDream(dream), setActivePage("preview"))
+                    }
                     className="p-2.5 rounded-lg bg-[var(--accent-color)] hover:opacity-95 text-white transition-all shadow-md cursor-pointer"
-                    title={t('launchGame')}
+                    title={t("launchGame")}
                   >
                     <Play className="w-4 h-4 fill-white" />
                   </button>
@@ -133,7 +187,7 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
             </div>
           ) : (
             <div className="glass-panel p-10 rounded-xl text-center border border-dashed border-white/10 text-gray-400 text-sm">
-              {t('noGames')}
+              {t("noGames")}
             </div>
           )}
         </div>
@@ -142,7 +196,7 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
         <div className="lg:col-span-4 flex flex-col gap-5">
           <h3 className="text-lg font-black text-white flex items-center gap-2 font-[var(--title-font)]">
             <Activity className="w-5 h-5 text-[var(--secondary-color)]" />
-            {t('achievementBadges').toUpperCase()}
+            {t("achievementBadges").toUpperCase()}
           </h3>
 
           <div className="glass-panel p-6 rounded-2xl flex flex-col gap-4">
@@ -150,19 +204,29 @@ export default function DashboardPage({ user, dreams, scores, setActivePage, set
               <div
                 key={idx}
                 className={`flex items-start gap-3.5 p-3.5 rounded-xl border transition-all ${
-                  badge.unlocked ? 'bg-white/5 border-white/10 opacity-100' : 'bg-black/20 border-white/5 opacity-40'
+                  badge.unlocked
+                    ? "bg-white/5 border-white/10 opacity-100"
+                    : "bg-black/20 border-white/5 opacity-40"
                 }`}
               >
                 <div
                   className={`p-2 rounded-lg font-black text-xs shrink-0 ${
-                    badge.unlocked ? 'bg-yellow-500/10 text-yellow-400' : 'bg-gray-500/10 text-gray-400'
+                    badge.unlocked
+                      ? "bg-yellow-500/10 text-yellow-400"
+                      : "bg-gray-500/10 text-gray-400"
                   }`}
                 >
-                  {badge.unlocked ? '★' : '☆'}
+                  {badge.unlocked ? "★" : "☆"}
                 </div>
                 <div className="flex flex-col gap-0.5 text-xs">
-                  <span className={`font-bold ${badge.unlocked ? 'text-white' : 'text-gray-500'}`}>{badge.name}</span>
-                  <span className="text-[10px] text-gray-400 leading-normal">{badge.desc}</span>
+                  <span
+                    className={`font-bold ${badge.unlocked ? "text-white" : "text-gray-500"}`}
+                  >
+                    {badge.name}
+                  </span>
+                  <span className="text-[10px] text-gray-400 leading-normal">
+                    {badge.desc}
+                  </span>
                 </div>
               </div>
             ))}

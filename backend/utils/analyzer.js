@@ -1,6 +1,6 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
-const { callAI } = require('./aiProvider');
+const { callAI } = require("./aiProvider");
 
 const CODEX_GAME_SYSTEM_PROMPT = `
 You are a senior game architect. Analyze the user's prompt and generate a complete, playable staged game blueprint in JSON.
@@ -118,60 +118,139 @@ GENRE SPECIFIC BLUEPRINT RULES:
 
 const GENRE_KEYWORDS = {
   driving: [
-    'drive',
-    'car',
-    'ferrari',
-    'lamborghini',
-    'tesla',
-    'police',
-    'traffic',
-    'chase',
-    'mumbai',
-    'street',
-    'highway',
-    'truck',
-    'taxi',
+    "drive",
+    "car",
+    "ferrari",
+    "lamborghini",
+    "tesla",
+    "police",
+    "traffic",
+    "chase",
+    "mumbai",
+    "street",
+    "highway",
+    "truck",
+    "taxi",
   ],
-  bike_racing: ['bike', 'motorcycle', 'moto', 'racing', 'race', 'tokyo', 'rider', 'cycle'],
-  racing: ['race', 'racing', 'laps', 'speedway', 'track', 'opponents', 'f1', 'kart'],
+  bike_racing: [
+    "bike",
+    "motorcycle",
+    "moto",
+    "racing",
+    "race",
+    "tokyo",
+    "rider",
+    "cycle",
+  ],
+  racing: [
+    "race",
+    "racing",
+    "laps",
+    "speedway",
+    "track",
+    "opponents",
+    "f1",
+    "kart",
+  ],
   endless_runner: [
-    'surfers',
-    'runner',
-    'subway',
-    'run',
-    'coin',
-    'dash',
-    'temple',
-    'lane',
-    'switch',
-    'obstacle',
-    'hyderabad',
+    "surfers",
+    "runner",
+    "subway",
+    "run",
+    "coin",
+    "dash",
+    "temple",
+    "lane",
+    "switch",
+    "obstacle",
+    "hyderabad",
   ],
   battle_royale: [
-    'battle',
-    'royale',
-    'dubai',
-    'free fire',
-    'pubg',
-    'fortnite',
-    'loot',
-    'zone',
-    'shrinking',
-    'circle',
-    'survival',
+    "battle",
+    "royale",
+    "dubai",
+    "free fire",
+    "pubg",
+    "fortnite",
+    "loot",
+    "zone",
+    "shrinking",
+    "circle",
+    "survival",
   ],
-  survival: ['survival', 'zombie', 'apocalypse', 'infect', 'hospital', 'undead', 'outbreak', 'survive'],
-  shooter: ['shooter', 'fps', 'tps', 'gun', 'shoot', 'bullet', 'soldier', 'military', 'war'],
-  open_world: ['open world', 'swing', 'spider-man', 'new york', 'city', 'sandbox', 'explore', 'npc', 'missions'],
-  rpg: ['rpg', 'quest', 'level up', 'character', 'inventory', 'stats'],
-  adventure: ['adventure', 'explore', 'treasure', 'island', 'cavern', 'pirate', 'map', 'chest'],
-  platformer: ['platformer', 'jump', 'blocks', 'ninja', 'naruto', 'shinobi', 'leaf village', 'adventure', 'rpg', 'open world', 'explore', 'quest'],
-  puzzle: ['puzzle', 'riddle', 'maze', 'logic', 'solve', 'clue', 'brain', 'cryptic', ' labyrinth'],
+  survival: [
+    "survival",
+    "zombie",
+    "apocalypse",
+    "infect",
+    "hospital",
+    "undead",
+    "outbreak",
+    "survive",
+  ],
+  shooter: [
+    "shooter",
+    "fps",
+    "tps",
+    "gun",
+    "shoot",
+    "bullet",
+    "soldier",
+    "military",
+    "war",
+  ],
+  open_world: [
+    "open world",
+    "swing",
+    "spider-man",
+    "new york",
+    "city",
+    "sandbox",
+    "explore",
+    "npc",
+    "missions",
+  ],
+  rpg: ["rpg", "quest", "level up", "character", "inventory", "stats"],
+  adventure: [
+    "adventure",
+    "explore",
+    "treasure",
+    "island",
+    "cavern",
+    "pirate",
+    "map",
+    "chest",
+  ],
+  platformer: [
+    "platformer",
+    "jump",
+    "blocks",
+    "ninja",
+    "naruto",
+    "shinobi",
+    "leaf village",
+    "adventure",
+    "rpg",
+    "open world",
+    "explore",
+    "quest",
+  ],
+  puzzle: [
+    "puzzle",
+    "riddle",
+    "maze",
+    "logic",
+    "solve",
+    "clue",
+    "brain",
+    "cryptic",
+    " labyrinth",
+  ],
 };
 
 function classifyGenre(text) {
   const t = text.toLowerCase();
-  let bestGenre = 'platformer';
+  let bestGenre = "platformer";
   let maxMatches = -1;
 
   for (const [genre, keywords] of Object.entries(GENRE_KEYWORDS)) {
@@ -182,23 +261,37 @@ function classifyGenre(text) {
     }
   }
 
-  if (t.includes('ferrari') || t.includes('car') || t.includes('police') || t.includes('traffic')) {
-    bestGenre = 'driving';
+  if (
+    t.includes("ferrari") ||
+    t.includes("car") ||
+    t.includes("police") ||
+    t.includes("traffic")
+  ) {
+    bestGenre = "driving";
   }
-  if (t.includes('bike') || t.includes('motorcycle')) {
-    bestGenre = 'bike_racing';
+  if (t.includes("bike") || t.includes("motorcycle")) {
+    bestGenre = "bike_racing";
   }
-  if (t.includes('surfers') || t.includes('endless') || (t.includes('run') && t.includes('coin'))) {
-    bestGenre = 'endless_runner';
+  if (
+    t.includes("surfers") ||
+    t.includes("endless") ||
+    (t.includes("run") && t.includes("coin"))
+  ) {
+    bestGenre = "endless_runner";
   }
-  if (t.includes('royale') || t.includes('free fire') || t.includes('battle')) {
-    bestGenre = 'battle_royale';
+  if (t.includes("royale") || t.includes("free fire") || t.includes("battle")) {
+    bestGenre = "battle_royale";
   }
-  if (t.includes('zombie') || t.includes('apocalypse')) {
-    bestGenre = 'survival';
+  if (t.includes("zombie") || t.includes("apocalypse")) {
+    bestGenre = "survival";
   }
-  if (t.includes('puzzle') || t.includes('riddle') || t.includes('maze') || t.includes('logic')) {
-    bestGenre = 'puzzle';
+  if (
+    t.includes("puzzle") ||
+    t.includes("riddle") ||
+    t.includes("maze") ||
+    t.includes("logic")
+  ) {
+    bestGenre = "puzzle";
   }
 
   return normalizeGenre(bestGenre);
@@ -206,22 +299,23 @@ function classifyGenre(text) {
 
 function extractLocation(text) {
   const t = text.toLowerCase();
-  if (t.includes('mumbai')) return 'Mumbai';
-  if (t.includes('tokyo')) return 'Tokyo';
-  if (t.includes('dubai')) return 'Dubai';
-  if (t.includes('hyderabad')) return 'Hyderabad';
-  if (t.includes('new york') || t.includes('ny')) return 'New York';
-  if (t.includes('london')) return 'London';
-  if (t.includes('paris')) return 'Paris';
-  if (t.includes('bangkok')) return 'Bangkok';
-  if (t.includes('seoul')) return 'Seoul';
-  if (t.includes('delhi')) return 'Delhi';
-  if (t.includes('space') || t.includes('galaxy') || t.includes('planet')) return 'Deep Space';
-  if (t.includes('ocean') || t.includes('sea')) return 'Ocean Realm';
-  if (t.includes('jungle') || t.includes('forest')) return 'Jungle Depths';
-  if (t.includes('desert')) return 'Desert Wasteland';
-  if (t.includes('city') || t.includes('urban')) return 'Metro City';
-  return 'Surreal Void';
+  if (t.includes("mumbai")) return "Mumbai";
+  if (t.includes("tokyo")) return "Tokyo";
+  if (t.includes("dubai")) return "Dubai";
+  if (t.includes("hyderabad")) return "Hyderabad";
+  if (t.includes("new york") || t.includes("ny")) return "New York";
+  if (t.includes("london")) return "London";
+  if (t.includes("paris")) return "Paris";
+  if (t.includes("bangkok")) return "Bangkok";
+  if (t.includes("seoul")) return "Seoul";
+  if (t.includes("delhi")) return "Delhi";
+  if (t.includes("space") || t.includes("galaxy") || t.includes("planet"))
+    return "Deep Space";
+  if (t.includes("ocean") || t.includes("sea")) return "Ocean Realm";
+  if (t.includes("jungle") || t.includes("forest")) return "Jungle Depths";
+  if (t.includes("desert")) return "Desert Wasteland";
+  if (t.includes("city") || t.includes("urban")) return "Metro City";
+  return "Surreal Void";
 }
 
 // ============================================================
@@ -230,113 +324,161 @@ function extractLocation(text) {
 
 const THEME_KEYWORDS = {
   city: [
-    'city',
-    'street',
-    'downtown',
-    'urban',
-    'crime',
-    'mafia',
-    'gang',
-    'traffic',
-    'highway',
-    'mumbai',
-    'dubai',
-    'tokyo',
-    'london',
-    'metro',
+    "city",
+    "street",
+    "downtown",
+    "urban",
+    "crime",
+    "mafia",
+    "gang",
+    "traffic",
+    "highway",
+    "mumbai",
+    "dubai",
+    "tokyo",
+    "london",
+    "metro",
   ],
   zombie: [
-    'zombie',
-    'undead',
-    'apocalypse',
-    'infected',
-    'walker',
-    'outbreak',
-    'viral',
-    'mutation',
-    'plague',
-    'dead',
-    'survivor',
+    "zombie",
+    "undead",
+    "apocalypse",
+    "infected",
+    "walker",
+    "outbreak",
+    "viral",
+    "mutation",
+    "plague",
+    "dead",
+    "survivor",
   ],
   space: [
-    'space',
-    'alien',
-    'galaxy',
-    'planet',
-    'spacecraft',
-    'star',
-    'ufo',
-    'cosmos',
-    'nebula',
-    'astronaut',
-    'orbit',
-    'sci-fi',
+    "space",
+    "alien",
+    "galaxy",
+    "planet",
+    "spacecraft",
+    "star",
+    "ufo",
+    "cosmos",
+    "nebula",
+    "astronaut",
+    "orbit",
+    "sci-fi",
   ],
   ninja: [
-    'ninja',
-    'shinobi',
-    'katana',
-    'samurai',
-    'martial',
-    'shadow',
-    'stealth',
-    'naruto',
-    'sensei',
-    'dojo',
-    'feudal',
+    "ninja",
+    "shinobi",
+    "katana",
+    "samurai",
+    "martial",
+    "shadow",
+    "stealth",
+    "naruto",
+    "sensei",
+    "dojo",
+    "feudal",
   ],
   military: [
-    'soldier',
-    'military',
-    'army',
-    'war',
-    'gun',
-    'rifle',
-    'combat',
-    'sniper',
-    'grenade',
-    'tactical',
-    'operation',
-    'platoon',
+    "soldier",
+    "military",
+    "army",
+    "war",
+    "gun",
+    "rifle",
+    "combat",
+    "sniper",
+    "grenade",
+    "tactical",
+    "operation",
+    "platoon",
   ],
   fantasy: [
-    'magic',
-    'dragon',
-    'wizard',
-    'elf',
-    'dwarf',
-    'castle',
-    'kingdom',
-    'sword',
-    'sorcery',
-    'dungeon',
-    'quest',
-    'rpg',
+    "magic",
+    "dragon",
+    "wizard",
+    "elf",
+    "dwarf",
+    "castle",
+    "kingdom",
+    "sword",
+    "sorcery",
+    "dungeon",
+    "quest",
+    "rpg",
   ],
-  pirate: ['pirate', 'corsair', 'ship', 'sea', 'treasure', 'island', 'cannon', 'sail', 'buccaneer', 'ocean'],
+  pirate: [
+    "pirate",
+    "corsair",
+    "ship",
+    "sea",
+    "treasure",
+    "island",
+    "cannon",
+    "sail",
+    "buccaneer",
+    "ocean",
+  ],
   racing: [
-    'race',
-    'racing',
-    'ferrari',
-    'lambo',
-    'car',
-    'bike',
-    'motorcycle',
-    'drift',
-    'turbo',
-    'nitro',
-    'lap',
-    'circuit',
+    "race",
+    "racing",
+    "ferrari",
+    "lambo",
+    "car",
+    "bike",
+    "motorcycle",
+    "drift",
+    "turbo",
+    "nitro",
+    "lap",
+    "circuit",
   ],
-  superhero: ['superhero', 'spider-man', 'spiderman', 'batman', 'hero', 'power', 'cape', 'web', 'super', 'villain'],
-  western: ['cowboy', 'western', 'wild west', 'gunslinger', 'sheriff', 'outlaw', 'saloon', 'desert'],
-  underwater: ['underwater', 'submarine', 'mermaid', 'deep sea', 'shark', 'coral', 'ocean depths'],
-  battle_royale: ['royale', 'pubg', 'fortnite', 'free fire', 'zone', 'shrink', 'loot', 'squad'],
+  superhero: [
+    "superhero",
+    "spider-man",
+    "spiderman",
+    "batman",
+    "hero",
+    "power",
+    "cape",
+    "web",
+    "super",
+    "villain",
+  ],
+  western: [
+    "cowboy",
+    "western",
+    "wild west",
+    "gunslinger",
+    "sheriff",
+    "outlaw",
+    "saloon",
+    "desert",
+  ],
+  underwater: [
+    "underwater",
+    "submarine",
+    "mermaid",
+    "deep sea",
+    "shark",
+    "coral",
+    "ocean depths",
+  ],
+  battle_royale: [
+    "royale",
+    "pubg",
+    "fortnite",
+    "free fire",
+    "zone",
+    "shrink",
+    "loot",
+    "squad",
+  ],
 };
 
 function resolveTheme(text) {
   const t = text.toLowerCase();
-  let bestTheme = 'city';
+  let bestTheme = "city";
   let maxMatches = 0;
 
   for (const [theme, keywords] of Object.entries(THEME_KEYWORDS)) {
@@ -348,12 +490,13 @@ function resolveTheme(text) {
   }
 
   // High-priority overrides
-  if (t.includes('zombie') || t.includes('undead')) return 'zombie';
-  if (t.includes('ninja') || t.includes('shinobi')) return 'ninja';
-  if (t.includes('space') || t.includes('alien') || t.includes('galaxy')) return 'space';
-  if (t.includes('pirate')) return 'pirate';
-  if (t.includes('battle') && t.includes('royale')) return 'battle_royale';
-  if (t.includes('spider-man') || t.includes('spiderman')) return 'superhero';
+  if (t.includes("zombie") || t.includes("undead")) return "zombie";
+  if (t.includes("ninja") || t.includes("shinobi")) return "ninja";
+  if (t.includes("space") || t.includes("alien") || t.includes("galaxy"))
+    return "space";
+  if (t.includes("pirate")) return "pirate";
+  if (t.includes("battle") && t.includes("royale")) return "battle_royale";
+  if (t.includes("spider-man") || t.includes("spiderman")) return "superhero";
 
   return bestTheme;
 }
@@ -366,315 +509,341 @@ function resolveHero(text, genre, theme) {
   const t = text.toLowerCase();
 
   // --- Vehicle heroes (checked first) ---
-  if (t.includes('ferrari')) {
+  if (t.includes("ferrari")) {
     return {
-      name: 'Ferrari Pilot',
-      type: 'vehicle',
-      subType: 'car',
-      appearance: 'Blazing red Ferrari sports car',
-      abilities: ['Nitro Boost', 'Handbrake Drift', 'Ram'],
+      name: "Ferrari Pilot",
+      type: "vehicle",
+      subType: "car",
+      appearance: "Blazing red Ferrari sports car",
+      abilities: ["Nitro Boost", "Handbrake Drift", "Ram"],
     };
   }
-  if (t.includes('lamborghini') || t.includes('lambo')) {
+  if (t.includes("lamborghini") || t.includes("lambo")) {
     return {
-      name: 'Lambo Driver',
-      type: 'vehicle',
-      subType: 'car',
-      appearance: 'Matte black Lamborghini supercar',
-      abilities: ['Nitro Boost', 'Drift Slide', 'Ram'],
+      name: "Lambo Driver",
+      type: "vehicle",
+      subType: "car",
+      appearance: "Matte black Lamborghini supercar",
+      abilities: ["Nitro Boost", "Drift Slide", "Ram"],
     };
   }
-  if (t.includes('tesla')) {
+  if (t.includes("tesla")) {
     return {
-      name: 'Tesla Ace',
-      type: 'vehicle',
-      subType: 'car',
-      appearance: 'Sleek electric Tesla Model S',
-      abilities: ['EV Burst', 'Autopilot Dodge', 'Ram'],
+      name: "Tesla Ace",
+      type: "vehicle",
+      subType: "car",
+      appearance: "Sleek electric Tesla Model S",
+      abilities: ["EV Burst", "Autopilot Dodge", "Ram"],
     };
   }
-  if (t.includes('truck') || t.includes('lorry')) {
+  if (t.includes("truck") || t.includes("lorry")) {
     return {
-      name: 'Truck Commander',
-      type: 'vehicle',
-      subType: 'car',
-      appearance: 'Heavy armored truck',
-      abilities: ['Ram Drive', 'Horn Blast', 'Turbo Push'],
+      name: "Truck Commander",
+      type: "vehicle",
+      subType: "car",
+      appearance: "Heavy armored truck",
+      abilities: ["Ram Drive", "Horn Blast", "Turbo Push"],
     };
   }
-  if (t.includes('bike') || t.includes('motorcycle') || t.includes('moto')) {
+  if (t.includes("bike") || t.includes("motorcycle") || t.includes("moto")) {
     return {
-      name: 'Moto Rider',
-      type: 'vehicle',
-      subType: 'motorcycle',
-      appearance: 'High-performance racing motorcycle',
-      abilities: ['Wheelie Thrust', 'Nitro Surge', 'Draft Dodge'],
+      name: "Moto Rider",
+      type: "vehicle",
+      subType: "motorcycle",
+      appearance: "High-performance racing motorcycle",
+      abilities: ["Wheelie Thrust", "Nitro Surge", "Draft Dodge"],
     };
   }
-  if (t.includes('plane') || t.includes('aircraft') || t.includes('jet')) {
+  if (t.includes("plane") || t.includes("aircraft") || t.includes("jet")) {
     return {
-      name: 'Ace Pilot',
-      type: 'vehicle',
-      subType: 'aircraft',
-      appearance: 'Twin-engine fighter jet',
-      abilities: ['Fly', 'Missile Strike', 'Barrel Roll'],
-    };
-  }
-  if (t.includes('spaceship') || t.includes('spacecraft') || t.includes('rocket')) {
-    return {
-      name: 'Starfighter',
-      type: 'vehicle',
-      subType: 'spacecraft',
-      appearance: 'Sleek sci-fi spacecraft',
-      abilities: ['Hyperdrive', 'Laser Volley', 'Warp Dodge'],
+      name: "Ace Pilot",
+      type: "vehicle",
+      subType: "aircraft",
+      appearance: "Twin-engine fighter jet",
+      abilities: ["Fly", "Missile Strike", "Barrel Roll"],
     };
   }
   if (
-    (genre === 'driving' || genre === 'racing') &&
-    !t.includes('human') &&
-    !t.includes('man') &&
-    !t.includes('person')
+    t.includes("spaceship") ||
+    t.includes("spacecraft") ||
+    t.includes("rocket")
   ) {
     return {
-      name: 'Street Racer',
-      type: 'vehicle',
-      subType: 'car',
-      appearance: 'Sleek custom race car',
-      abilities: ['Nitro Boost', 'Handbrake Drift', 'Ram'],
+      name: "Starfighter",
+      type: "vehicle",
+      subType: "spacecraft",
+      appearance: "Sleek sci-fi spacecraft",
+      abilities: ["Hyperdrive", "Laser Volley", "Warp Dodge"],
     };
   }
-  if (genre === 'bike_racing') {
+  if (
+    (genre === "driving" || genre === "racing") &&
+    !t.includes("human") &&
+    !t.includes("man") &&
+    !t.includes("person")
+  ) {
     return {
-      name: 'Moto Racer',
-      type: 'vehicle',
-      subType: 'motorcycle',
-      appearance: 'Racing motorcycle',
-      abilities: ['Wheelie Thrust', 'Nitro Surge', 'Draft Dodge'],
+      name: "Street Racer",
+      type: "vehicle",
+      subType: "car",
+      appearance: "Sleek custom race car",
+      abilities: ["Nitro Boost", "Handbrake Drift", "Ram"],
+    };
+  }
+  if (genre === "bike_racing") {
+    return {
+      name: "Moto Racer",
+      type: "vehicle",
+      subType: "motorcycle",
+      appearance: "Racing motorcycle",
+      abilities: ["Wheelie Thrust", "Nitro Surge", "Draft Dodge"],
     };
   }
 
   // --- Human archetypes ---
-  if (t.includes('naruto')) {
+  if (t.includes("naruto")) {
     return {
-      name: 'Naruto Uzumaki',
-      type: 'human',
-      subType: 'ninja',
-      appearance: 'Orange jumpsuit with headband and spiky blonde hair',
-      abilities: ['Rasengan', 'Shadow Clone', 'Nine-Tails Burst'],
+      name: "Naruto Uzumaki",
+      type: "human",
+      subType: "ninja",
+      appearance: "Orange jumpsuit with headband and spiky blonde hair",
+      abilities: ["Rasengan", "Shadow Clone", "Nine-Tails Burst"],
     };
   }
-  if (t.includes('ninja') || t.includes('shinobi')) {
+  if (t.includes("ninja") || t.includes("shinobi")) {
     return {
-      name: 'Shadow Ninja',
-      type: 'human',
-      subType: 'ninja',
-      appearance: 'Dark hooded ninja with katana and mask',
-      abilities: ['Wall Jump', 'Shuriken Throw', 'Shadow Dash'],
+      name: "Shadow Ninja",
+      type: "human",
+      subType: "ninja",
+      appearance: "Dark hooded ninja with katana and mask",
+      abilities: ["Wall Jump", "Shuriken Throw", "Shadow Dash"],
     };
   }
-  if (t.includes('samurai')) {
+  if (t.includes("samurai")) {
     return {
-      name: 'Ronin Samurai',
-      type: 'human',
-      subType: 'ninja',
-      appearance: 'Armored samurai with katana and red clan markings',
-      abilities: ['Blade Slash', 'Parry', 'Iaijutsu Strike'],
+      name: "Ronin Samurai",
+      type: "human",
+      subType: "ninja",
+      appearance: "Armored samurai with katana and red clan markings",
+      abilities: ["Blade Slash", "Parry", "Iaijutsu Strike"],
     };
   }
-  if (t.includes('spider-man') || t.includes('spiderman')) {
+  if (t.includes("spider-man") || t.includes("spiderman")) {
     return {
-      name: 'Spider Hero',
-      type: 'human',
-      subType: 'superhero',
-      appearance: 'Red and blue spider suit with web shooters',
-      abilities: ['Web Swing', 'Wall Crawl', 'Spider Sense'],
+      name: "Spider Hero",
+      type: "human",
+      subType: "superhero",
+      appearance: "Red and blue spider suit with web shooters",
+      abilities: ["Web Swing", "Wall Crawl", "Spider Sense"],
     };
   }
-  if (t.includes('batman')) {
+  if (t.includes("batman")) {
     return {
-      name: 'Dark Knight',
-      type: 'human',
-      subType: 'superhero',
-      appearance: 'Dark armored bat suit with cape',
-      abilities: ['Batarang Throw', 'Grapple Hook', 'Cape Glide'],
+      name: "Dark Knight",
+      type: "human",
+      subType: "superhero",
+      appearance: "Dark armored bat suit with cape",
+      abilities: ["Batarang Throw", "Grapple Hook", "Cape Glide"],
     };
   }
-  if (t.includes('superhero') || t.includes('super hero') || (t.includes('hero') && t.includes('power'))) {
+  if (
+    t.includes("superhero") ||
+    t.includes("super hero") ||
+    (t.includes("hero") && t.includes("power"))
+  ) {
     return {
-      name: 'Apex Hero',
-      type: 'human',
-      subType: 'superhero',
-      appearance: 'Bold caped superhero suit with glowing emblem',
-      abilities: ['Super Punch', 'Shield Blast', 'Flight Dash'],
+      name: "Apex Hero",
+      type: "human",
+      subType: "superhero",
+      appearance: "Bold caped superhero suit with glowing emblem",
+      abilities: ["Super Punch", "Shield Blast", "Flight Dash"],
     };
   }
-  if (t.includes('soldier') || t.includes('military') || t.includes('army') || t.includes('marine')) {
+  if (
+    t.includes("soldier") ||
+    t.includes("military") ||
+    t.includes("army") ||
+    t.includes("marine")
+  ) {
     return {
-      name: 'Combat Soldier',
-      type: 'human',
-      subType: 'soldier',
-      appearance: 'Digital camouflage tactical gear with helmet and rifle',
-      abilities: ['Fire Rifle', 'Grenade Throw', 'Roll Dodge'],
+      name: "Combat Soldier",
+      type: "human",
+      subType: "soldier",
+      appearance: "Digital camouflage tactical gear with helmet and rifle",
+      abilities: ["Fire Rifle", "Grenade Throw", "Roll Dodge"],
     };
   }
-  if (t.includes('sniper')) {
+  if (t.includes("sniper")) {
     return {
-      name: 'Elite Sniper',
-      type: 'human',
-      subType: 'soldier',
-      appearance: 'Ghillie suit with long-range rifle',
-      abilities: ['Precision Shot', 'Cloak', 'Tactical Sprint'],
+      name: "Elite Sniper",
+      type: "human",
+      subType: "soldier",
+      appearance: "Ghillie suit with long-range rifle",
+      abilities: ["Precision Shot", "Cloak", "Tactical Sprint"],
     };
   }
-  if (t.includes('pirate') || t.includes('corsair')) {
+  if (t.includes("pirate") || t.includes("corsair")) {
     return {
-      name: 'Sea Corsair',
-      type: 'human',
-      subType: 'human_male',
-      appearance: 'Classic pirate coat with hat and curved cutlass',
-      abilities: ['Sword Slash', 'Pistol Shot', 'Grapple Hook'],
+      name: "Sea Corsair",
+      type: "human",
+      subType: "human_male",
+      appearance: "Classic pirate coat with hat and curved cutlass",
+      abilities: ["Sword Slash", "Pistol Shot", "Grapple Hook"],
     };
   }
-  if (t.includes('wizard') || t.includes('mage') || t.includes('sorcerer') || t.includes('warlock')) {
+  if (
+    t.includes("wizard") ||
+    t.includes("mage") ||
+    t.includes("sorcerer") ||
+    t.includes("warlock")
+  ) {
     return {
-      name: 'Arcane Mage',
-      type: 'human',
-      subType: 'superhero',
-      appearance: 'Robed wizard with glowing staff and arcane runes',
-      abilities: ['Fireball', 'Frost Nova', 'Teleport'],
+      name: "Arcane Mage",
+      type: "human",
+      subType: "superhero",
+      appearance: "Robed wizard with glowing staff and arcane runes",
+      abilities: ["Fireball", "Frost Nova", "Teleport"],
     };
   }
-  if (t.includes('zombie') && (t.includes('survivor') || t.includes('slayer') || t.includes('fighter'))) {
+  if (
+    t.includes("zombie") &&
+    (t.includes("survivor") || t.includes("slayer") || t.includes("fighter"))
+  ) {
     return {
-      name: 'Undead Slayer',
-      type: 'human',
-      subType: 'soldier',
-      appearance: 'Ragged survivor gear with machete and shotgun',
-      abilities: ['Slash', 'Shotgun Blast', 'Roll Dodge'],
+      name: "Undead Slayer",
+      type: "human",
+      subType: "soldier",
+      appearance: "Ragged survivor gear with machete and shotgun",
+      abilities: ["Slash", "Shotgun Blast", "Roll Dodge"],
     };
   }
-  if (t.includes('zombie') || t.includes('apocalypse')) {
+  if (t.includes("zombie") || t.includes("apocalypse")) {
     return {
-      name: 'Last Survivor',
-      type: 'human',
-      subType: 'soldier',
-      appearance: 'Torn clothes, survivor pack, armed with a rifle',
-      abilities: ['Fire Weapon', 'Dodge', 'Melee Strike'],
+      name: "Last Survivor",
+      type: "human",
+      subType: "soldier",
+      appearance: "Torn clothes, survivor pack, armed with a rifle",
+      abilities: ["Fire Weapon", "Dodge", "Melee Strike"],
     };
   }
-  if (t.includes('police') || t.includes('cop') || t.includes('officer')) {
+  if (t.includes("police") || t.includes("cop") || t.includes("officer")) {
     return {
-      name: 'Officer Chase',
-      type: 'human',
-      subType: 'soldier',
-      appearance: 'Police uniform with badge and pistol holster',
-      abilities: ['Fire Pistol', 'Tackle', 'Call Backup'],
+      name: "Officer Chase",
+      type: "human",
+      subType: "soldier",
+      appearance: "Police uniform with badge and pistol holster",
+      abilities: ["Fire Pistol", "Tackle", "Call Backup"],
     };
   }
-  if (t.includes('assassin') || t.includes('hitman')) {
+  if (t.includes("assassin") || t.includes("hitman")) {
     return {
-      name: 'Phantom Assassin',
-      type: 'human',
-      subType: 'ninja',
-      appearance: 'Sleek black assassin suit, dual blades',
-      abilities: ['Silent Kill', 'Shadow Step', 'Poison Blade'],
+      name: "Phantom Assassin",
+      type: "human",
+      subType: "ninja",
+      appearance: "Sleek black assassin suit, dual blades",
+      abilities: ["Silent Kill", "Shadow Step", "Poison Blade"],
     };
   }
-  if (t.includes('dragon')) {
+  if (t.includes("dragon")) {
     return {
-      name: 'Dragon Rider',
-      type: 'animal',
-      subType: 'creature',
-      appearance: 'Armored rider atop a massive fire-breathing dragon',
-      abilities: ['Fire Breath', 'Wing Dash', 'Dragon Roar'],
+      name: "Dragon Rider",
+      type: "animal",
+      subType: "creature",
+      appearance: "Armored rider atop a massive fire-breathing dragon",
+      abilities: ["Fire Breath", "Wing Dash", "Dragon Roar"],
     };
   }
-  if (t.includes('woman') || t.includes('girl') || t.includes('female')) {
+  if (t.includes("woman") || t.includes("girl") || t.includes("female")) {
     return {
-      name: 'Swift Heroine',
-      type: 'human',
-      subType: 'human_female',
-      appearance: 'Athletic woman in sleek combat suit with energy pistol',
-      abilities: ['Dash Strike', 'Double Jump', 'Kunai Throw'],
+      name: "Swift Heroine",
+      type: "human",
+      subType: "human_female",
+      appearance: "Athletic woman in sleek combat suit with energy pistol",
+      abilities: ["Dash Strike", "Double Jump", "Kunai Throw"],
     };
   }
-  if (t.includes('man') || t.includes('guy') || t.includes('boy') || t.includes('male')) {
+  if (
+    t.includes("man") ||
+    t.includes("guy") ||
+    t.includes("boy") ||
+    t.includes("male")
+  ) {
     return {
-      name: 'Street Runner',
-      type: 'human',
-      subType: 'human_male',
-      appearance: 'Young man in urban street wear with sneakers',
-      abilities: ['Sprint', 'Double Jump', 'Power Punch'],
+      name: "Street Runner",
+      type: "human",
+      subType: "human_male",
+      appearance: "Young man in urban street wear with sneakers",
+      abilities: ["Sprint", "Double Jump", "Power Punch"],
     };
   }
 
   // Fallback by theme
   const themeDefaults = {
     zombie: {
-      name: 'Survivor',
-      type: 'human',
-      subType: 'soldier',
-      appearance: 'Ragged survivor with machete',
-      abilities: ['Slash', 'Shoot', 'Dodge'],
+      name: "Survivor",
+      type: "human",
+      subType: "soldier",
+      appearance: "Ragged survivor with machete",
+      abilities: ["Slash", "Shoot", "Dodge"],
     },
     space: {
-      name: 'Cosmic Drifter',
-      type: 'human',
-      subType: 'superhero',
-      appearance: 'Space suit with jet pack',
-      abilities: ['Laser Blast', 'Jet Thrust', 'Shield Bubble'],
+      name: "Cosmic Drifter",
+      type: "human",
+      subType: "superhero",
+      appearance: "Space suit with jet pack",
+      abilities: ["Laser Blast", "Jet Thrust", "Shield Bubble"],
     },
     ninja: {
-      name: 'Shadow Ninja',
-      type: 'human',
-      subType: 'ninja',
-      appearance: 'Dark ninja suit with katana',
-      abilities: ['Wall Jump', 'Shuriken', 'Shadow Dash'],
+      name: "Shadow Ninja",
+      type: "human",
+      subType: "ninja",
+      appearance: "Dark ninja suit with katana",
+      abilities: ["Wall Jump", "Shuriken", "Shadow Dash"],
     },
     military: {
-      name: 'Combat Soldier',
-      type: 'human',
-      subType: 'soldier',
-      appearance: 'Tactical gear with rifle',
-      abilities: ['Fire Rifle', 'Grenade', 'Roll'],
+      name: "Combat Soldier",
+      type: "human",
+      subType: "soldier",
+      appearance: "Tactical gear with rifle",
+      abilities: ["Fire Rifle", "Grenade", "Roll"],
     },
     fantasy: {
-      name: 'Brave Knight',
-      type: 'human',
-      subType: 'human_male',
-      appearance: 'Armored knight with sword and shield',
-      abilities: ['Sword Slash', 'Shield Block', 'Charge'],
+      name: "Brave Knight",
+      type: "human",
+      subType: "human_male",
+      appearance: "Armored knight with sword and shield",
+      abilities: ["Sword Slash", "Shield Block", "Charge"],
     },
     pirate: {
-      name: 'Sea Corsair',
-      type: 'human',
-      subType: 'human_male',
-      appearance: 'Pirate coat and hat',
-      abilities: ['Sword Slash', 'Pistol Shot', 'Grapple'],
+      name: "Sea Corsair",
+      type: "human",
+      subType: "human_male",
+      appearance: "Pirate coat and hat",
+      abilities: ["Sword Slash", "Pistol Shot", "Grapple"],
     },
     superhero: {
-      name: 'Apex Hero',
-      type: 'human',
-      subType: 'superhero',
-      appearance: 'Caped superhero suit',
-      abilities: ['Super Punch', 'Shield Blast', 'Flight'],
+      name: "Apex Hero",
+      type: "human",
+      subType: "superhero",
+      appearance: "Caped superhero suit",
+      abilities: ["Super Punch", "Shield Blast", "Flight"],
     },
     racing: {
-      name: 'Street Racer',
-      type: 'vehicle',
-      subType: 'car',
-      appearance: 'Sleek race car',
-      abilities: ['Nitro Boost', 'Drift', 'Ram'],
+      name: "Street Racer",
+      type: "vehicle",
+      subType: "car",
+      appearance: "Sleek race car",
+      abilities: ["Nitro Boost", "Drift", "Ram"],
     },
   };
 
   return (
     themeDefaults[theme] || {
-      name: 'Dream Explorer',
-      type: 'human',
-      subType: 'human_male',
-      appearance: 'Traveler in casual adventure gear',
-      abilities: ['Dash', 'Double Jump', 'Throw'],
+      name: "Dream Explorer",
+      type: "human",
+      subType: "human_male",
+      appearance: "Traveler in casual adventure gear",
+      abilities: ["Dash", "Double Jump", "Throw"],
     }
   );
 }
@@ -685,77 +854,102 @@ function resolveHero(text, genre, theme) {
 
 const ENEMY_BANKS = {
   city: [
-    { name: 'Gang Member', type: 'patrol', hp: 80, maxHp: 80, damage: 10 },
-    { name: 'Police Officer', type: 'chase', hp: 100, maxHp: 100, damage: 15 },
-    { name: 'Security Guard', type: 'patrol', hp: 90, maxHp: 90, damage: 12 },
-    { name: 'Crime Boss Bodyguard', type: 'chase', hp: 150, maxHp: 150, damage: 20 },
+    { name: "Gang Member", type: "patrol", hp: 80, maxHp: 80, damage: 10 },
+    { name: "Police Officer", type: "chase", hp: 100, maxHp: 100, damage: 15 },
+    { name: "Security Guard", type: "patrol", hp: 90, maxHp: 90, damage: 12 },
+    {
+      name: "Crime Boss Bodyguard",
+      type: "chase",
+      hp: 150,
+      maxHp: 150,
+      damage: 20,
+    },
   ],
   zombie: [
-    { name: 'Walker', type: 'zombie', hp: 60, maxHp: 60, damage: 10 },
-    { name: 'Runner', type: 'chase', hp: 80, maxHp: 80, damage: 15 },
-    { name: 'Mutant', type: 'zombie', hp: 120, maxHp: 120, damage: 20 },
-    { name: 'Infected Beast', type: 'chase', hp: 150, maxHp: 150, damage: 25 },
+    { name: "Walker", type: "zombie", hp: 60, maxHp: 60, damage: 10 },
+    { name: "Runner", type: "chase", hp: 80, maxHp: 80, damage: 15 },
+    { name: "Mutant", type: "zombie", hp: 120, maxHp: 120, damage: 20 },
+    { name: "Infected Beast", type: "chase", hp: 150, maxHp: 150, damage: 25 },
   ],
   space: [
-    { name: 'Alien Soldier', type: 'patrol', hp: 80, maxHp: 80, damage: 12 },
-    { name: 'Attack Drone', type: 'chase', hp: 60, maxHp: 60, damage: 10 },
-    { name: 'Mech Robot', type: 'patrol', hp: 130, maxHp: 130, damage: 18 },
-    { name: 'Space Hunter', type: 'chase', hp: 100, maxHp: 100, damage: 15 },
+    { name: "Alien Soldier", type: "patrol", hp: 80, maxHp: 80, damage: 12 },
+    { name: "Attack Drone", type: "chase", hp: 60, maxHp: 60, damage: 10 },
+    { name: "Mech Robot", type: "patrol", hp: 130, maxHp: 130, damage: 18 },
+    { name: "Space Hunter", type: "chase", hp: 100, maxHp: 100, damage: 15 },
   ],
   ninja: [
-    { name: 'Shadow Assassin', type: 'chase', hp: 80, maxHp: 80, damage: 15 },
-    { name: 'Ronin Guard', type: 'patrol', hp: 100, maxHp: 100, damage: 12 },
-    { name: 'Shuriken Scout', type: 'patrol', hp: 60, maxHp: 60, damage: 10 },
-    { name: 'Oni Warrior', type: 'chase', hp: 150, maxHp: 150, damage: 22 },
+    { name: "Shadow Assassin", type: "chase", hp: 80, maxHp: 80, damage: 15 },
+    { name: "Ronin Guard", type: "patrol", hp: 100, maxHp: 100, damage: 12 },
+    { name: "Shuriken Scout", type: "patrol", hp: 60, maxHp: 60, damage: 10 },
+    { name: "Oni Warrior", type: "chase", hp: 150, maxHp: 150, damage: 22 },
   ],
   military: [
-    { name: 'Foot Soldier', type: 'patrol', hp: 100, maxHp: 100, damage: 15 },
-    { name: 'Sniper', type: 'patrol', hp: 80, maxHp: 80, damage: 25 },
-    { name: 'Tank Trooper', type: 'patrol', hp: 160, maxHp: 160, damage: 20 },
-    { name: 'Assault Mech', type: 'chase', hp: 200, maxHp: 200, damage: 30 },
+    { name: "Foot Soldier", type: "patrol", hp: 100, maxHp: 100, damage: 15 },
+    { name: "Sniper", type: "patrol", hp: 80, maxHp: 80, damage: 25 },
+    { name: "Tank Trooper", type: "patrol", hp: 160, maxHp: 160, damage: 20 },
+    { name: "Assault Mech", type: "chase", hp: 200, maxHp: 200, damage: 30 },
   ],
   fantasy: [
-    { name: 'Dark Elf', type: 'patrol', hp: 80, maxHp: 80, damage: 12 },
-    { name: 'Wraith', type: 'chase', hp: 70, maxHp: 70, damage: 15 },
-    { name: 'Stone Golem', type: 'patrol', hp: 200, maxHp: 200, damage: 20 },
-    { name: 'Shadow Knight', type: 'chase', hp: 150, maxHp: 150, damage: 25 },
+    { name: "Dark Elf", type: "patrol", hp: 80, maxHp: 80, damage: 12 },
+    { name: "Wraith", type: "chase", hp: 70, maxHp: 70, damage: 15 },
+    { name: "Stone Golem", type: "patrol", hp: 200, maxHp: 200, damage: 20 },
+    { name: "Shadow Knight", type: "chase", hp: 150, maxHp: 150, damage: 25 },
   ],
   racing: [
-    { name: 'Traffic Sedan', type: 'traffic', hp: 80, maxHp: 80, damage: 25 },
-    { name: 'Police Patrol Car', type: 'traffic', hp: 100, maxHp: 100, damage: 30 },
-    { name: 'Road Blocker Truck', type: 'traffic', hp: 120, maxHp: 120, damage: 35 },
-    { name: 'Speed Rival', type: 'traffic', hp: 90, maxHp: 90, damage: 25 },
+    { name: "Traffic Sedan", type: "traffic", hp: 80, maxHp: 80, damage: 25 },
+    {
+      name: "Police Patrol Car",
+      type: "traffic",
+      hp: 100,
+      maxHp: 100,
+      damage: 30,
+    },
+    {
+      name: "Road Blocker Truck",
+      type: "traffic",
+      hp: 120,
+      maxHp: 120,
+      damage: 35,
+    },
+    { name: "Speed Rival", type: "traffic", hp: 90, maxHp: 90, damage: 25 },
   ],
   battle_royale: [
-    { name: 'Rival Sniper', type: 'patrol', hp: 100, maxHp: 100, damage: 20 },
-    { name: 'Assault Trooper', type: 'chase', hp: 120, maxHp: 120, damage: 15 },
-    { name: 'Apex Hunter', type: 'chase', hp: 150, maxHp: 150, damage: 18 },
-    { name: 'Recon Agent', type: 'patrol', hp: 80, maxHp: 80, damage: 12 },
+    { name: "Rival Sniper", type: "patrol", hp: 100, maxHp: 100, damage: 20 },
+    { name: "Assault Trooper", type: "chase", hp: 120, maxHp: 120, damage: 15 },
+    { name: "Apex Hunter", type: "chase", hp: 150, maxHp: 150, damage: 18 },
+    { name: "Recon Agent", type: "patrol", hp: 80, maxHp: 80, damage: 12 },
   ],
   pirate: [
-    { name: 'Corsair Sailor', type: 'patrol', hp: 80, maxHp: 80, damage: 10 },
-    { name: 'Sea Serpent', type: 'chase', hp: 120, maxHp: 120, damage: 18 },
-    { name: 'Cannoneer', type: 'patrol', hp: 90, maxHp: 90, damage: 20 },
-    { name: 'Ghost Sailor', type: 'chase', hp: 100, maxHp: 100, damage: 15 },
+    { name: "Corsair Sailor", type: "patrol", hp: 80, maxHp: 80, damage: 10 },
+    { name: "Sea Serpent", type: "chase", hp: 120, maxHp: 120, damage: 18 },
+    { name: "Cannoneer", type: "patrol", hp: 90, maxHp: 90, damage: 20 },
+    { name: "Ghost Sailor", type: "chase", hp: 100, maxHp: 100, damage: 15 },
   ],
   superhero: [
-    { name: 'Henchman', type: 'patrol', hp: 80, maxHp: 80, damage: 10 },
-    { name: 'Armored Villain', type: 'chase', hp: 130, maxHp: 130, damage: 20 },
-    { name: 'Mercenary', type: 'patrol', hp: 90, maxHp: 90, damage: 15 },
-    { name: 'Cyborg Agent', type: 'chase', hp: 150, maxHp: 150, damage: 22 },
+    { name: "Henchman", type: "patrol", hp: 80, maxHp: 80, damage: 10 },
+    { name: "Armored Villain", type: "chase", hp: 130, maxHp: 130, damage: 20 },
+    { name: "Mercenary", type: "patrol", hp: 90, maxHp: 90, damage: 15 },
+    { name: "Cyborg Agent", type: "chase", hp: 150, maxHp: 150, damage: 22 },
   ],
   western: [
-    { name: 'Outlaw Gunman', type: 'patrol', hp: 80, maxHp: 80, damage: 15 },
-    { name: 'Bandit Rider', type: 'chase', hp: 90, maxHp: 90, damage: 12 },
-    { name: 'Wanted Renegade', type: 'patrol', hp: 100, maxHp: 100, damage: 18 },
-    { name: 'Gang Enforcer', type: 'chase', hp: 120, maxHp: 120, damage: 20 },
+    { name: "Outlaw Gunman", type: "patrol", hp: 80, maxHp: 80, damage: 15 },
+    { name: "Bandit Rider", type: "chase", hp: 90, maxHp: 90, damage: 12 },
+    {
+      name: "Wanted Renegade",
+      type: "patrol",
+      hp: 100,
+      maxHp: 100,
+      damage: 18,
+    },
+    { name: "Gang Enforcer", type: "chase", hp: 120, maxHp: 120, damage: 20 },
   ],
 };
 
 function resolveEnemies(theme, genre) {
-  if (genre === 'driving' || genre === 'racing' || genre === 'bike_racing') return ENEMY_BANKS.racing;
-  if (genre === 'battle_royale') return ENEMY_BANKS.battle_royale;
-  if (genre === 'survival') return ENEMY_BANKS.zombie;
+  if (genre === "driving" || genre === "racing" || genre === "bike_racing")
+    return ENEMY_BANKS.racing;
+  if (genre === "battle_royale") return ENEMY_BANKS.battle_royale;
+  if (genre === "survival") return ENEMY_BANKS.zombie;
   return ENEMY_BANKS[theme] || ENEMY_BANKS.city;
 }
 
@@ -764,38 +958,75 @@ function resolveEnemies(theme, genre) {
 // ============================================================
 
 const BOSS_REGISTRY = {
-  city: { baseName: 'Street King', specialMove: 'Nitro Storm', abilities: ['Ram Drive', 'Call Reinforcements'] },
-  zombie: { baseName: 'Mutant Titan', specialMove: 'Ground Smash', abilities: ['Zombie Summon', 'Toxic Roar'] },
-  space: { baseName: 'Cosmic Overlord', specialMove: 'Laser Grid', abilities: ['Black Hole Pull', 'Drone Fleet'] },
-  ninja: { baseName: 'Shadow Master', specialMove: 'Shadow Clone Strike', abilities: ['Teleport', 'Shuriken Storm'] },
+  city: {
+    baseName: "Street King",
+    specialMove: "Nitro Storm",
+    abilities: ["Ram Drive", "Call Reinforcements"],
+  },
+  zombie: {
+    baseName: "Mutant Titan",
+    specialMove: "Ground Smash",
+    abilities: ["Zombie Summon", "Toxic Roar"],
+  },
+  space: {
+    baseName: "Cosmic Overlord",
+    specialMove: "Laser Grid",
+    abilities: ["Black Hole Pull", "Drone Fleet"],
+  },
+  ninja: {
+    baseName: "Shadow Master",
+    specialMove: "Shadow Clone Strike",
+    abilities: ["Teleport", "Shuriken Storm"],
+  },
   military: {
-    baseName: 'General Iron',
-    specialMove: 'Airstrike Call',
-    abilities: ['Grenade Barrage', 'Armored Charge'],
+    baseName: "General Iron",
+    specialMove: "Airstrike Call",
+    abilities: ["Grenade Barrage", "Armored Charge"],
   },
-  fantasy: { baseName: 'Lich King', specialMove: 'Soul Drain', abilities: ['Undead Army', 'Death Nova'] },
-  pirate: { baseName: "Davy's Wrath", specialMove: 'Cannonball Barrage', abilities: ['Sea Tempest', 'Ghost Crew'] },
-  racing: { baseName: 'Apex Predator', specialMove: 'Nitro Overdrive', abilities: ['Ram Blitz', 'Oil Slick Trail'] },
+  fantasy: {
+    baseName: "Lich King",
+    specialMove: "Soul Drain",
+    abilities: ["Undead Army", "Death Nova"],
+  },
+  pirate: {
+    baseName: "Davy's Wrath",
+    specialMove: "Cannonball Barrage",
+    abilities: ["Sea Tempest", "Ghost Crew"],
+  },
+  racing: {
+    baseName: "Apex Predator",
+    specialMove: "Nitro Overdrive",
+    abilities: ["Ram Blitz", "Oil Slick Trail"],
+  },
   battle_royale: {
-    baseName: 'Warlord X',
-    specialMove: 'Minigun Rain',
-    abilities: ['Rocket Launcher', 'Airdrop Bombs'],
+    baseName: "Warlord X",
+    specialMove: "Minigun Rain",
+    abilities: ["Rocket Launcher", "Airdrop Bombs"],
   },
-  superhero: { baseName: 'Crimson Tyrant', specialMove: 'Energy Beam', abilities: ['Gravity Control', 'Minion Army'] },
-  western: { baseName: 'The Undertaker', specialMove: 'Rapid Gunfire', abilities: ['Lasso Pull', 'Dynamite Throw'] },
+  superhero: {
+    baseName: "Crimson Tyrant",
+    specialMove: "Energy Beam",
+    abilities: ["Gravity Control", "Minion Army"],
+  },
+  western: {
+    baseName: "The Undertaker",
+    specialMove: "Rapid Gunfire",
+    abilities: ["Lasso Pull", "Dynamite Throw"],
+  },
 };
 
 function resolveBoss(theme, genre, location, stageNumber) {
   let registry = BOSS_REGISTRY[theme] || BOSS_REGISTRY.city;
-  if (genre === 'driving' || genre === 'racing' || genre === 'bike_racing') registry = BOSS_REGISTRY.racing;
-  if (genre === 'battle_royale') registry = BOSS_REGISTRY.battle_royale;
-  if (genre === 'survival') registry = BOSS_REGISTRY.zombie;
+  if (genre === "driving" || genre === "racing" || genre === "bike_racing")
+    registry = BOSS_REGISTRY.racing;
+  if (genre === "battle_royale") registry = BOSS_REGISTRY.battle_royale;
+  if (genre === "survival") registry = BOSS_REGISTRY.zombie;
 
-  const suffix = stageNumber > 1 ? ` Mk.${stageNumber}` : '';
+  const suffix = stageNumber > 1 ? ` Mk.${stageNumber}` : "";
   return {
     name: `${registry.baseName}${suffix}`,
     specialMove: registry.specialMove,
-    phases: ['Phase 1: HP 200-140', 'Phase 2: HP 139-70', 'Phase 3: HP 69-0'],
+    phases: ["Phase 1: HP 200-140", "Phase 2: HP 139-70", "Phase 3: HP 69-0"],
     hp: 200,
     maxHp: 200,
     alive: true,
@@ -808,16 +1039,17 @@ function resolveBoss(theme, genre, location, stageNumber) {
 // ============================================================
 
 function resolveScoreLabel(theme, genre) {
-  if (genre === 'driving' || genre === 'racing' || genre === 'bike_racing') return 'SPEED';
-  if (genre === 'endless_runner') return 'COINS';
-  if (theme === 'zombie' || genre === 'survival') return 'KILLS';
-  if (theme === 'space') return 'ENERGY';
-  if (theme === 'pirate') return 'GOLD';
-  if (theme === 'fantasy') return 'MANA';
-  if (theme === 'ninja') return 'CHI';
-  if (theme === 'military' || genre === 'battle_royale') return 'KILLS';
-  if (theme === 'city' || theme === 'racing') return 'CASH';
-  return 'SHARDS';
+  if (genre === "driving" || genre === "racing" || genre === "bike_racing")
+    return "SPEED";
+  if (genre === "endless_runner") return "COINS";
+  if (theme === "zombie" || genre === "survival") return "KILLS";
+  if (theme === "space") return "ENERGY";
+  if (theme === "pirate") return "GOLD";
+  if (theme === "fantasy") return "MANA";
+  if (theme === "ninja") return "CHI";
+  if (theme === "military" || genre === "battle_royale") return "KILLS";
+  if (theme === "city" || theme === "racing") return "CASH";
+  return "SHARDS";
 }
 
 // ============================================================
@@ -827,100 +1059,100 @@ function resolveScoreLabel(theme, genre) {
 function resolveColors(location, theme, genre) {
   const palettes = {
     Mumbai: {
-      bg: '#172554',
-      accent: '#f97316',
-      secondary: '#facc15',
-      hazard: '#dc2626',
-      player: '#dc2626',
-      text: '#ffffff',
+      bg: "#172554",
+      accent: "#f97316",
+      secondary: "#facc15",
+      hazard: "#dc2626",
+      player: "#dc2626",
+      text: "#ffffff",
     },
     Tokyo: {
-      bg: '#030712',
-      accent: '#ec4899',
-      secondary: '#06b6d4',
-      hazard: '#ef4444',
-      player: '#10b981',
-      text: '#f3f4f6',
+      bg: "#030712",
+      accent: "#ec4899",
+      secondary: "#06b6d4",
+      hazard: "#ef4444",
+      player: "#10b981",
+      text: "#f3f4f6",
     },
     Dubai: {
-      bg: '#451a03',
-      accent: '#eab308',
-      secondary: '#10b981',
-      hazard: '#ea580c',
-      player: '#fbbf24',
-      text: '#fef08a',
+      bg: "#451a03",
+      accent: "#eab308",
+      secondary: "#10b981",
+      hazard: "#ea580c",
+      player: "#fbbf24",
+      text: "#fef08a",
     },
     Hyderabad: {
-      bg: '#0f172a',
-      accent: '#a855f7',
-      secondary: '#06b6d4',
-      hazard: '#ef4444',
-      player: '#3b82f6',
-      text: '#ffffff',
+      bg: "#0f172a",
+      accent: "#a855f7",
+      secondary: "#06b6d4",
+      hazard: "#ef4444",
+      player: "#3b82f6",
+      text: "#ffffff",
     },
-    'New York': {
-      bg: '#0f172a',
-      accent: '#facc15',
-      secondary: '#f97316',
-      hazard: '#ef4444',
-      player: '#22c55e',
-      text: '#ffffff',
+    "New York": {
+      bg: "#0f172a",
+      accent: "#facc15",
+      secondary: "#f97316",
+      hazard: "#ef4444",
+      player: "#22c55e",
+      text: "#ffffff",
     },
     London: {
-      bg: '#1a1a2e',
-      accent: '#60a5fa',
-      secondary: '#a78bfa',
-      hazard: '#f43f5e',
-      player: '#38bdf8',
-      text: '#ffffff',
+      bg: "#1a1a2e",
+      accent: "#60a5fa",
+      secondary: "#a78bfa",
+      hazard: "#f43f5e",
+      player: "#38bdf8",
+      text: "#ffffff",
     },
     Paris: {
-      bg: '#1e1b4b',
-      accent: '#f9a8d4',
-      secondary: '#c4b5fd',
-      hazard: '#fb7185',
-      player: '#e879f9',
-      text: '#ffffff',
+      bg: "#1e1b4b",
+      accent: "#f9a8d4",
+      secondary: "#c4b5fd",
+      hazard: "#fb7185",
+      player: "#e879f9",
+      text: "#ffffff",
     },
-    'Deep Space': {
-      bg: '#020817',
-      accent: '#818cf8',
-      secondary: '#06b6d4',
-      hazard: '#a855f7',
-      player: '#6366f1',
-      text: '#e2e8f0',
+    "Deep Space": {
+      bg: "#020817",
+      accent: "#818cf8",
+      secondary: "#06b6d4",
+      hazard: "#a855f7",
+      player: "#6366f1",
+      text: "#e2e8f0",
     },
-    'Ocean Realm': {
-      bg: '#0c4a6e',
-      accent: '#22d3ee',
-      secondary: '#34d399',
-      hazard: '#f87171',
-      player: '#38bdf8',
-      text: '#e0f2fe',
+    "Ocean Realm": {
+      bg: "#0c4a6e",
+      accent: "#22d3ee",
+      secondary: "#34d399",
+      hazard: "#f87171",
+      player: "#38bdf8",
+      text: "#e0f2fe",
     },
-    'Jungle Depths': {
-      bg: '#052e16',
-      accent: '#4ade80',
-      secondary: '#facc15',
-      hazard: '#ef4444',
-      player: '#86efac',
-      text: '#dcfce7',
+    "Jungle Depths": {
+      bg: "#052e16",
+      accent: "#4ade80",
+      secondary: "#facc15",
+      hazard: "#ef4444",
+      player: "#86efac",
+      text: "#dcfce7",
     },
-    'Desert Wasteland': {
-      bg: '#292524',
-      accent: '#fb923c',
-      secondary: '#facc15',
-      hazard: '#ef4444',
-      player: '#fbbf24',
-      text: '#fff7ed',
+    "Desert Wasteland": {
+      bg: "#292524",
+      accent: "#fb923c",
+      secondary: "#facc15",
+      hazard: "#ef4444",
+      player: "#fbbf24",
+      text: "#fff7ed",
     },
-    'Metro City': {
-      bg: '#0f172a',
-      accent: '#7c3aed',
-      secondary: '#06b6d4',
-      hazard: '#f43f5e',
-      player: '#22c55e',
-      text: '#ffffff',
+    "Metro City": {
+      bg: "#0f172a",
+      accent: "#7c3aed",
+      secondary: "#06b6d4",
+      hazard: "#f43f5e",
+      player: "#22c55e",
+      text: "#ffffff",
     },
   };
 
@@ -929,79 +1161,79 @@ function resolveColors(location, theme, genre) {
   // Theme-based fallbacks
   const themePalettes = {
     zombie: {
-      bg: '#14532d',
-      accent: '#4ade80',
-      secondary: '#86efac',
-      hazard: '#7c3aed',
-      player: '#22c55e',
-      text: '#f0fdf4',
+      bg: "#14532d",
+      accent: "#4ade80",
+      secondary: "#86efac",
+      hazard: "#7c3aed",
+      player: "#22c55e",
+      text: "#f0fdf4",
     },
     ninja: {
-      bg: '#030712',
-      accent: '#6366f1',
-      secondary: '#818cf8',
-      hazard: '#f43f5e',
-      player: '#4f46e5',
-      text: '#e2e8f0',
+      bg: "#030712",
+      accent: "#6366f1",
+      secondary: "#818cf8",
+      hazard: "#f43f5e",
+      player: "#4f46e5",
+      text: "#e2e8f0",
     },
     space: {
-      bg: '#020817',
-      accent: '#818cf8',
-      secondary: '#06b6d4',
-      hazard: '#a855f7',
-      player: '#6366f1',
-      text: '#e2e8f0',
+      bg: "#020817",
+      accent: "#818cf8",
+      secondary: "#06b6d4",
+      hazard: "#a855f7",
+      player: "#6366f1",
+      text: "#e2e8f0",
     },
     pirate: {
-      bg: '#1e1b4b',
-      accent: '#f59e0b',
-      secondary: '#34d399',
-      hazard: '#ef4444',
-      player: '#d97706',
-      text: '#fef3c7',
+      bg: "#1e1b4b",
+      accent: "#f59e0b",
+      secondary: "#34d399",
+      hazard: "#ef4444",
+      player: "#d97706",
+      text: "#fef3c7",
     },
     military: {
-      bg: '#1c1917',
-      accent: '#4ade80',
-      secondary: '#facc15',
-      hazard: '#f43f5e',
-      player: '#84cc16',
-      text: '#fafaf9',
+      bg: "#1c1917",
+      accent: "#4ade80",
+      secondary: "#facc15",
+      hazard: "#f43f5e",
+      player: "#84cc16",
+      text: "#fafaf9",
     },
     fantasy: {
-      bg: '#1e1b4b',
-      accent: '#c084fc',
-      secondary: '#f0abfc',
-      hazard: '#f43f5e',
-      player: '#a855f7',
-      text: '#faf5ff',
+      bg: "#1e1b4b",
+      accent: "#c084fc",
+      secondary: "#f0abfc",
+      hazard: "#f43f5e",
+      player: "#a855f7",
+      text: "#faf5ff",
     },
     superhero: {
-      bg: '#0f172a',
-      accent: '#facc15',
-      secondary: '#f97316',
-      hazard: '#ef4444',
-      player: '#eab308',
-      text: '#ffffff',
+      bg: "#0f172a",
+      accent: "#facc15",
+      secondary: "#f97316",
+      hazard: "#ef4444",
+      player: "#eab308",
+      text: "#ffffff",
     },
     racing: {
-      bg: '#0f172a',
-      accent: '#f43f5e',
-      secondary: '#facc15',
-      hazard: '#7c3aed',
-      player: '#e11d48',
-      text: '#ffffff',
+      bg: "#0f172a",
+      accent: "#f43f5e",
+      secondary: "#facc15",
+      hazard: "#7c3aed",
+      player: "#e11d48",
+      text: "#ffffff",
     },
   };
 
   return (
     themePalettes[theme] || {
-      bg: '#0a0b10',
-      accent: '#8b5cf6',
-      secondary: '#06b6d4',
-      hazard: '#f43f5e',
-      player: '#22c55e',
-      text: '#ffffff',
+      bg: "#0a0b10",
+      accent: "#8b5cf6",
+      secondary: "#06b6d4",
+      hazard: "#f43f5e",
+      player: "#22c55e",
+      text: "#ffffff",
     }
   );
 }
@@ -1012,17 +1244,17 @@ function resolveColors(location, theme, genre) {
 
 function capitalizeWords(str) {
   return str
-    .split(' ')
+    .split(" ")
     .map((w) => w.charAt(0).toUpperCase() + w.substring(1))
-    .join(' ');
+    .join(" ");
 }
 
 // ============================================================
 // LOCAL DREAM ANALYZER
 // ============================================================
 
-function analyzeDreamLocally(title = '', description = '') {
-  const text = (title + ' ' + description).toLowerCase();
+function analyzeDreamLocally(title = "", description = "") {
+  const text = `${title} ${description}`.toLowerCase();
 
   const genre = classifyGenre(text);
   const location = extractLocation(text);
@@ -1045,7 +1277,8 @@ function analyzeDreamLocally(title = '', description = '') {
       2: `${location} — Midfield Assault`,
       3: `${location} — Final Stronghold`,
     };
-    const environmentName = stageEnvironments[stageNumber] || `${location} Stage ${stageNumber}`;
+    const environmentName =
+      stageEnvironments[stageNumber] || `${location} Stage ${stageNumber}`;
     const objectiveNames = {
       driving: `Outrun ${stageNumber * 3} rivals and reach the checkpoint!`,
       bike_racing: `Dodge traffic and complete ${stageNumber} lap circuits.`,
@@ -1053,14 +1286,15 @@ function analyzeDreamLocally(title = '', description = '') {
       endless_runner: `Collect ${stageNumber * 15} coins while dodging hurdles!`,
       battle_royale: `Eliminate all ${stageNumber + 2} rivals and stay inside the zone.`,
       survival: `Survive the zombie horde and clear ${stageNumber * 4} walkers.`,
-      shooter: `Neutralise all hostiles and secure the area.`,
+      shooter: "Neutralise all hostiles and secure the area.",
       puzzle: `Collect all ${4 + stageNumber * 2} puzzle pieces scattered across platforms!`,
     };
-    const objectiveName = objectiveNames[genre] || `Scale the heights and defeat the stage boss!`;
-    const compCond = `All enemies defeated and boss destroyed.`;
+    const objectiveName =
+      objectiveNames[genre] || "Scale the heights and defeat the stage boss!";
+    const compCond = "All enemies defeated and boss destroyed.";
 
     // ── DRIVING / RACING / BIKE ──────────────────────────────────────────
-    if (genre === 'driving' || genre === 'racing' || genre === 'bike_racing') {
+    if (genre === "driving" || genre === "racing" || genre === "bike_racing") {
       const lanes = [320, 360, 400];
 
       for (let rx = 0; rx < 5000; rx += 400) {
@@ -1070,7 +1304,7 @@ function analyzeDreamLocally(title = '', description = '') {
           y: 370,
           width: 400,
           height: 90,
-          type: 'ground',
+          type: "ground",
         });
       }
 
@@ -1099,12 +1333,12 @@ function analyzeDreamLocally(title = '', description = '') {
           y: lanes[blockIndex % lanes.length],
           width: 20,
           height: 20,
-          type: 'collectible',
+          type: "collectible",
         });
       }
 
       // ── ENDLESS RUNNER ───────────────────────────────────────────────────
-    } else if (genre === 'endless_runner') {
+    } else if (genre === "endless_runner") {
       const tracksY = [150, 250, 350];
       tracksY.forEach((ty) => {
         for (let rx = 0; rx < 5000; rx += 500) {
@@ -1114,7 +1348,7 @@ function analyzeDreamLocally(title = '', description = '') {
             y: ty,
             width: 500,
             height: 10,
-            type: 'solid',
+            type: "solid",
           });
         }
       });
@@ -1127,7 +1361,7 @@ function analyzeDreamLocally(title = '', description = '') {
           y: trackY - 20,
           width: 30,
           height: 38,
-          type: 'hazard',
+          type: "hazard",
         });
         blocks.push({
           id: `b_${stageNumber}_coin_${blockIndex++}`,
@@ -1135,12 +1369,12 @@ function analyzeDreamLocally(title = '', description = '') {
           y: trackY - 25,
           width: 20,
           height: 20,
-          type: 'collectible',
+          type: "collectible",
         });
       }
 
       // ── BATTLE ROYALE ────────────────────────────────────────────────────
-    } else if (genre === 'battle_royale') {
+    } else if (genre === "battle_royale") {
       for (let rx = 0; rx < 5000; rx += 400) {
         blocks.push({
           id: `b_${stageNumber}_ground_${blockIndex++}`,
@@ -1148,7 +1382,7 @@ function analyzeDreamLocally(title = '', description = '') {
           y: 420,
           width: 400,
           height: 30,
-          type: 'ground',
+          type: "ground",
         });
       }
       for (let ex = 800; ex < 4400; ex += 580) {
@@ -1174,12 +1408,12 @@ function analyzeDreamLocally(title = '', description = '') {
           y: 395,
           width: 30,
           height: 30,
-          type: 'collectible',
+          type: "collectible",
         });
       }
 
       // ── SURVIVAL / ZOMBIE ────────────────────────────────────────────────
-    } else if (genre === 'survival') {
+    } else if (genre === "survival") {
       for (let rx = 0; rx < 5000; rx += 400) {
         blocks.push({
           id: `b_${stageNumber}_ground_${blockIndex++}`,
@@ -1187,7 +1421,7 @@ function analyzeDreamLocally(title = '', description = '') {
           y: 420,
           width: 400,
           height: 30,
-          type: 'ground',
+          type: "ground",
         });
       }
       for (let zx = 500; zx < 4400; zx += 350 + stageNumber * 20) {
@@ -1213,12 +1447,12 @@ function analyzeDreamLocally(title = '', description = '') {
           y: 395,
           width: 20,
           height: 20,
-          type: 'collectible',
+          type: "collectible",
         });
       }
 
       // ── PUZZLE ───────────────────────────────────────────────────────────
-    } else if (genre === 'puzzle') {
+    } else if (genre === "puzzle") {
       const platforms = [
         { x: 300, y: 420 },
         { x: 700, y: 380 },
@@ -1237,7 +1471,7 @@ function analyzeDreamLocally(title = '', description = '') {
           y: plat.y,
           width: 180,
           height: 24,
-          type: 'solid',
+          type: "solid",
         });
         blocks.push({
           id: `b_${stageNumber}_piece_${blockIndex++}`,
@@ -1245,7 +1479,7 @@ function analyzeDreamLocally(title = '', description = '') {
           y: plat.y - 35,
           width: 22,
           height: 22,
-          type: 'puzzle_piece',
+          type: "puzzle_piece",
         });
       });
 
@@ -1255,7 +1489,7 @@ function analyzeDreamLocally(title = '', description = '') {
         y: 420,
         width: 320,
         height: 30,
-        type: 'ground',
+        type: "ground",
       });
 
       // ── PLATFORMER / ADVENTURE / RPG ─────────────────────────────────────
@@ -1272,7 +1506,7 @@ function analyzeDreamLocally(title = '', description = '') {
             y: 435,
             width: 32,
             height: 32,
-            type: 'hazard',
+            type: "hazard",
           });
           currentX += 128;
           continue;
@@ -1285,7 +1519,7 @@ function analyzeDreamLocally(title = '', description = '') {
           y: 420,
           width: platWidth,
           height: 30,
-          type: 'ground',
+          type: "ground",
         });
 
         if (!isStart && !isEnd && Math.random() < 0.6) {
@@ -1297,7 +1531,7 @@ function analyzeDreamLocally(title = '', description = '') {
             y: floatY,
             width: 128,
             height: 20,
-            type: 'solid',
+            type: "solid",
           });
           blocks.push({
             id: `b_${stageNumber}_coin_${blockIndex++}`,
@@ -1305,7 +1539,7 @@ function analyzeDreamLocally(title = '', description = '') {
             y: floatY - 25,
             width: 20,
             height: 20,
-            type: 'collectible',
+            type: "collectible",
           });
 
           if (Math.random() < 0.45) {
@@ -1333,12 +1567,12 @@ function analyzeDreamLocally(title = '', description = '') {
     // ── BOSS (unique per theme+stage) ─────────────────────────────────────
     const bossData = resolveBoss(theme, genre, location, stageNumber);
     const boss =
-      genre === 'puzzle'
+      genre === "puzzle"
         ? null
         : {
             id: `boss_${stageNumber}`,
             x: 4500,
-            y: genre === 'driving' || genre === 'endless_runner' ? 360 : 200,
+            y: genre === "driving" || genre === "endless_runner" ? 360 : 200,
             ...bossData,
           };
 
@@ -1356,20 +1590,22 @@ function analyzeDreamLocally(title = '', description = '') {
   const finalStage = stages[stages.length - 1];
 
   const rawBlueprint = {
-    title: title || `${capitalizeWords(theme)} ${capitalizeWords(genre)} — ${location}`,
+    title:
+      title ||
+      `${capitalizeWords(theme)} ${capitalizeWords(genre)} — ${location}`,
     theme: `${capitalizeWords(theme)} in ${location}`,
     genre,
     intent: {
       character: hero.name,
       characterType: hero.type,
-      vehicle: hero.type === 'vehicle' ? hero.name : null,
+      vehicle: hero.type === "vehicle" ? hero.name : null,
       location,
       weapons: hero.abilities.filter(
         (a) =>
-          a.toLowerCase().includes('shoot') ||
-          a.toLowerCase().includes('fire') ||
-          a.toLowerCase().includes('blast') ||
-          a.toLowerCase().includes('gun')
+          a.toLowerCase().includes("shoot") ||
+          a.toLowerCase().includes("fire") ||
+          a.toLowerCase().includes("blast") ||
+          a.toLowerCase().includes("gun"),
       ),
       actions: hero.abilities,
       scoreLabel,
@@ -1382,21 +1618,35 @@ function analyzeDreamLocally(title = '', description = '') {
       appearance: hero.appearance,
       hp: 100,
       maxHp: 100,
-      speed: genre === 'driving' || genre === 'racing' || genre === 'bike_racing' ? 250 : 220,
+      speed:
+        genre === "driving" || genre === "racing" || genre === "bike_racing"
+          ? 250
+          : 220,
       jumpForce: -350,
-      gravity: genre.includes('driving') || genre.includes('racing') || genre.includes('runner') ? 0 : 300,
+      gravity:
+        genre.includes("driving") ||
+        genre.includes("racing") ||
+        genre.includes("runner")
+          ? 0
+          : 300,
       colors,
       abilities: hero.abilities,
     },
     stages,
     winCondition:
-      genre === 'puzzle'
+      genre === "puzzle"
         ? `Collect all puzzle pieces and clear every stage in ${location}!`
-        : `Complete all missions in ${location} and defeat ${finalStage.boss?.name || 'the final boss'}!`,
-    loseCondition: `Fail to survive — health reaches zero.`,
+        : `Complete all missions in ${location} and defeat ${
+            finalStage.boss?.name || "the final boss"
+          }!`,
+    loseCondition: "Fail to survive — health reaches zero.",
   };
 
-  return validateAndNormalizeBlueprint(rawBlueprint, { mood: 'Adventure', difficulty: 'Medium', colors });
+  return validateAndNormalizeBlueprint(rawBlueprint, {
+    mood: "Adventure",
+    difficulty: "Medium",
+    colors,
+  });
 }
 
 // ============================================================
@@ -1405,50 +1655,66 @@ function analyzeDreamLocally(title = '', description = '') {
 
 function checkThematicValidation(blueprint, promptText) {
   const p = promptText.toLowerCase();
-  const genre = (blueprint.genre || '').toLowerCase();
-  const location = (blueprint.intent?.location || '').toLowerCase();
-  const theme = (blueprint.theme || '').toLowerCase();
+  const genre = (blueprint.genre || "").toLowerCase();
+  const location = (blueprint.intent?.location || "").toLowerCase();
+  const theme = (blueprint.theme || "").toLowerCase();
 
-  if (p.includes('mumbai') && !location.includes('mumbai') && !theme.includes('mumbai')) {
+  if (
+    p.includes("mumbai") &&
+    !location.includes("mumbai") &&
+    !theme.includes("mumbai")
+  ) {
     throw new Error(
-      'Theme Validation Failed: Request specified "Mumbai", but generated blueprint does not place the game in Mumbai.'
+      'Theme Validation Failed: Request specified "Mumbai", but generated blueprint does not place the game in Mumbai.',
     );
   }
-  if (p.includes('tokyo') && !location.includes('tokyo') && !theme.includes('tokyo')) {
+  if (
+    p.includes("tokyo") &&
+    !location.includes("tokyo") &&
+    !theme.includes("tokyo")
+  ) {
     throw new Error(
-      'Theme Validation Failed: Request specified "Tokyo", but generated blueprint does not place the game in Tokyo.'
+      'Theme Validation Failed: Request specified "Tokyo", but generated blueprint does not place the game in Tokyo.',
     );
   }
-  if (p.includes('dubai') && !location.includes('dubai') && !theme.includes('dubai')) {
+  if (
+    p.includes("dubai") &&
+    !location.includes("dubai") &&
+    !theme.includes("dubai")
+  ) {
     throw new Error(
-      'Theme Validation Failed: Request specified "Dubai", but generated blueprint does not place the game in Dubai.'
+      'Theme Validation Failed: Request specified "Dubai", but generated blueprint does not place the game in Dubai.',
     );
   }
-  if (p.includes('ferrari') && !p.includes('platformer')) {
-    if (!genre.includes('driving') && !genre.includes('racing')) {
+  if (p.includes("ferrari") && !p.includes("platformer")) {
+    if (!genre.includes("driving") && !genre.includes("racing")) {
       throw new Error(
-        'Theme Validation Failed: Request specified Ferrari but generated game is not a driving/racing genre.'
+        "Theme Validation Failed: Request specified Ferrari but generated game is not a driving/racing genre.",
       );
     }
   }
-  if (p.includes('bike') || p.includes('motorcycle')) {
-    if (!genre.includes('bike_racing') && !genre.includes('racing')) {
+  if (p.includes("bike") || p.includes("motorcycle")) {
+    if (!genre.includes("bike_racing") && !genre.includes("racing")) {
       throw new Error(
-        'Theme Validation Failed: Request specified motorcycle/bike but generated game is not a racing genre.'
+        "Theme Validation Failed: Request specified motorcycle/bike but generated game is not a racing genre.",
       );
     }
   }
 
   // Reject obvious generic placeholders that were not requested
   const allStages = blueprint.stages || [];
-  const enemies = allStages.flatMap((s) => (s.enemies || []).map((e) => e.name.toLowerCase()));
-  const bosses = allStages.map((s) => (s.boss?.name || '').toLowerCase());
-  const generics = ['slime', 'goblin', 'stone platform', 'security defender'];
+  const enemies = allStages.flatMap((s) =>
+    (s.enemies || []).map((e) => e.name.toLowerCase()),
+  );
+  const bosses = allStages.map((s) => (s.boss?.name || "").toLowerCase());
+  const generics = ["slime", "goblin", "stone platform", "security defender"];
 
   for (const item of [...enemies, ...bosses]) {
     for (const gen of generics) {
       if (item.includes(gen) && !p.includes(gen)) {
-        throw new Error(`Theme Validation Failed: Found generic placeholder "${item}" which was not requested.`);
+        throw new Error(
+          `Theme Validation Failed: Found generic placeholder "${item}" which was not requested.`,
+        );
       }
     }
   }
@@ -1460,44 +1726,48 @@ function checkThematicValidation(blueprint, promptText) {
 
 function normalizeGenre(genre) {
   const playable = [
-    'platformer',
-    'driving',
-    'bike_racing',
-    'racing',
-    'endless_runner',
-    'shooter',
-    'battle_royale',
-    'survival',
-    'puzzle',
+    "platformer",
+    "driving",
+    "bike_racing",
+    "racing",
+    "endless_runner",
+    "shooter",
+    "battle_royale",
+    "survival",
+    "puzzle",
   ];
-  const g = String(genre || 'platformer')
+  const g = String(genre || "platformer")
     .toLowerCase()
-    .replace(/\s+/g, '_');
+    .replace(/\s+/g, "_");
   if (playable.includes(g)) return g;
-  if (['open_world', 'rpg', 'adventure', 'simulation', 'sports'].includes(g)) return 'platformer';
-  return 'platformer';
+  if (["open_world", "rpg", "adventure", "simulation", "sports"].includes(g))
+    return "platformer";
+  return "platformer";
 }
 
 function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
-  if (!rawBlueprint || typeof rawBlueprint !== 'object') {
-    throw new Error('Blueprint must be a JSON object.');
+  if (!rawBlueprint || typeof rawBlueprint !== "object") {
+    throw new Error("Blueprint must be a JSON object.");
   }
 
-  const lang = themeData.lang || 'en';
+  const lang = themeData.lang || "en";
 
-  const title = localTranslate(rawBlueprint.title || 'Untitled Dream Game', lang);
-  const theme = localTranslate(rawBlueprint.theme || 'Dream Realm', lang);
-  const genre = normalizeGenre(rawBlueprint.genre || 'platformer');
+  const title = localTranslate(
+    rawBlueprint.title || "Untitled Dream Game",
+    lang,
+  );
+  const theme = localTranslate(rawBlueprint.theme || "Dream Realm", lang);
+  const genre = normalizeGenre(rawBlueprint.genre || "platformer");
 
   const intent = rawBlueprint.intent || {
-    character: 'Hero Explorer',
-    characterType: 'human',
+    character: "Hero Explorer",
+    characterType: "human",
     vehicle: null,
-    location: 'Surreal Void',
+    location: "Surreal Void",
     weapons: [],
-    actions: ['Dash', 'Double Jump'],
-    scoreLabel: 'SHARDS',
-    subType: 'human_male',
+    actions: ["Dash", "Double Jump"],
+    scoreLabel: "SHARDS",
+    subType: "human_male",
   };
 
   intent.character = localTranslate(intent.character, lang);
@@ -1506,72 +1776,86 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
 
   const player = rawBlueprint.player || {};
   const normalizedPlayer = {
-    name: localTranslate(player.name || intent.character || 'Explorer', lang),
-    type: player.type || intent.characterType || 'human',
-    subType: player.subType || intent.subType || 'human_male',
-    appearance: localTranslate(player.appearance || 'Standard appearance', lang),
+    name: localTranslate(player.name || intent.character || "Explorer", lang),
+    type: player.type || intent.characterType || "human",
+    subType: player.subType || intent.subType || "human_male",
+    appearance: localTranslate(
+      player.appearance || "Standard appearance",
+      lang,
+    ),
     hp: Number.isFinite(player.hp) ? player.hp : 100,
     maxHp: Number.isFinite(player.maxHp) ? player.maxHp : 100,
     speed: Number.isFinite(player.speed) ? player.speed : 220,
     jumpForce: Number.isFinite(player.jumpForce) ? player.jumpForce : -350,
     gravity: Number.isFinite(player.gravity)
       ? player.gravity
-      : genre.includes('driving') || genre.includes('racing') || genre.includes('runner')
+      : genre.includes("driving") ||
+          genre.includes("racing") ||
+          genre.includes("runner")
         ? 0
         : 300,
     colors: player.colors ||
       themeData.colors || {
-        bg: '#0a0b10',
-        accent: '#8b5cf6',
-        secondary: '#06b6d4',
-        hazard: '#f43f5e',
-        player: '#22c55e',
-        text: '#ffffff',
+        bg: "#0a0b10",
+        accent: "#8b5cf6",
+        secondary: "#06b6d4",
+        hazard: "#f43f5e",
+        player: "#22c55e",
+        text: "#ffffff",
       },
     abilities:
       Array.isArray(player.abilities) && player.abilities.length
         ? player.abilities
-        : intent.actions || ['Dash', 'Double Jump'],
+        : intent.actions || ["Dash", "Double Jump"],
   };
 
   const stages = Array.isArray(rawBlueprint.stages) ? rawBlueprint.stages : [];
-  if (stages.length < 1) throw new Error('Blueprint must contain at least 1 stage.');
+  if (stages.length < 1)
+    throw new Error("Blueprint must contain at least 1 stage.");
 
   const normalizedStages = stages.map((stage, idx) => {
     const stageNumber = stage.stageNumber || idx + 1;
 
-    const blocks = (Array.isArray(stage.blocks) ? stage.blocks : []).map((b, bidx) => ({
-      id: b.id || `b_${stageNumber}_${bidx}`,
-      x: Number.isFinite(b.x) ? b.x : 100 + bidx * 150,
-      y: Number.isFinite(b.y) ? b.y : 420,
-      width: Number.isFinite(b.width) ? b.width : 128,
-      height: Number.isFinite(b.height) ? b.height : 20,
-      type: b.type || 'ground',
-    }));
+    const blocks = (Array.isArray(stage.blocks) ? stage.blocks : []).map(
+      (b, bidx) => ({
+        id: b.id || `b_${stageNumber}_${bidx}`,
+        x: Number.isFinite(b.x) ? b.x : 100 + bidx * 150,
+        y: Number.isFinite(b.y) ? b.y : 420,
+        width: Number.isFinite(b.width) ? b.width : 128,
+        height: Number.isFinite(b.height) ? b.height : 20,
+        type: b.type || "ground",
+      }),
+    );
 
-    const enemies = (Array.isArray(stage.enemies) ? stage.enemies : []).map((e, eidx) => ({
-      id: e.id || `e_${stageNumber}_${eidx}`,
-      name: localTranslate(e.name || 'Shadow Scout', lang),
-      x: Number.isFinite(e.x) ? e.x : 300 + eidx * 400,
-      y: Number.isFinite(e.y) ? e.y : 390,
-      hp: Number.isFinite(e.hp) ? e.hp : 100,
-      maxHp: Number.isFinite(e.maxHp) ? e.maxHp : 100,
-      damage: Number.isFinite(e.damage) ? e.damage : 10,
-      type: e.type || 'patrol',
-      alive: e.alive !== undefined ? e.alive : true,
-      defeated: e.defeated !== undefined ? e.defeated : false,
-    }));
+    const enemies = (Array.isArray(stage.enemies) ? stage.enemies : []).map(
+      (e, eidx) => ({
+        id: e.id || `e_${stageNumber}_${eidx}`,
+        name: localTranslate(e.name || "Shadow Scout", lang),
+        x: Number.isFinite(e.x) ? e.x : 300 + eidx * 400,
+        y: Number.isFinite(e.y) ? e.y : 390,
+        hp: Number.isFinite(e.hp) ? e.hp : 100,
+        maxHp: Number.isFinite(e.maxHp) ? e.maxHp : 100,
+        damage: Number.isFinite(e.damage) ? e.damage : 10,
+        type: e.type || "patrol",
+        alive: e.alive !== undefined ? e.alive : true,
+        defeated: e.defeated !== undefined ? e.defeated : false,
+      }),
+    );
 
     const rawBoss = stage.boss || null;
     const boss = rawBoss
       ? {
           id: rawBoss.id || `boss_${stageNumber}`,
-          name: localTranslate(rawBoss.name || 'Stage Overlord', lang),
+          name: localTranslate(rawBoss.name || "Stage Overlord", lang),
           x: Number.isFinite(rawBoss.x) ? rawBoss.x : 2650,
           y: Number.isFinite(rawBoss.y) ? rawBoss.y : 200,
           hp: 200,
           maxHp: 200,
-          phases: ['Phase 1: HP 200-140', 'Phase 2: HP 139-70', 'Phase 3: HP 69-0'],
+          phases: [
+            "Phase 1: HP 200-140",
+            "Phase 2: HP 139-70",
+            "Phase 3: HP 69-0",
+          ],
           alive: rawBoss.alive !== undefined ? rawBoss.alive : true,
           defeated: rawBoss.defeated !== undefined ? rawBoss.defeated : false,
         }
@@ -1579,52 +1863,70 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
 
     return {
       stageNumber,
-      environment: localTranslate(stage.environment || `${intent.location} Stage ${stageNumber}`, lang),
-      objective: localTranslate(stage.objective || (boss ? `Survive and defeat ${boss.name}.` : 'Complete the stage objective.'), lang),
+      environment: localTranslate(
+        stage.environment || `${intent.location} Stage ${stageNumber}`,
+        lang,
+      ),
+      objective: localTranslate(
+        stage.objective ||
+          (boss
+            ? `Survive and defeat ${boss.name}.`
+            : "Complete the stage objective."),
+        lang,
+      ),
       blocks,
       enemies,
       boss,
-      completionCondition: localTranslate(stage.completionCondition || 'Defeat the boss and exit.', lang),
+      completionCondition: localTranslate(
+        stage.completionCondition || "Defeat the boss and exit.",
+        lang,
+      ),
     };
   });
 
   const finalStage = normalizedStages[normalizedStages.length - 1];
-  const allEnemyNames = normalizedStages.flatMap((s) => s.enemies.map((e) => e.name));
-  const scoreLabel = intent.scoreLabel || resolveScoreLabel(resolveTheme(title + ' ' + theme), genre);
+  const allEnemyNames = normalizedStages.flatMap((s) =>
+    s.enemies.map((e) => e.name),
+  );
+  const scoreLabel =
+    intent.scoreLabel ||
+    resolveScoreLabel(resolveTheme(`${title} ${theme}`), genre);
 
   const translatedPlayerName = normalizedPlayer.name;
   const translatedLocation = intent.location;
   const translatedObjective = finalStage.objective;
-  const translatedBossName = finalStage.boss?.name || (genre === 'puzzle' ? 'Puzzle Guardian' : 'Stage Overlord');
+  const translatedBossName =
+    finalStage.boss?.name ||
+    (genre === "puzzle" ? "Puzzle Guardian" : "Stage Overlord");
 
   let intro = `You deploy as ${translatedPlayerName}. The battle begins in ${translatedLocation}.`;
   let mission =
-    genre === 'puzzle'
+    genre === "puzzle"
       ? `Mission: ${translatedObjective}`
       : `Mission: ${translatedObjective} Defeat the fearsome ${translatedBossName}!`;
   let ending =
-    genre === 'puzzle'
+    genre === "puzzle"
       ? `${translatedPlayerName} solved every puzzle in ${translatedLocation}!`
       : `${translatedBossName} falls. ${translatedPlayerName} has conquered ${translatedLocation}!`;
 
-  if (lang === 'hi') {
+  if (lang === "hi") {
     intro = `आप ${translatedPlayerName} के रूप में तैनात होते हैं। लड़ाई ${translatedLocation} में शुरू होती है।`;
     mission =
-      genre === 'puzzle'
+      genre === "puzzle"
         ? `मिशन: ${translatedObjective}`
         : `मिशन: ${translatedObjective} भयानक ${translatedBossName} को हराएं!`;
     ending =
-      genre === 'puzzle'
+      genre === "puzzle"
         ? `${translatedPlayerName} ने ${translatedLocation} में हर पहेली को हल कर दिया!`
         : `${translatedBossName} हार गया। ${translatedPlayerName} ने ${translatedLocation} पर विजय प्राप्त कर ली है!`;
-  } else if (lang === 'te') {
+  } else if (lang === "te") {
     intro = `మీరు ${translatedPlayerName}గా రంగంలోకి దిగారు. యుద్ధం ${translatedLocation}లో ప్రారంభమవుతుంది.`;
     mission =
-      genre === 'puzzle'
+      genre === "puzzle"
         ? `లక్ష్యం: ${translatedObjective}`
         : `లక్ష్యం: ${translatedObjective} భయంకరమైన ${translatedBossName}ని ఓడించండి!`;
     ending =
-      genre === 'puzzle'
+      genre === "puzzle"
         ? `${translatedPlayerName} ${translatedLocation}లోని ప్రతి పజిల్‌ను పరిష్కరించారు!`
         : `${translatedBossName} ఓడిపోయాడు. ${translatedPlayerName} ${translatedLocation}ను జయించారు!`;
   }
@@ -1638,22 +1940,29 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
     stages: normalizedStages,
     winCondition: localTranslate(
       rawBlueprint.winCondition ||
-      (genre === 'puzzle'
-        ? `Clear all ${normalizedStages.length} puzzle stages.`
-        : `Defeat ${finalStage.boss?.name || 'the boss'} and clear all ${normalizedStages.length} stages.`),
-      lang
+        (genre === "puzzle"
+          ? `Clear all ${normalizedStages.length} puzzle stages.`
+          : `Defeat ${finalStage.boss?.name || "the boss"} and clear all ${
+              normalizedStages.length
+            } stages.`),
+      lang,
     ),
-    loseCondition: localTranslate(rawBlueprint.loseCondition || 'Player health reduces to 0.', lang),
+    loseCondition: localTranslate(
+      rawBlueprint.loseCondition || "Player health reduces to 0.",
+      lang,
+    ),
 
     // UI compatibility
     hero: normalizedPlayer.name,
     world: theme,
     enemies: [...new Set(allEnemyNames)].slice(0, 4),
-    boss: finalStage.boss?.name || (genre === 'puzzle' ? 'Puzzle Guardian' : 'Stage Overlord'),
+    boss:
+      finalStage.boss?.name ||
+      (genre === "puzzle" ? "Puzzle Guardian" : "Stage Overlord"),
     objective: finalStage.objective,
     powerups: normalizedPlayer.abilities.slice(0, 3),
-    mood: themeData.mood || 'Adventure',
-    difficulty: themeData.difficulty || 'Medium',
+    mood: themeData.mood || "Adventure",
+    difficulty: themeData.difficulty || "Medium",
     colors: normalizedPlayer.colors,
     physics: {
       gravity: normalizedPlayer.gravity,
@@ -1669,28 +1978,42 @@ function validateAndNormalizeBlueprint(rawBlueprint, themeData = {}) {
 // MAIN ENTRY POINT
 // ============================================================
 
-async function analyzeDream(title, description, aiConfig = {}, lang = 'en') {
+async function analyzeDream(title, description, aiConfig = {}, lang = "en") {
   // Backwards compat: if a bare string key was passed, wrap it
-  if (typeof aiConfig === 'string') {
-    aiConfig = { provider: 'openai', apiKey: aiConfig || process.env.OPENAI_API_KEY };
+  let activeAiConfig = aiConfig;
+  if (typeof aiConfig === "string") {
+    activeAiConfig = {
+      provider: "openai",
+      apiKey: aiConfig || process.env.OPENAI_API_KEY,
+    };
   }
-  const { provider = 'openai', apiKey = process.env.OPENAI_API_KEY, model, endpoint } = aiConfig;
+  const {
+    provider = "openai",
+    apiKey = process.env.OPENAI_API_KEY,
+    model,
+    endpoint,
+  } = activeAiConfig;
 
   const combinedText = `${title} ${description}`;
 
   // No key and not a keyless provider (ollama/local) → use local analyzer
-  const needsKey = provider === 'openai' || provider === 'anthropic' || provider === 'gemini';
+  const needsKey =
+    provider === "openai" || provider === "anthropic" || provider === "gemini";
   if (needsKey && !apiKey) {
-    console.log(`[AI] No API key for provider '${provider}'. Using local analyzer.`);
+    console.log(
+      `[AI] No API key for provider '${provider}'. Using local analyzer.`,
+    );
     return analyzeDreamLocally(title, description, lang);
   }
 
   try {
     let systemPrompt = CODEX_GAME_SYSTEM_PROMPT;
-    if (lang === 'hi') {
-      systemPrompt += '\nIMPORTANT: Generate all user-facing strings (such as "title", "theme", "intent.character", "player.name", "player.appearance", "stages[].environment", "stages[].objective", "stages[].boss.name", "stages[].completionCondition", "winCondition", "loseCondition", and all storylines/descriptions) in Hindi (using Devanagari script). JSON keys and other structural fields must remain exactly in English as defined in the schema.';
-    } else if (lang === 'te') {
-      systemPrompt += '\nIMPORTANT: Generate all user-facing strings (such as "title", "theme", "intent.character", "player.name", "player.appearance", "stages[].environment", "stages[].objective", "stages[].boss.name", "stages[].completionCondition", "winCondition", "loseCondition", and all storylines/descriptions) in Telugu (using Telugu script). JSON keys and other structural fields must remain exactly in English as defined in the schema.';
+    if (lang === "hi") {
+      systemPrompt +=
+        '\nIMPORTANT: Generate all user-facing strings (such as "title", "theme", "intent.character", "player.name", "player.appearance", "stages[].environment", "stages[].objective", "stages[].boss.name", "stages[].completionCondition", "winCondition", "loseCondition", and all storylines/descriptions) in Hindi (using Devanagari script). JSON keys and other structural fields must remain exactly in English as defined in the schema.';
+    } else if (lang === "te") {
+      systemPrompt +=
+        '\nIMPORTANT: Generate all user-facing strings (such as "title", "theme", "intent.character", "player.name", "player.appearance", "stages[].environment", "stages[].objective", "stages[].boss.name", "stages[].completionCondition", "winCondition", "loseCondition", and all storylines/descriptions) in Telugu (using Telugu script). JSON keys and other structural fields must remain exactly in English as defined in the schema.';
     }
 
     const prompt = `
@@ -1702,17 +2025,23 @@ async function analyzeDream(title, description, aiConfig = {}, lang = 'en') {
     `;
 
     const messages = [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: prompt },
+      { role: "system", content: systemPrompt },
+      { role: "user", content: prompt },
     ];
 
-    console.log(`[AI] Calling provider: ${provider}, model: ${model || 'default'}`);
-    let rawContent = await callAI({ provider, apiKey, model, endpoint }, messages);
+    console.log(
+      `[AI] Calling provider: ${provider}, model: ${model || "default"}`,
+    );
+    let rawContent = await callAI(
+      { provider, apiKey, model, endpoint },
+      messages,
+    );
 
     // Strip markdown code fences if present
-    if (rawContent.startsWith('```json')) rawContent = rawContent.substring(7);
-    if (rawContent.startsWith('```')) rawContent = rawContent.substring(3);
-    if (rawContent.endsWith('```')) rawContent = rawContent.substring(0, rawContent.length - 3);
+    if (rawContent.startsWith("```json")) rawContent = rawContent.substring(7);
+    if (rawContent.startsWith("```")) rawContent = rawContent.substring(3);
+    if (rawContent.endsWith("```"))
+      rawContent = rawContent.substring(0, rawContent.length - 3);
 
     const parsed = JSON.parse(rawContent.trim());
     checkThematicValidation(parsed, combinedText);
@@ -1733,10 +2062,16 @@ async function analyzeDream(title, description, aiConfig = {}, lang = 'en') {
       parsed.intent.subType = hero.subType;
     }
 
-    return validateAndNormalizeBlueprint(parsed, { colors: resolveColors(extractLocation(text), theme, genre), lang });
+    return validateAndNormalizeBlueprint(parsed, {
+      colors: resolveColors(extractLocation(text), theme, genre),
+      lang,
+    });
   } catch (err) {
-    console.error(`[AI] Failed to generate dream using provider '${provider}':`, err.message);
-    console.log('[AI] Falling back to local dynamic dream analyzer.');
+    console.error(
+      `[AI] Failed to generate dream using provider '${provider}':`,
+      err.message,
+    );
+    console.log("[AI] Falling back to local dynamic dream analyzer.");
     return analyzeDreamLocally(title, description, lang);
   }
 }
@@ -1745,21 +2080,31 @@ async function analyzeDream(title, description, aiConfig = {}, lang = 'en') {
 // DREAM FUSION
 // ============================================================
 
-async function fuseDreams(dream1, dream2, aiConfig = {}, lang = 'en') {
+async function fuseDreams(dream1, dream2, aiConfig = {}, lang = "en") {
   // Backwards compat
-  if (typeof aiConfig === 'string') {
-    aiConfig = { provider: 'openai', apiKey: aiConfig || process.env.OPENAI_API_KEY };
+  let activeAiConfig = aiConfig;
+  if (typeof aiConfig === "string") {
+    activeAiConfig = {
+      provider: "openai",
+      apiKey: aiConfig || process.env.OPENAI_API_KEY,
+    };
   }
-  const { provider = 'openai', apiKey = process.env.OPENAI_API_KEY, model, endpoint } = aiConfig;
+  const {
+    provider = "openai",
+    apiKey = process.env.OPENAI_API_KEY,
+    model,
+    endpoint,
+  } = activeAiConfig;
 
   const combinedText = `${dream1.title} ${dream1.description} fused with ${dream2.title} ${dream2.description}`;
-  const needsKey = provider === 'openai' || provider === 'anthropic' || provider === 'gemini';
+  const needsKey =
+    provider === "openai" || provider === "anthropic" || provider === "gemini";
 
   if (needsKey && !apiKey) {
     const result = analyzeDreamLocally(
       `Fused: ${dream1.title.slice(0, 15)} + ${dream2.title.slice(0, 15)}`,
       combinedText,
-      lang
+      lang,
     );
     result.player.name = `${dream1.blueprint.hero} / ${dream2.blueprint.hero} Chimera`;
     result.hero = result.player.name;
@@ -1770,10 +2115,12 @@ async function fuseDreams(dream1, dream2, aiConfig = {}, lang = 'en') {
 
   try {
     let systemPrompt = CODEX_GAME_SYSTEM_PROMPT;
-    if (lang === 'hi') {
-      systemPrompt += '\nIMPORTANT: Generate all user-facing strings in Hindi (using Devanagari script). JSON keys and structural fields must remain in English.';
-    } else if (lang === 'te') {
-      systemPrompt += '\nIMPORTANT: Generate all user-facing strings in Telugu (using Telugu script). JSON keys and structural fields must remain in English.';
+    if (lang === "hi") {
+      systemPrompt +=
+        "\nIMPORTANT: Generate all user-facing strings in Hindi (using Devanagari script). JSON keys and structural fields must remain in English.";
+    } else if (lang === "te") {
+      systemPrompt +=
+        "\nIMPORTANT: Generate all user-facing strings in Telugu (using Telugu script). JSON keys and structural fields must remain in English.";
     }
 
     const prompt = `
@@ -1786,16 +2133,22 @@ async function fuseDreams(dream1, dream2, aiConfig = {}, lang = 'en') {
     `;
 
     const messages = [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: prompt },
+      { role: "system", content: systemPrompt },
+      { role: "user", content: prompt },
     ];
 
-    console.log(`[AI] Fusing dreams via provider: ${provider}, model: ${model || 'default'}`);
-    let rawContent = await callAI({ provider, apiKey, model, endpoint }, messages);
+    console.log(
+      `[AI] Fusing dreams via provider: ${provider}, model: ${model || "default"}`,
+    );
+    let rawContent = await callAI(
+      { provider, apiKey, model, endpoint },
+      messages,
+    );
 
-    if (rawContent.startsWith('```json')) rawContent = rawContent.substring(7);
-    if (rawContent.startsWith('```')) rawContent = rawContent.substring(3);
-    if (rawContent.endsWith('```')) rawContent = rawContent.substring(0, rawContent.length - 3);
+    if (rawContent.startsWith("```json")) rawContent = rawContent.substring(7);
+    if (rawContent.startsWith("```")) rawContent = rawContent.substring(3);
+    if (rawContent.endsWith("```"))
+      rawContent = rawContent.substring(0, rawContent.length - 3);
 
     const parsed = JSON.parse(rawContent.trim());
     checkThematicValidation(parsed, combinedText);
@@ -1804,10 +2157,16 @@ async function fuseDreams(dream1, dream2, aiConfig = {}, lang = 'en') {
     const genre = classifyGenre(text);
     const theme = resolveTheme(text);
 
-    return validateAndNormalizeBlueprint(parsed, { colors: resolveColors(extractLocation(text), theme, genre), lang });
+    return validateAndNormalizeBlueprint(parsed, {
+      colors: resolveColors(extractLocation(text), theme, genre),
+      lang,
+    });
   } catch (err) {
-    console.error(`[AI] Failed to fuse dreams using provider '${provider}':`, err.message);
-    const result = analyzeDreamLocally('Fused Dream', combinedText, lang);
+    console.error(
+      `[AI] Failed to fuse dreams using provider '${provider}':`,
+      err.message,
+    );
+    const result = analyzeDreamLocally("Fused Dream", combinedText, lang);
     result.player.name = `${dream1.blueprint.hero} / ${dream2.blueprint.hero} Chimera`;
     result.hero = result.player.name;
     result.theme = `Fused: ${dream1.title} x ${dream2.title}`;
@@ -1823,7 +2182,7 @@ async function fuseDreams(dream1, dream2, aiConfig = {}, lang = 'en') {
 const LOCAL_TRANSLATIONS = {
   hi: {
     // hero names
-    "Survivor": "सरवाइवर",
+    Survivor: "सरवाइवर",
     "Cosmic Drifter": "कॉस्मिक ड्रिफ्टर",
     "Shadow Ninja": "शैडो निंजा",
     "Combat Soldier": "कॉम्बैट सोल्जर",
@@ -1852,9 +2211,9 @@ const LOCAL_TRANSLATIONS = {
     "Police Officer": "पुलिस अधिकारी",
     "Security Guard": "सुरक्षा गार्ड",
     "Crime Boss Bodyguard": "क्राइम बॉस बॉडीगार्ड",
-    "Walker": "वॉकर",
-    "Runner": "रनर",
-    "Mutant": "म्यूटेंट",
+    Walker: "वॉकर",
+    Runner: "रनर",
+    Mutant: "म्यूटेंट",
     "Infected Beast": "संक्रमित जानवर",
     "Alien Soldier": "एलियन सैनिक",
     "Attack Drone": "हमलावर ड्रोन",
@@ -1865,11 +2224,11 @@ const LOCAL_TRANSLATIONS = {
     "Shuriken Scout": "शूरिकेन स्काउट",
     "Oni Warrior": "ओनी योद्धा",
     "Foot Soldier": "पैदल सैनिक",
-    "Sniper": "स्नाइपर",
+    Sniper: "स्नाइपर",
     "Tank Trooper": "टैंक ट्रूपर",
     "Assault Mech": "असॉल्ट मेक",
     "Dark Elf": "डार्क एल्फ",
-    "Wraith": "रेथ",
+    Wraith: "रेथ",
     "Stone Golem": "स्टोन गोलेम",
     "Shadow Knight": "शैडो नाइट",
     "Traffic Sedan": "ट्रैफिक सेडान",
@@ -1882,11 +2241,11 @@ const LOCAL_TRANSLATIONS = {
     "Recon Agent": "रेकन एजेंट",
     "Corsair Sailor": "कौसैर नाविक",
     "Sea Serpent": "समुद्री नाग",
-    "Cannoneer": "तोपची",
+    Cannoneer: "तोपची",
     "Ghost Sailor": "भूतिया नाविक",
-    "Henchman": "गुर्गा",
+    Henchman: "गुर्गा",
     "Armored Villain": "बख्तरबंद खलनायक",
-    "Mercenary": "किराए का सैनिक",
+    Mercenary: "किराए का सैनिक",
     "Cyborg Agent": "साइबोर्ग एजेंट",
     "Outlaw Gunman": "डाकू बंदूकधारी",
     "Bandit Rider": "डाकू घुड़सवार",
@@ -1896,22 +2255,22 @@ const LOCAL_TRANSLATIONS = {
     "Opening Grounds": "प्रारंभिक मैदान",
     "Midfield Assault": "मिडफील्ड हमला",
     "Final Stronghold": "अंतिम किला",
-    "Stage": "चरण",
+    Stage: "चरण",
     // simple texts
     "Complete the stage objective.": "चरण का उद्देश्य पूरा करें।",
     "Defeat the boss and exit.": "बॉस को हराएं और बाहर निकलें।",
     "Player health reduces to 0.": "खिलाड़ी का स्वास्थ्य 0 हो जाता है।",
     // locations
-    "Mumbai": "मुंबई",
-    "Tokyo": "टोक्यो",
-    "Dubai": "दुबई",
-    "Hyderabad": "हैदराबाद",
+    Mumbai: "मुंबई",
+    Tokyo: "टोक्यो",
+    Dubai: "दुबई",
+    Hyderabad: "हैदराबाद",
     "New York": "न्यूयॉर्क",
-    "London": "लंदन",
-    "Paris": "पेरिस",
-    "Bangkok": "बैंकॉक",
-    "Seoul": "सियोल",
-    "Delhi": "दिल्ली",
+    London: "लंदन",
+    Paris: "पेरिस",
+    Bangkok: "बैंकॉक",
+    Seoul: "सियोल",
+    Delhi: "दिल्ली",
     "Deep Space": "गहरा अंतरिक्ष",
     "Ocean Realm": "महासागर क्षेत्र",
     "Jungle Depths": "जंगल की गहराई",
@@ -1921,7 +2280,7 @@ const LOCAL_TRANSLATIONS = {
   },
   te: {
     // hero names
-    "Survivor": "సర్వైవర్",
+    Survivor: "సర్వైవర్",
     "Cosmic Drifter": "కాస్మిక్ డ్రిఫ్టర్",
     "Shadow Ninja": "షాడో నింజా",
     "Combat Soldier": "కాంబ్యాట్ సోల్జర్",
@@ -1950,9 +2309,9 @@ const LOCAL_TRANSLATIONS = {
     "Police Officer": "పోలీస్ అధికారి",
     "Security Guard": "సెక్యూరిటీ గార్డ్",
     "Crime Boss Bodyguard": "క్రైమ్ బాస్ బాడీగార్డ్",
-    "Walker": "వాకర్",
-    "Runner": "రన్నర్",
-    "Mutant": "మ్యుటెంట్",
+    Walker: "వాకర్",
+    Runner: "రన్నర్",
+    Mutant: "మ్యుటెంట్",
     "Infected Beast": "ఇన్ఫెక్టెడ్ బీస్ట్",
     "Alien Soldier": "ఏలియన్ సైనికుడు",
     "Attack Drone": "అటాక్ డ్రోన్",
@@ -1963,11 +2322,11 @@ const LOCAL_TRANSLATIONS = {
     "Shuriken Scout": "షురికెన్ స్కౌట్",
     "Oni Warrior": "ఓని యోధుడు",
     "Foot Soldier": "కాల్బల సైనికుడు",
-    "Sniper": "స్నిపర్",
+    Sniper: "స్నిపర్",
     "Tank Trooper": "ట్యాంక్ ట్రూపర్",
     "Assault Mech": "అసాల్ట్ మెక్",
     "Dark Elf": "డార్క్ ఎల్ఫ్",
-    "Wraith": "రైత్",
+    Wraith: "రైత్",
     "Stone Golem": "స్టోన్ గోలెం",
     "Shadow Knight": "షాడో నైట్",
     "Traffic Sedan": "ట్రాఫిక్ సెడాన్",
@@ -1980,11 +2339,11 @@ const LOCAL_TRANSLATIONS = {
     "Recon Agent": "రెకాన్ ఏజెంట్",
     "Corsair Sailor": "కోర్సెయిర్ నావికుడు",
     "Sea Serpent": "సీ సెర్పెంట్",
-    "Cannoneer": "కానోనియర్",
+    Cannoneer: "కానోనియర్",
     "Ghost Sailor": "ఘోస్ట్ నావికుడు",
-    "Henchman": "హెంచ్మన్",
+    Henchman: "హెంచ్మన్",
     "Armored Villain": "ఆర్మర్డ్ విలన్",
-    "Mercenary": "మెర్సెనరీ",
+    Mercenary: "మెర్సెనరీ",
     "Cyborg Agent": "సైబోర్గ్ ఏజెంట్",
     "Outlaw Gunman": "అవుట్‌లా గన్‌మ్యాన్",
     "Bandit Rider": "బాండిట్ రైడర్",
@@ -1994,49 +2353,49 @@ const LOCAL_TRANSLATIONS = {
     "Opening Grounds": "ప్రారంభ మైదానం",
     "Midfield Assault": "మిడ్‌ఫీల్డ్ దాడి",
     "Final Stronghold": "చివరి కోట",
-    "Stage": "స్టేజ్",
+    Stage: "స్టేజ్",
     // simple texts
     "Complete the stage objective.": "స్టేజ్ లక్ష్యాన్ని పూర్తి చేయండి.",
     "Defeat the boss and exit.": "బాస్‌ను ఓడించి నిష్క్రమించండి.",
     "Player health reduces to 0.": "ఆటగాడి ఆరోగ్యం 0 కి పడిపోతుంది.",
     // locations
-    "Mumbai": "ముంబై",
-    "Tokyo": "టోక్యో",
-    "Dubai": "దుబాయ్",
-    "Hyderabad": "హైదరాబాద్",
+    Mumbai: "ముంబై",
+    Tokyo: "టోక్యో",
+    Dubai: "దుబాయ్",
+    Hyderabad: "హైదరాబాద్",
     "New York": "న్యూయార్క్",
-    "London": "లండన్",
-    "Paris": "పారిస్",
-    "Bangkok": "బ్యాంకాక్",
-    "Seoul": "సియోల్",
-    "Delhi": "ఢిల్లీ",
+    London: "లండన్",
+    Paris: "పారిస్",
+    Bangkok: "బ్యాంకాక్",
+    Seoul: "సియోల్",
+    Delhi: "ఢిల్లీ",
     "Deep Space": "అంతరిక్షం",
     "Ocean Realm": "సముద్ర సామ్రాజ్యం",
     "Jungle Depths": "అడవి లోతులు",
     "Desert Wasteland": "ఎడారి భూమి",
     "Metro City": "మెట్రో నగరం",
     "Surreal Void": "శూన్యం",
-  }
+  },
 };
 
 function localTranslate(text, lang) {
   if (!text) return text;
-  if (!lang || lang === 'en') return text;
+  if (!lang || lang === "en") return text;
   const dict = LOCAL_TRANSLATIONS[lang];
   if (!dict) return text;
-  
+
   if (dict[text]) return dict[text];
 
   // Try parsing template-based strings like stage environments: "Mumbai — Opening Grounds"
-  if (text.includes(' — ')) {
-    const parts = text.split(' — ');
-    const translatedParts = parts.map(p => localTranslate(p.trim(), lang));
-    return translatedParts.join(' — ');
+  if (text.includes(" — ")) {
+    const parts = text.split(" — ");
+    const translatedParts = parts.map((p) => localTranslate(p.trim(), lang));
+    return translatedParts.join(" — ");
   }
-  if (text.includes(' Stage ')) {
-    const parts = text.split(' Stage ');
+  if (text.includes(" Stage ")) {
+    const parts = text.split(" Stage ");
     const tLoc = localTranslate(parts[0].trim(), lang);
-    const tStage = dict["Stage"] || "Stage";
+    const tStage = dict.Stage || "Stage";
     return `${tLoc} ${tStage} ${parts[1]}`;
   }
 
@@ -2045,15 +2404,15 @@ function localTranslate(text, lang) {
   let match = text.match(/Outrun (\d+) rivals and reach the checkpoint!/i);
   if (match) {
     const count = match[1];
-    return lang === 'hi' 
-      ? `${count} प्रतिद्वंद्वियों से आगे निकलें और चेकपॉइंट पर पहुंचें!` 
+    return lang === "hi"
+      ? `${count} प्रतिद्वंद्वियों से आगे निकलें और चेकपॉइंट पर पहुंचें!`
       : `${count} మంది ప్రత్యర్థులను దాటి చెక్‌పాయింట్‌ను చేరుకోండి!`;
   }
   // "Dodge traffic and complete X lap circuits."
   match = text.match(/Dodge traffic and complete (\d+) lap circuits\./i);
   if (match) {
     const count = match[1];
-    return lang === 'hi'
+    return lang === "hi"
       ? `ट्रैफिक से बचें और ${count} लैप सर्किट पूरे करें।`
       : `ట్రాఫిక్ నుండి తప్పించుకుని ${count} ల్యాప్ సర్క్యూట్‌లను పూర్తి చేయండి.`;
   }
@@ -2061,7 +2420,7 @@ function localTranslate(text, lang) {
   match = text.match(/Win against (\d+) opponents on the circuit\./i);
   if (match) {
     const count = match[1];
-    return lang === 'hi'
+    return lang === "hi"
       ? `सर्किट पर ${count} विरोधियों के खिलाफ जीतें।`
       : `సర్క్యూట్‌లో ${count} మంది ప్రత్యర్థులపై విజయం సాధించండి.`;
   }
@@ -2069,7 +2428,7 @@ function localTranslate(text, lang) {
   match = text.match(/Collect (\d+) coins while dodging hurdles!/i);
   if (match) {
     const count = match[1];
-    return lang === 'hi'
+    return lang === "hi"
       ? `बाधाओं से बचते हुए ${count} सिक्के एकत्र करें!`
       : `అడ్డంకులను తప్పించుకుంటూ ${count} నాణేలను సేకరించండి!`;
   }
@@ -2077,7 +2436,7 @@ function localTranslate(text, lang) {
   match = text.match(/Eliminate all (\d+) rivals and stay inside the zone\./i);
   if (match) {
     const count = match[1];
-    return lang === 'hi'
+    return lang === "hi"
       ? `सभी ${count} प्रतिद्वंद्वियों को खत्म करें और ज़ोन के अंदर रहें।`
       : `${count} మంది ప్రత్యర్థులందరినీ నిర్మూలించి జోన్ లోపల ఉండండి.`;
   }
@@ -2085,24 +2444,26 @@ function localTranslate(text, lang) {
   match = text.match(/Survive the zombie horde and clear (\d+) walkers\./i);
   if (match) {
     const count = match[1];
-    return lang === 'hi'
+    return lang === "hi"
       ? `ज़ोंबी झुंड से बचें और ${count} वॉकर साफ़ करें।`
       : `జోంబీ గుంపు నుండి బ్రతికి బయటపడి ${count} వాకర్లను నిర్మూలించండి.`;
   }
   // "Collect all X puzzle pieces scattered across platforms!"
-  match = text.match(/Collect all (\d+) puzzle pieces scattered across platforms!/i);
+  match = text.match(
+    /Collect all (\d+) puzzle pieces scattered across platforms!/i,
+  );
   if (match) {
     const count = match[1];
-    return lang === 'hi'
+    return lang === "hi"
       ? `प्लेटफॉर्म पर बिखरे सभी ${count} पहेली टुकड़ों को इकट्ठा करें!`
-      : `ప్లాట్‌ఫారమ్‌లపై చెల్లాచెదురుగా ఉన్న అన్ని {{count}} పజిల్ ముక్కలను సేకరించండి!`;
+      : "ప్లాట్‌ఫారమ్‌లపై చెల్లాచెదురుగా ఉన్న అన్ని {{count}} పజిల్ ముక్కలను సేకరించండి!";
   }
-  
+
   // "Survive and defeat X."
   match = text.match(/Survive and defeat (.+)\./i);
   if (match) {
     const bossName = localTranslate(match[1].trim(), lang);
-    return lang === 'hi'
+    return lang === "hi"
       ? `बचें और ${bossName} को हराएं।`
       : `అలాగే ${bossName} ని ఓడించండి.`;
   }
@@ -2111,7 +2472,7 @@ function localTranslate(text, lang) {
   match = text.match(/Clear all (\d+) puzzle stages\./i);
   if (match) {
     const count = match[1];
-    return lang === 'hi'
+    return lang === "hi"
       ? `सभी ${count} पहेली चरणों को पूरा करें।`
       : `అన్ని ${count} పజిల్ స్టేజ్‌లను పూర్తి చేయండి.`;
   }
@@ -2121,7 +2482,7 @@ function localTranslate(text, lang) {
   if (match) {
     const bossName = localTranslate(match[1].trim(), lang);
     const count = match[2];
-    return lang === 'hi'
+    return lang === "hi"
       ? `${bossName} को हराएं और सभी ${count} चरणों को पूरा करें।`
       : `${bossName}ని ఓడించి అన్ని ${count} స్టేజ్‌లను పూర్తి చేయండి.`;
   }
