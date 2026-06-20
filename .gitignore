@@ -25,3 +25,8 @@ Thumbs.db
 
 # Test coverage
 coverage/
+
+# GitLab Runner (machine-specific, contains sensitive tokens)
+config.toml
+.runner_system_id
+builds/
