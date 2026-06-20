@@ -8,6 +8,7 @@ export default defineConfig({
       '**/node_modules/**',
       '**/dist/**',
       '**/build/**',
+      '**/builds/**',
       '**/coverage/**',
       'frontend/dist/**',
       'backend/uploads/**',
